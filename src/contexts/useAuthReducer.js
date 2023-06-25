@@ -46,15 +46,15 @@ const actionsCreator = (dispatch, state) => {
             });
         }
     };
-    const uservValidation = async ({ email }) => {
+    const uservValidation = async({ email }) => {
         let postData = {
             email: email,
         }
-        const { ticket } = await
-            NetworkManager.getDataWithUrl(false)(ProjectUtils.makeUserValidationRequestURL(), { ...postData });
-        if (ticket) {
-            dispatch({ type: 'SET_LOGIN_SUCCESS', payload: { email, ticket } });
-            Router.push('/dashboard', `/dashboard`);
+        const response = await
+        NetworkManager.getDataWithUrl(false)(ProjectUtils.makeUserValidationRequestURL(), {...postData });
+        if (response) {
+
+            Router.push('/changePassword', `/changePassword`);
             return { email }
         } else {
             toast.error(message, {
@@ -62,7 +62,7 @@ const actionsCreator = (dispatch, state) => {
             });
         }
     };
-    return { signIn,uservValidation }
+    return { signIn, uservValidation }
 };
 
 

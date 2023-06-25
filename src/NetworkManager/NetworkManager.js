@@ -150,16 +150,13 @@ class NetworkManager {
                 return error;
             });
     };
-    static getDataWithUrl = (withToken = false) => async (url, context = null, extraHeaders = {}) => {
-        url = url + '?emailID='+context.email
+    static getDataWithUrl = (withToken = false) => async(url, context = null, extraHeaders = {}) => {
+        url = url + '?emailID=' + context.email
         const headers = await NetworkManager.makeGetTokenHeaderParam(null);
         const response = await axiosInstance.get(url, headers);
         return await response.data;
     }
-
 }
-
-
 export const createPlusAxiosReq = (endpoint, baseUrl) => {
     let url;
     const getHeader = () => NetworkManager.makeHeaderParamWishList();
