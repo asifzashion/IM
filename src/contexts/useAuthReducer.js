@@ -46,7 +46,23 @@ const actionsCreator = (dispatch, state) => {
             });
         }
     };
-    return { signIn }
+    const uservValidation = async ({ email }) => {
+        let postData = {
+            email: email,
+        }
+        const { ticket } = await
+            NetworkManager.getDataWithUrl(false)(ProjectUtils.makeUserValidationRequestURL(), { ...postData });
+        if (ticket) {
+            dispatch({ type: 'SET_LOGIN_SUCCESS', payload: { email, ticket } });
+            Router.push('/dashboard', `/dashboard`);
+            return { email }
+        } else {
+            toast.error(message, {
+                position: toast.POSITION.TOP_CENTER
+            });
+        }
+    };
+    return { signIn,uservValidation }
 };
 
 

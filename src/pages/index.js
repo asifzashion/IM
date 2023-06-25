@@ -12,13 +12,14 @@ export default function Home() {
     const [isForgot, setForgot] = useState(0)
     const [isvalidSubmit, setvalidSubmit] = useState(0)
     const [isLogin, setLogin] = useState(1)
+    const [uservalidate, setuservalidate] = useState({})
 
     const [error, setError] = useState({
         email: '',
         password: ''
     },)
     const {
-        actions: {signIn},
+        actions: {signIn,uservValidation},
     } = useContext(AppContext).auth;
    const handleSubmit = async () => {
         const {email, password, urlPrefix} = formData;
@@ -47,11 +48,17 @@ export default function Home() {
         setLogin(0)
         setForgot(1)
     }
-    const submitrestPwd = evt => {
-        setLogin(0)
-        setForgot(0)
-        setvalidSubmit(1)
-        
+    const submitrestPwd = async () => {
+        const { email} = uservalidate;
+        if (email !== '' && validEmailRegex.test(email)) {
+            const response = await uservValidation({ email })
+        } else {
+            setError({
+                errors: {
+                    email: "Please enter email address",
+                }
+            });
+        }
     }
     const updatePswd = evt => {
         setLogin(1)
@@ -59,7 +66,10 @@ export default function Home() {
         setvalidSubmit(0)
         
     }
-    
+    const handleForgotinput = evt => {
+        const {name, value} = evt.target;        
+        setuservalidate({...uservalidate, [name]: value});
+    }
 
     return ( 
       <div className="wrapper wrapper-full-page">
@@ -105,7 +115,7 @@ export default function Home() {
             <div className="content">
                 <div className="form-group">
                     <label>Username</label>
-                    <input type="email" placeholder="Username" onChange={handleForgotinput} className="form-control" />
+                    <input type="email"name="email" placeholder="Username" onChange={handleForgotinput} className="form-control" />
                 </div>
 
                
