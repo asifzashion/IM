@@ -46,7 +46,23 @@ const actionsCreator = (dispatch, state) => {
             });
         }
     };
-    return { signIn }
+    const uservValidation = async({ email }) => {
+        let postData = {
+            email: email,
+        }
+        const response = await
+        NetworkManager.getDataWithUrl(false)(ProjectUtils.makeUserValidationRequestURL(), {...postData });
+        if (response) {
+
+            Router.push('/changePassword', `/changePassword`);
+            return { email }
+        } else {
+            toast.error(message, {
+                position: toast.POSITION.TOP_CENTER
+            });
+        }
+    };
+    return { signIn, uservValidation }
 };
 
 

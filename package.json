@@ -5,6 +5,8 @@
   "scripts": {
     "dev": "nodemon -w server.js server.js",
     "dev-beta": "CONFIG_PROFILE=beta nodemon -w server.js server.js",
+    "dev-beta-windows": "set CONFIG_PROFILE=beta&&node server.js",
+    "dev-windows": "SET CONFIG_PROFILE=beta&&npm run dev",
     "dev-prod": "CONFIG_PROFILE=production nodemon -w server.js server.js",
     "build": "next build",
     "start": "next start",

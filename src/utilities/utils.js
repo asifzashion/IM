@@ -19,6 +19,12 @@ class ProjectUtils {
     static makeReactLoginRequestURL() {
         return `${window.CORS_URL}${process.env.BASE_LOCATION}${APIConstant.POST_LOGIN}`;
     }
+    static makeUserValidationRequestURL() {
+        return `${window.CORS_URL}${process.env.BASE_LOCATION}${APIConstant.GETUSER_VALIDATION}`;
+    }
+    static makeResetPasswordRequestURL() {
+        return `${window.CORS_URL}${process.env.BASE_LOCATION}${APIConstant.POST_LOGIN}`;
+    }
 }
 
 export default ProjectUtils;
