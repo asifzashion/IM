@@ -2,6 +2,8 @@ import '../../public/css/bootstrap.min.css'
 import '../../public/css/all.css'
 import '../../public/css/main.css'
 import '../../public/css/pe-icon-7-stroke.css'
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 import {Router, withRouter} from 'next/router'
 import AppContextProvider from '../contexts/AppContextProvider';
@@ -19,6 +21,7 @@ const wrapErrorBoundary = (children) => {
     return( 
         <AppContextProvider ctxReqHeaders={ctxReqHeaders} pageProps={pageProps}>
            <Component {...pageProps } />
+           <ToastContainer />
         </AppContextProvider>
     )
 }

@@ -84,7 +84,7 @@ export default function Home() {
                                         <div className="header login text-center"><img src="../img/ashghal-logo.png" /></div>
                                         <div className="content">
                                             <div className="form-group">
-                                                <label>Username</label>
+                                                <label>Username</label>                                                
                                                 <input type="email" placeholder="Username" className="form-control" name="email" onChange={handleChange} />
                                             </div>
                                             <div className="form-group">

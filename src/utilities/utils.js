@@ -25,6 +25,9 @@ class ProjectUtils {
     static makeResetPasswordRequestURL() {
         return `${window.CORS_URL}${process.env.BASE_LOCATION}${APIConstant.POST_LOGIN}`;
     }
+    static getProjectRequestURL() {
+        return `${window.CORS_URL}${process.env.BASE_LOCATION}${APIConstant.GET_PROJECTS}`;
+    }
 }
 
 export default ProjectUtils;

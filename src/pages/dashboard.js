@@ -1,27 +1,31 @@
 import Image from 'next/image'
 import axios from "axios";
-import React from "react";
+import React, { useContext } from "react";
 import Footer from '../components/common/layouts/Footer'
 import Link from 'next/link'
-const baseURL = "https://jsonplaceholder.typicode.com/posts/1";
+import {AppContext} from "../contexts/AppContextProvider";
 export default function Dashboard() {
-    const [post, setPost] = React.useState(null);
+    const {
+        state:{email,token,projects=[]},actions: {getProjects},
+    } = useContext(AppContext).auth;
 
-    React.useEffect(() => {
-        axios.get(baseURL).then((response) => {
-            setPost(response.data);
-        });
-    }, []);
+    React.useEffect(async() => {
+        if(token){
+            await getProjects(token,email)
+        }
+    }, [token]);
 
-    if (!post) return null;
-
-
+    const handleProjectClick = (project) => {
+        console.log("You Clicked On",project);
+    };
+   
     return ( 
         <div className="wrapper">
 
 <div className="sidebar" data-color="purple" style={{backgroundImage : `url("../img/sidebar-5.jpg")` }} >
 
 <div className="sidebar-wrapper">
+
     <div className="user">
         <div className="info">
             <div className="photo">
@@ -63,45 +67,24 @@ User Name
 
         </li>
         <li>
-            <a data-toggle="collapse" href="#tablesExamples">
+            <a data-toggle="collapse" href="#projects">
                 <i className="pe-7s-news-paper"></i>
-                <p>Menu with links
+                <p>Projects
                     <b className="caret"></b>
                 </p>
             </a>
-            <div className="collapse" id="tablesExamples">
+            <div className="collapse" id="projects">
                 <ul className="nav">
-                    <li>
-                        <a href="#">
-                            <span className="sidebar-mini">L1</span>
-                            <span className="sidebar-normal">Link 1</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#">
-                            <span className="sidebar-mini">L2</span>
-                            <span className="sidebar-normal">Link 2</span>
-                        </a>
-                    </li>
-
-                    <li>
-                        <a href="#">
-                            <span className="sidebar-mini">L3</span>
-                            <span className="sidebar-normal">Link 3</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#">
-                            <span className="sidebar-mini">L4</span>
-                            <span className="sidebar-normal">Link 4</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#">
-                            <span className="sidebar-mini">L5</span>
-                            <span className="sidebar-normal">Link 5</span>
-                        </a>
-                    </li>
+                    {projects.map((project) =>{
+                        return (
+                            <li>
+                            <a onClick={() => handleProjectClick(project)}>
+                                {/* <span className="sidebar-mini">L1</span> */}
+                               <span className="sidebar-normal">{project.Project}</span>
+                            </a>
+                        </li>
+                        )
+                    })}
                 </ul>
             </div>
         </li>
