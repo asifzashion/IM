@@ -1,317 +1,392 @@
-import Image from 'next/image'
-import axios from "axios";
-import React, { useContext } from "react";
-import Footer from '../components/common/layouts/Footer'
-import Link from 'next/link'
-import {AppContext} from "../contexts/AppContextProvider";
-export default function Dashboard() {
-    const {
-        state:{email,token,projects=[]},actions: {getProjects},
-    } = useContext(AppContext).auth;
+import React, { useContext, useState } from "react";
+import ProjectNav from "../components/common/ProjectNav";
+import TableComponent from "../components/common/tableComponent";
+import { AppContext } from "../contexts/AppContextProvider";
+import MyAssignment from "../components/common/layouts/MyAssignment";
 
-    React.useEffect(async() => {
-        if(token){
-            await getProjects(token,email)
-        }
-    }, [token]);
 
-    const handleProjectClick = (project) => {
-        console.log("You Clicked On",project);
-    };
-   
-    return ( 
-        <div className="wrapper">
+//import BootstrapTable from 'react-bootstrap-table-2';
+//import 'react-bootstrap-table-2/dist/react-bootstrap-table2.min.css';
+//import 'bootstrap/dist/css/bootstrap.min.css';
+//import { Button } from 'react-bootstrap';
+//import Swal from 'sweetalert2';
 
-<div className="sidebar" data-color="purple" style={{backgroundImage : `url("../img/sidebar-5.jpg")` }} >
+//import 'bootstrap/dist/css/bootstrap.min.css';
+//import 'bootstrap/dist/js/bootstrap.min.js';
 
-<div className="sidebar-wrapper">
+const Dashboard = () => {
+  const [loading, setLoading] = useState(false);
+  const [expandProjects, setExpandProjects] = useState(false);
+  const [submittalsData, setSubmittalsData] = useState([]);
+  const [showAssignments, setShowAssignments] = useState(false);
+  const columns = React.useMemo(
+    () => [
+      {
+        accessorKey: "Subject",
+        id: "Subject",
+        header: () => <span>Subject</span>,
+        //cell: (row) => <span>{row.Subject}</span>,
+        cell: (row) => {
+          return <div dangerouslySetInnerHTML={{ __html: row.Subject }} />;
+        },
+        // cell: (info) => {
+        //     return <div dangerouslySetInnerHTML={{ __html: info.renderValue() }} />
+        // },
+      },
+      {
+        accessorKey: "PWARefNumber",
+        id: "PWARefNumber",
+        header: () => <span>#PWA Ref Number</span>,
+        cell: (row) => <span>{row.PWARefNumber}</span>,
+        // cell: (info) => info.getValue(),
+      },
+      {
+        accessorKey: "Purpose",
+        id: "Purpose",
+        header: () => <span>Purpose</span>,
+        cell: (row) => <span>{row.Purpose}</span>,
+      },
+      {
+        accessorKey: "Owner",
+        id: "Owner",
+        header: () => <span>Stakeholder</span>,
+        cell: (row) => <span>{row.Stakeholder}</span>,
+      },
+      {
+        accessorKey: "Asset",
+        id: "Asset",
+        header: () => <span>Asset</span>,
+        cell: (row) => <span>{row.Asset}</span>,
+      },
+      {
+        accessorKey: "Section",
+        id: "Section",
+        header: () => <span>Section</span>,
+        //cell: (row) => <span>{row.Section}</span>,
+        cell: (row) => {
+          return <div dangerouslySetInnerHTML={{ __html: row.Section }} />;
+        },
+      },
+      {
+        accessorKey: "CreatedDate",
+        id: "CreatedDate",
+        header: () => <span>Craeted Date</span>,
+        cell: (row) => <span>{row.CreatedDate}</span>,
+      },
+      {
+        accessorKey: "Status",
+        id: "Status",
+        header: () => <span>Status</span>,
+        cell: (row) => <span>{row.Status}</span>,
+      },
+    ],
+    []
+  );
 
-    <div className="user">
-        <div className="info">
-            <div className="photo">
-                <img src="../img/default-avatar.png" />
-            </div>
-            <a data-toggle="collapse" href="#collapseExample" className="collapsed">
-                <span>
-User Name
-<b className="caret"></b>
-</span>
-            </a>
-            <div className="collapse" id="collapseExample">
-                <ul className="nav">
-                    <li>
-                        <a href="#">
-                            <i className="pe-7s-user"></i>
-                            <span className="sidebar-normal">My Profile</span>
-                        </a>
-                    </li>
+  const {
+    state: { email, token, projects = [] },
+    actions: { getProjects, getSubmittals },
+  } = useContext(AppContext).auth;
 
-                </ul>
-            </div>
+  React.useEffect(async () => {
+    if (token) {
+      await getProjects(token, email);
+    }
+  }, [token]);
+
+  const handleProjectMenuClick = async (project, type) => {
+    setShowAssignments(false);
+    if (type === "Submittals") {
+      setLoading(true);
+      setSubmittalsData([]);
+      const response = await getSubmittals(token, project.ProjectDataID);
+      console.log("response", response);
+      setSubmittalsData(response.data);
+      setLoading(false);
+    }
+  };
+
+  const handleAssignmentClick = () => {
+    setShowAssignments(true)
+  }
+
+  const handleSideBarClick = () => {
+    document.body.classList.toggle("sidebar-mini");
+  };
+
+ 
+
+  return (
+    <div className="wrapper">
+      <div
+        className="sidebar"
+        data-color="purple"
+        style={{ backgroundImage: `url("../img/sidebar-5.jpg")` }}
+      >
+        <div class="logo">
+          <a href="#" class="simple-text logo-normal">
+            Ashghal
+          </a>
         </div>
-    </div>
-    <ul className="nav">
-        <li className="active">
-            <a href="">
+        <div className="sidebar-wrapper ps-container ps-theme-default ps-active-y im-scrollbar">
+          <div className="user">
+            <div className="info">
+              <div className="photo">
+                <img src="../img/default-avatar.png" />
+              </div>
+              <a
+                data-toggle="collapse"
+                href="#collapseExample"
+                className="collapsed"
+              >
+                <span>
+                  User Name
+                  <b className="caret"></b>
+                </span>
+              </a>
+              <div className="collapse" id="collapseExample">
+                <ul className="nav">
+                  <li>
+                    <a href="#">
+                      <i className="pe-7s-user"></i>
+                      <span className="sidebar-normal">My Profile</span>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <ul className="nav">
+            {/* <li className="active">
+              <a href="">
                 <i className="pe-7s-graph"></i>
                 <p>Dashboard</p>
-            </a>
-        </li>
+              </a>
+            </li> */}
 
-        <li>
-            <a data-toggle="collapse" href="#formsExamples">
+            {/* <li>
+              <a data-toggle="collapse" href="#formsExamples">
                 <i className="pe-7s-note2"></i>
-                <p>Single Link
-                </p>
-            </a>
-
-        </li>
-        <li>
-            <a data-toggle="collapse" href="#projects">
+                <p>Single Link</p>
+              </a>
+            </li> */}
+            <li>
+              <a
+                // data-toggle="collapse"
+                // href="#projects"
+                onClick={() => setExpandProjects(!expandProjects)}
+              >
                 <i className="pe-7s-news-paper"></i>
-                <p>Projects
-                    <b className="caret"></b>
-                </p>
-            </a>
-            <div className="collapse" id="projects">
-                <ul className="nav">
-                    {projects.map((project) =>{
-                        return (
-                            <li>
-                            <a onClick={() => handleProjectClick(project)}>
-                                {/* <span className="sidebar-mini">L1</span> */}
-                               <span className="sidebar-normal">{project.Project}</span>
-                            </a>
-                        </li>
-                        )
-                    })}
-                </ul>
+                <p>
+                  Projects
+                  <b className="caret"></b>
+                </p>                
+              </a>
+              <div
+                className={`collapse ${expandProjects ? "show" : ""}`}
+                id="projects"
+              >
+                <ProjectNav
+                handleAssignmentClick={handleAssignmentClick}
+                  projects={projects}
+                  handleProjectMenuClick={handleProjectMenuClick}
+                />
+              </div>
+
+            </li>
+           
+          </ul>
+          <div className="ps-scrollbar-x-rail">
+            <div className="ps-scrollbar-x"></div>
+          </div>
+          <div className="ps-scrollbar-y-rail">
+            <div className="ps-scrollbar-y"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="main-panel">
+        <nav class="navbar navbar-default">
+          <div class="container-fluid">
+            <div class="navbar-minimize">
+              <button
+                id="minimizeSidebar"
+                class="btn btn-warning btn-fill btn-round btn-icon"
+                onClick={handleSideBarClick}
+              >
+                <i class="fa fa-ellipsis-v visible-on-sidebar-regular"></i>
+                <i class="fa fa-navicon visible-on-sidebar-mini"></i>
+              </button>
             </div>
-        </li>
-    </ul>
-</div>
-</div>
-
-<div className="main-panel">
-
-<nav className="navbar navbar-default">
-                <div className="container-fluid">
-                    <div className="navbar-minimize">
-                        <button id="minimizeSidebar" className="btn btn-warning btn-fill btn-round btn-icon">
-<i className="pe-7s-angle-left fs22 visible-on-sidebar-regular"></i>
-<i className="pe-7s-angle-right fs22 visible-on-sidebar-mini"></i>
-
-</button>
-                    </div>
-                    <div className="navbar-header">
-                        <button type="button" className="navbar-toggle" data-toggle="collapse">
-<span className="sr-only">Toggle navigation</span>
-<span className="icon-bar"></span>
-<span className="icon-bar"></span>
-<span className="icon-bar"></span>
-</button>
-                        <a className="navbar-brand" href="#">Ashghal</a>
-                    </div>
-                    <div className="collapse navbar-collapse">
-                        <form className="navbar-form navbar-left navbar-search-form" role="search">
-                            <div className="input-group">
-                                <span className="input-group-addon"><i className="pe-7s-search fs22"></i></span>
-                                <input type="text" value className="form-control" placeholder="Search..." />
-                            </div>
-                        </form>
-                        <ul className="nav navbar-nav navbar-right">
-                            <li>
-                                <a href="#">
-                                    <i className="pe-7s-graph1 fs22"></i>
-                                    <p>Stats</p>
-                                </a>
-                            </li>
-                            <li className="dropdown">
-                                <a href="#" className="dropdown-toggle" data-toggle="dropdown">
-                                    <i className="pe-7s-info fs22"></i>
-                                    <p className="hidden-md hidden-lg">
-                                        Actions
-                                        <b className="caret"></b>
-                                    </p>
-                                </a>
-                                <ul className="dropdown-menu">
-                                    <li><a href="#">Create New Post</a></li>
-                                    <li><a href="#">Manage Something</a></li>
-                                    <li><a href="#">Do Nothing</a></li>
-                                    <li><a href="#">Submit to live</a></li>
-                                    <li className="divider"></li>
-                                    <li><a href="#">Another Action</a></li>
-                                </ul>
-                            </li>
-                            <li className="dropdown">
-                                <a href="#" className="dropdown-toggle" data-toggle="dropdown">
-                                    <i className="pe-7s-bell fs22"></i>
-                                    <span className="notification">5</span>
-                                    <p className="hidden-md hidden-lg">
-                                        Notifications
-                                        <b className="caret"></b>
-                                    </p>
-                                </a>
-                                <ul className="dropdown-menu">
-                                    <li><a href="#">Notification 1</a></li>
-                                    <li><a href="#">Notification 2</a></li>
-                                    <li><a href="#">Notification 3</a></li>
-                                    <li><a href="#">Notification 4</a></li>
-                                    <li><a href="#">Another notification</a></li>
-                                </ul>
-                            </li>
-                            <li className="dropdown dropdown-with-icons">
-                                <a href="#" className="dropdown-toggle" data-toggle="dropdown">
-                                    <i className="pe-7s-menu fs22"></i>
-                                    <p className="hidden-md hidden-lg">
-                                        More
-                                        <b className="caret"></b>
-                                    </p>
-                                </a>
-                                <ul className="dropdown-menu dropdown-with-icons">
-                                    <li>
-                                        <a href="#">
-                                            <i className="pe-7s-mail"></i> Messages
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#">
-                                            <i className="pe-7s-help1"></i> Help Center
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#">
-                                            <i className="pe-7s-tools"></i> Settings
-                                        </a>
-                                    </li>
-                                    <li className="divider"></li>
-                                    <li>
-                                        <a href="#">
-                                            <i className="pe-7s-lock"></i> Lock Screen
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#" className="text-danger">
-                                            <i className="pe-7s-close-circle"></i> Log out
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </div>
+            <div class="navbar-header">
+              <button
+                type="button"
+                class="navbar-toggle"
+                data-toggle="collapse"
+              >
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a class="navbar-brand" href="bootstrap-table.html#">
+                PDLM
+              </a>
+            </div>
+            <div class="collapse navbar-collapse">
+              <form
+                class="navbar-form navbar-left navbar-search-form"
+                role="search"
+              >
+                <div class="input-group">
+                  <span class="input-group-addon">
+                    <i class="fa fa-search"></i>
+                  </span>
+                  <input
+                    type="text"
+                    value
+                    class="form-control"
+                    placeholder="Search..."
+                  />
                 </div>
-            </nav>
-
-            <div className="main-content">
-                <div className="container-fluid">
-
-                <div className="row">
-                        <div className="col-md-12">
-                            <div className="card ">
-                                <div className="header">
-                                    <h4 className="title">Global Sales by Top Locations</h4>
-                                    <p className="category">All products that were shipped</p>
-                                </div>
-                                <div className="content">
-                                    <div className="row">
-                                        <div className="col-md-12">
-                                            <div className="table-responsive">
-                                                <table className="table">
-                                                    <tbody>
-                                                        <tr>
-                                                            <td>
-                                                                <div className="flag">
-                                                                    <img src="/img/flags/US.png" /> </div>
-                                                            </td>
-                                                            <td>USA</td>
-                                                            <td className="text-right">
-                                                                2.920
-                                                            </td>
-                                                            <td className="text-right">
-                                                                53.23%
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>
-                                                                <div className="flag">
-                                                                    <img src="../img/flags/DE.png" /> </div>
-                                                            </td>
-                                                            <td>Germany</td>
-                                                            <td className="text-right">
-                                                                1.300
-                                                            </td>
-                                                            <td className="text-right">
-                                                                20.43%
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>
-                                                                <div className="flag">
-                                                                    <img src="../img/flags/AU.png" /> </div>
-                                                            </td>
-                                                            <td>Australia</td>
-                                                            <td className="text-right">
-                                                                760
-                                                            </td>
-                                                            <td className="text-right">
-                                                                10.35%
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>
-                                                                <div className="flag">
-                                                                    <img src="../img/flags/GB.png" /> </div>
-                                                            </td>
-                                                            <td>United Kingdom</td>
-                                                            <td className="text-right">
-                                                                690
-                                                            </td>
-                                                            <td className="text-right">
-                                                                7.87%
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>
-                                                                <div className="flag">
-                                                                    <img src="../img/flags/RO.png" /> </div>
-                                                            </td>
-                                                            <td>Romania</td>
-                                                            <td className="text-right">
-                                                                600
-                                                            </td>
-                                                            <td className="text-right">
-                                                                5.94%
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>
-                                                                <div className="flag">
-                                                                    <img src="../img/flags/BR.png" /> </div>
-                                                            </td>
-                                                            <td>Brasil</td>
-                                                            <td className="text-right">
-                                                                550
-                                                            </td>
-                                                            <td className="text-right">
-                                                                4.34%
-                                                            </td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                                </div>
-                                                </div>
-                                             
-                                                </div>
-                                                </div>
-                                                </div>
-                                                </div>
-                                            </div>
-
+              </form>
+              <ul class="nav navbar-nav navbar-right">
+                <li>
+                  <a href="../charts.html">
+                    <i class="fa fa-line-chart"></i>
+                    <p>Stats</p>
+                  </a>
+                </li>
+                <li class="dropdown">
+                  <a
+                    href="bootstrap-table.html#"
+                    class="dropdown-toggle"
+                    data-toggle="dropdown"
+                  >
+                    <i class="fa fa-gavel"></i>
+                    <p class="hidden-md hidden-lg">
+                      Actions
+                      <b class="caret"></b>
+                    </p>
+                  </a>
+                  <ul class="dropdown-menu">
+                    <li>
+                      <a href="bootstrap-table.html#">Create New Post</a>
+                    </li>
+                    <li>
+                      <a href="bootstrap-table.html#">Manage Something</a>
+                    </li>
+                    <li>
+                      <a href="bootstrap-table.html#">Do Nothing</a>
+                    </li>
+                    <li>
+                      <a href="bootstrap-table.html#">Submit to live</a>
+                    </li>
+                    <li class="divider"></li>
+                    <li>
+                      <a href="bootstrap-table.html#">Another Action</a>
+                    </li>
+                  </ul>
+                </li>
+                <li class="dropdown">
+                  <a
+                    href="bootstrap-table.html#"
+                    class="dropdown-toggle"
+                    data-toggle="dropdown"
+                  >
+                    <i class="fa fa-bell-o"></i>
+                    <span class="notification">5</span>
+                    <p class="hidden-md hidden-lg">
+                      Notifications
+                      <b class="caret"></b>
+                    </p>
+                  </a>
+                  <ul class="dropdown-menu">
+                    <li>
+                      <a href="bootstrap-table.html#">Notification 1</a>
+                    </li>
+                    <li>
+                      <a href="bootstrap-table.html#">Notification 2</a>
+                    </li>
+                    <li>
+                      <a href="bootstrap-table.html#">Notification 3</a>
+                    </li>
+                    <li>
+                      <a href="bootstrap-table.html#">Notification 4</a>
+                    </li>
+                    <li>
+                      <a href="bootstrap-table.html#">Another notification</a>
+                    </li>
+                  </ul>
+                </li>
+                <li class="dropdown dropdown-with-icons">
+                  <a
+                    href="bootstrap-table.html#"
+                    class="dropdown-toggle"
+                    data-toggle="dropdown"
+                  >
+                    <i class="fa fa-list"></i>
+                    <p class="hidden-md hidden-lg">
+                      More
+                      <b class="caret"></b>
+                    </p>
+                  </a>
+                  <ul class="dropdown-menu dropdown-with-icons">
+                    <li>
+                      <a href="bootstrap-table.html#">
+                        <i class="pe-7s-mail"></i> Messages
+                      </a>
+                    </li>
+                    <li>
+                      <a href="bootstrap-table.html#">
+                        <i class="pe-7s-help1"></i> Help Center
+                      </a>
+                    </li>
+                    <li>
+                      <a href="bootstrap-table.html#">
+                        <i class="pe-7s-tools"></i> Settings
+                      </a>
+                    </li>
+                    <li class="divider"></li>
+                    <li>
+                      <a href="bootstrap-table.html#">
+                        <i class="pe-7s-lock"></i> Lock Screen
+                      </a>
+                    </li>
+                    <li>
+                      <a href="bootstrap-table.html#" class="text-danger">
+                        <i class="pe-7s-close-circle"></i> Log out
+                      </a>
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </nav>
+        <div class="main-content im-scrollbar">
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="card">
+                  <div class="toolbar"></div>
+                 { showAssignments ?<MyAssignment setLoading={setLoading} />
+                  :<TableComponent data={submittalsData} columns={columns} />}
+                  {loading && (
+                    <div style={{ position: "relative", height: 100 }}>
+                      <div class="jvectormap-spinner" />
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-        </div>
-        </div>
-        <Footer />
-        </div>
+      </div>
+      {/* <Footer /> */}
+     
+    </div>
+  );
+};
 
-    )
-}
+export default Dashboard;

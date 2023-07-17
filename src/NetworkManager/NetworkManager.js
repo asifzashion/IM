@@ -230,11 +230,13 @@ class NetworkManager {
   static getDataWithUrl =
     (token = '') =>
     async (url, context = null, extraHeaders = {}) => {
-     url = url + "&userID=" + context.email;
+    // url = url + "&userID=" + context.email;
       const headers = await NetworkManager.makeGetTokenHeaderParam(token);
       const response = await axiosInstance.get(url, headers);
       return response.data;
     };
+
+    
 }
 export const createPlusAxiosReq = (endpoint, baseUrl) => {
   let url;

@@ -25,8 +25,14 @@ class ProjectUtils {
     static makeResetPasswordRequestURL() {
         return `${window.CORS_URL}${process.env.BASE_LOCATION}${APIConstant.POST_LOGIN}`;
     }
-    static getProjectRequestURL() {
-        return `${window.CORS_URL}${process.env.BASE_LOCATION}${APIConstant.GET_PROJECTS}`;
+    static getProjectRequestURL(email) {
+        return `${window.CORS_URL}${process.env.BASE_LOCATION}${APIConstant.GET_PROJECTS}&userID=${email}`;
+    }
+    static getSubmittalsRequestURL(ContractDataID) {
+        return `${window.CORS_URL}${process.env.BASE_LOCATION}${APIConstant.GET_SUBMITTALS}&ContractDataID=${ContractDataID}`;
+    }
+    static getAssignmentsNewURL(type,emailId) {
+        return `${window.CORS_URL}${process.env.BASE_LOCATION}${APIConstant.GET_ASSIGNMENTS_NEW}&emaildid=${emailId}${type}`;
     }
 }
 
