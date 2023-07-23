@@ -3,6 +3,7 @@ import ProjectUtils from "../utilities/utils";
 import NetworkManager, { getToken } from "../NetworkManager/NetworkManager";
 import { toast } from "react-toastify";
 import Router from "next/router";
+import jsCookie from "js-cookie";
 
 const reducerCb = (state, action) => {
   const { payload, type } = action;
@@ -10,6 +11,8 @@ const reducerCb = (state, action) => {
   switch (type) {
     case "SET_LOGIN_SUCCESS":
       const expireDate = payload.expireDate;
+      jsCookie.set('email', payload.email, { expires: expireDate });
+      window.sessionStorage.setItem('token', payload.token)
       newState = { ...state, ...payload, isGuest: false };
       break;
     case "SET_PROJECTS":
