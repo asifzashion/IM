@@ -4,7 +4,6 @@ import * as APIConstant from '../constants/APIConstant';
 import * as Constants from '../constants/constant';
 import NetworkManager from '../NetworkManager/NetworkManager';
 
-
 /**
  * @param path
  * @param params
@@ -12,7 +11,6 @@ import NetworkManager from '../NetworkManager/NetworkManager';
  * @returns {string}
  * @description replace paths with format path/to/:param1:/param2
  */
-
 
 class ProjectUtils {
 
@@ -31,7 +29,7 @@ class ProjectUtils {
     static getSubmittalsRequestURL(ContractDataID, draw, start, end) {
         return `${window.CORS_URL}${process.env.BASE_LOCATION}${APIConstant.GET_SUBMITTALS}&ContractDataID=${ContractDataID}&draw=${draw}&start=${start}&length=${end}`;
     }
-    static getAssignmentsNewURL(type,emailId, draw, start, end) {
+    static getAssignmentsNewURL(type, emailId, draw, start, end) {
         return `${window.CORS_URL}${process.env.BASE_LOCATION}${APIConstant.GET_ASSIGNMENTS_NEW}&emaildid=${emailId}&draw=${draw}&start=${start}&length=${end}${type}`;
     }
     static getOTDSTicket() {

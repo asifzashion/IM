@@ -62,6 +62,7 @@ const MyAssignment = ({ setLoading }) => {
   };
 
   const loadAssignmentData = async () => {
+    const token = window.sessionStorage.getItem('token')
     const payload = searchText
       ? type + `&columns[0][search][value]=${searchText}`
       : type;

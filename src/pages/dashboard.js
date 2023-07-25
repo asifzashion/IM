@@ -72,10 +72,12 @@ const Dashboard = () => {
   } = useContext(AppContext).auth;
 
   React.useEffect(async () => {
+    const token = window.sessionStorage.getItem('token')
+    const email = window.sessionStorage.getItem('email')
     if (token) {
       await getProjects(token, email);
     }
-  }, [token]);
+  }, []);
 
   useEffect(() => {
     if (currentProject) getSubmittalsData(currentProject);
@@ -92,6 +94,7 @@ const Dashboard = () => {
   const getSubmittalsData = async (project) => {
     setLoading(true);
     setSubmittalsData([]);
+    const token = window.sessionStorage.getItem('token')
     const startIndex = (currentPage - 1) * itemsPerPage; (0) * 10;
     const response = await getSubmittals(
       token,

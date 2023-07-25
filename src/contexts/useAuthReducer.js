@@ -12,6 +12,7 @@ const reducerCb = (state, action) => {
     case "SET_LOGIN_SUCCESS":
       const expireDate = payload.expireDate;
       jsCookie.set('email', payload.email, { expires: expireDate });
+      window.sessionStorage.setItem('email', payload.email)
       window.sessionStorage.setItem('token', payload.token)
       newState = { ...state, ...payload, isGuest: false };
       break;
