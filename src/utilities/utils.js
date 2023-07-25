@@ -28,11 +28,14 @@ class ProjectUtils {
     static getProjectRequestURL(email) {
         return `${window.CORS_URL}${process.env.BASE_LOCATION}${APIConstant.GET_PROJECTS}&userID=${email}`;
     }
-    static getSubmittalsRequestURL(ContractDataID) {
-        return `${window.CORS_URL}${process.env.BASE_LOCATION}${APIConstant.GET_SUBMITTALS}&ContractDataID=${ContractDataID}`;
+    static getSubmittalsRequestURL(ContractDataID, draw, start, end) {
+        return `${window.CORS_URL}${process.env.BASE_LOCATION}${APIConstant.GET_SUBMITTALS}&ContractDataID=${ContractDataID}&draw=${draw}&start=${start}&length=${end}`;
     }
-    static getAssignmentsNewURL(type,emailId) {
-        return `${window.CORS_URL}${process.env.BASE_LOCATION}${APIConstant.GET_ASSIGNMENTS_NEW}&emaildid=${emailId}${type}`;
+    static getAssignmentsNewURL(type,emailId, draw, start, end) {
+        return `${window.CORS_URL}${process.env.BASE_LOCATION}${APIConstant.GET_ASSIGNMENTS_NEW}&emaildid=${emailId}&draw=${draw}&start=${start}&length=${end}${type}`;
+    }
+    static getOTDSTicket() {
+        return `${window.CORS_URL}${process.env.BASE_LOCATION}${APIConstant.GET_OTDSTICKET}`;
     }
 }
 

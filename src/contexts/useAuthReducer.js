@@ -19,8 +19,12 @@ const reducerCb = (state, action) => {
       newState = { ...state, ...payload };
       break;
     case "SET_ASSIGNMENTS_NEW":
-        newState = { ...state, ...payload };
-        break;
+      newState = { ...state, ...payload };
+      break;
+    case "SET_OTDSTICKET":
+      newState = { ...state, ...payload };
+      break;
+
     default:
       newState = state;
       break;
@@ -43,10 +47,11 @@ const actionsCreator = (dispatch, state) => {
       username: email,
       password: password,
     };
-    const { ticket } = await NetworkManager.postDataWithUrl(true)(
+    const { ticket } = await NetworkManager.postDataWithUrl(false)(
       ProjectUtils.makeReactLoginRequestURL(),
       { ...postData }
     );
+    getTicket(email, password);
     if (ticket) {
       dispatch({
         type: "SET_LOGIN_SUCCESS",
@@ -61,6 +66,22 @@ const actionsCreator = (dispatch, state) => {
     }
   };
 
+  const getTicket = async (email, password) => {
+    let postData = {
+      userName: email,
+      password: password,
+    };
+    const { ticket } = await NetworkManager.postDataWithUrl(true)(
+      ProjectUtils.getOTDSTicket(),
+      { ...postData }
+    );
+    dispatch({
+      type: "SET_OTDSTICKET",
+      payload: { otdsticket: ticket },
+    });
+    return;
+  };
+
   const getProjects = async (token, email) => {
     const response = await NetworkManager.getDataWithUrl(token)(
       ProjectUtils.getProjectRequestURL(email)
@@ -69,9 +90,9 @@ const actionsCreator = (dispatch, state) => {
     return response;
   };
 
-  const getSubmittals = async (token, contractId) => {
+  const getSubmittals = async (token, contractId, draw, start, end) => {
     const response = await NetworkManager.getDataWithUrl(token)(
-      ProjectUtils.getSubmittalsRequestURL(contractId)
+      ProjectUtils.getSubmittalsRequestURL(contractId, draw, start, end)
     );
     dispatch({
       type: "SET_SUBMITTALS",
@@ -80,13 +101,13 @@ const actionsCreator = (dispatch, state) => {
     return response;
   };
 
-  const getAssignmentsNew = async (token, type, emailId) => {
+  const getAssignmentsNew = async (token, type, emailId, draw, start, end) => {
     dispatch({
       type: "SET_ASSIGNMENTS_NEW",
-      payload: { assignments:[]},
+      payload: { assignments: [] },
     });
     const response = await NetworkManager.getDataWithUrl(token)(
-      ProjectUtils.getAssignmentsNewURL(type, emailId)
+      ProjectUtils.getAssignmentsNewURL(type, emailId, draw, start, end)
     );
     dispatch({
       type: "SET_ASSIGNMENTS_NEW",
@@ -113,7 +134,13 @@ const actionsCreator = (dispatch, state) => {
     }
   };
 
-  return { signIn, uservValidation, getProjects, getSubmittals,getAssignmentsNew };
+  return {
+    signIn,
+    uservValidation,
+    getProjects,
+    getSubmittals,
+    getAssignmentsNew,
+  };
 };
 
 export default function useAuthReducer(ctxReqHeaders) {

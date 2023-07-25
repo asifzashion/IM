@@ -215,7 +215,8 @@ class NetworkManager {
   static postDataWithUrl =
     (withToken = false) =>
     async (url, params, callback = (a) => a) => {
-      const header = await NetworkManager.makeTokenHeaderParam(null);
+      const header = withToken ? await NetworkManager.makeGetTokenHeaderParam()
+      : await NetworkManager.makeTokenHeaderParam(null);
       return axiosInstance
         .post(url, params, header)
         .then((response) => {

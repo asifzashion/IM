@@ -1,36 +1,38 @@
-const TableComponent = ({ data, columns }) => {
+import BootstrapTable from "react-bootstrap-table-next";
+import paginationFactory from "react-bootstrap-table2-paginator";
+// import "bootstrap/dist/css/bootstrap.min.css";
+
+const TableComponent = ({
+  data,
+  columns,
+  totalRecords,
+  currentPage = 1,
+  setCurrentPage,
+  itemsPerPage = 10,
+}) => {
+  const handleTableChange = (type, { page, sortField, sortOrder, filters }) => {
+    console.log("Table changed:", type, page, sortField, sortOrder, filters);
+  };
+
   return (
-    <table id="bootstrap-table" class="table">
-      <thead>
-        <tr>
-          {columns.map((column) =>
-            column.id === "action" ? (
-              <th
-                data-field="actions"
-                class="td-actions text-right"
-                data-events="operateEvents"
-                data-formatter="operateFormatter"
-              >
-                Actions
-              </th>
-            ) : (
-              <th key={column.id} data-field={column.id}>
-                {column.header()}
-              </th>
-            )
-          )}
-        </tr>
-      </thead>
-      <tbody>
-        {data.map((row, rowIndex) => (
-          <tr key={rowIndex}>
-            {columns.map((column, columnIndex) => (
-              <td key={columnIndex}>{column.cell(row)}</td>
-            ))}
-          </tr>
-        ))}
-      </tbody>
-    </table>
+    <div className="m-3">
+      {data?.length ? (
+        <BootstrapTable
+          keyField="id"
+          data={data}
+          columns={columns}
+          remote={true}
+          onTableChange={handleTableChange}
+          pagination={paginationFactory({
+            page: currentPage,
+            sizePerPage: itemsPerPage,
+            hideSizePerPage: true,
+            totalSize: totalRecords,
+            onPageChange: (page) => setCurrentPage(page),
+          })}
+        />
+      ) : null}
+    </div>
   );
 };
 

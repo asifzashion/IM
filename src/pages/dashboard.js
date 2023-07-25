@@ -1,9 +1,8 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import ProjectNav from "../components/common/ProjectNav";
 import TableComponent from "../components/common/tableComponent";
 import { AppContext } from "../contexts/AppContextProvider";
 import MyAssignment from "../components/common/layouts/MyAssignment";
-
 
 //import BootstrapTable from 'react-bootstrap-table-2';
 //import 'react-bootstrap-table-2/dist/react-bootstrap-table2.min.css';
@@ -15,69 +14,53 @@ import MyAssignment from "../components/common/layouts/MyAssignment";
 //import 'bootstrap/dist/js/bootstrap.min.js';
 
 const Dashboard = () => {
+  const [currentProject, setCurrentProject] = useState({});
   const [loading, setLoading] = useState(false);
   const [expandProjects, setExpandProjects] = useState(false);
   const [submittalsData, setSubmittalsData] = useState([]);
   const [showAssignments, setShowAssignments] = useState(false);
+  const [totalRecords, setTotalRecords] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
   const columns = React.useMemo(
     () => [
       {
-        accessorKey: "Subject",
-        id: "Subject",
-        header: () => <span>Subject</span>,
-        //cell: (row) => <span>{row.Subject}</span>,
-        cell: (row) => {
+        dadaField: "Subject",
+        text: "Subject",
+        formatter: (_cell, row) => {
           return <div dangerouslySetInnerHTML={{ __html: row.Subject }} />;
         },
-        // cell: (info) => {
-        //     return <div dangerouslySetInnerHTML={{ __html: info.renderValue() }} />
-        // },
       },
       {
-        accessorKey: "PWARefNumber",
-        id: "PWARefNumber",
-        header: () => <span>#PWA Ref Number</span>,
-        cell: (row) => <span>{row.PWARefNumber}</span>,
-        // cell: (info) => info.getValue(),
+        dataField: "PWARefNumber",
+        text: "#PWA Ref Number",
       },
       {
-        accessorKey: "Purpose",
-        id: "Purpose",
-        header: () => <span>Purpose</span>,
-        cell: (row) => <span>{row.Purpose}</span>,
+        dataField: "Purpose",
+        text: "Purpose",
       },
       {
-        accessorKey: "Owner",
-        id: "Owner",
-        header: () => <span>Stakeholder</span>,
-        cell: (row) => <span>{row.Stakeholder}</span>,
+        dataField: "Owner",
+        text: "Owner",
       },
       {
-        accessorKey: "Asset",
-        id: "Asset",
-        header: () => <span>Asset</span>,
-        cell: (row) => <span>{row.Asset}</span>,
+        dataField: "Asset",
+        text: "Asset",
       },
       {
-        accessorKey: "Section",
-        id: "Section",
-        header: () => <span>Section</span>,
-        //cell: (row) => <span>{row.Section}</span>,
-        cell: (row) => {
+        dataField: "Section",
+        text: "Section",
+        formatter: (_cell, row) => {
           return <div dangerouslySetInnerHTML={{ __html: row.Section }} />;
         },
       },
       {
-        accessorKey: "CreatedDate",
-        id: "CreatedDate",
-        header: () => <span>Craeted Date</span>,
-        cell: (row) => <span>{row.CreatedDate}</span>,
+        dataField: "CreatedDate",
+        text: "Craeted Date",
       },
       {
-        accessorKey: "Status",
-        id: "Status",
-        header: () => <span>Status</span>,
-        cell: (row) => <span>{row.Status}</span>,
+        dataField: "Status",
+        text: "Status",
       },
     ],
     []
@@ -94,27 +77,43 @@ const Dashboard = () => {
     }
   }, [token]);
 
+  useEffect(() => {
+    if (currentProject) getSubmittalsData(currentProject);
+  }, [currentPage, currentProject]);
+
   const handleProjectMenuClick = async (project, type) => {
     setShowAssignments(false);
     if (type === "Submittals") {
-      setLoading(true);
-      setSubmittalsData([]);
-      const response = await getSubmittals(token, project.ProjectDataID);
-      console.log("response", response);
-      setSubmittalsData(response.data);
-      setLoading(false);
+      setCurrentProject(project);
+      setCurrentPage(1);
+    }
+  };
+
+  const getSubmittalsData = async (project) => {
+    setLoading(true);
+    setSubmittalsData([]);
+    const startIndex = (currentPage - 1) * itemsPerPage; (0) * 10;
+    const response = await getSubmittals(
+      token,
+      project.ProjectDataID,
+      currentPage,
+      startIndex,
+      itemsPerPage
+    );
+    setSubmittalsData(response.data);
+    setLoading(false);
+    if (response?.recordsTotal) {
+      setTotalRecords(response.recordsTotal);
     }
   };
 
   const handleAssignmentClick = () => {
-    setShowAssignments(true)
-  }
+    setShowAssignments(true);
+  };
 
   const handleSideBarClick = () => {
     document.body.classList.toggle("sidebar-mini");
   };
-
- 
 
   return (
     <div className="wrapper">
@@ -123,8 +122,8 @@ const Dashboard = () => {
         data-color="purple"
         style={{ backgroundImage: `url("../img/sidebar-5.jpg")` }}
       >
-        <div class="logo">
-          <a href="#" class="simple-text logo-normal">
+        <div className="logo">
+          <a href="#" className="simple-text logo-normal">
             Ashghal
           </a>
         </div>
@@ -180,21 +179,19 @@ const Dashboard = () => {
                 <p>
                   Projects
                   <b className="caret"></b>
-                </p>                
+                </p>
               </a>
               <div
                 className={`collapse ${expandProjects ? "show" : ""}`}
                 id="projects"
               >
                 <ProjectNav
-                handleAssignmentClick={handleAssignmentClick}
+                  handleAssignmentClick={handleAssignmentClick}
                   projects={projects}
                   handleProjectMenuClick={handleProjectMenuClick}
                 />
               </div>
-
             </li>
-           
           </ul>
           <div className="ps-scrollbar-x-rail">
             <div className="ps-scrollbar-x"></div>
@@ -205,71 +202,71 @@ const Dashboard = () => {
         </div>
       </div>
 
-      <div class="main-panel">
-        <nav class="navbar navbar-default">
-          <div class="container-fluid">
-            <div class="navbar-minimize">
+      <div className="main-panel">
+        <nav className="navbar navbar-default">
+          <div className="container-fluid">
+            <div className="navbar-minimize">
               <button
                 id="minimizeSidebar"
-                class="btn btn-warning btn-fill btn-round btn-icon"
+                className="btn btn-warning btn-fill btn-round btn-icon"
                 onClick={handleSideBarClick}
               >
-                <i class="fa fa-ellipsis-v visible-on-sidebar-regular"></i>
-                <i class="fa fa-navicon visible-on-sidebar-mini"></i>
+                <i className="pe-7s-angle-left visible-on-sidebar-regular"></i>
+                <i className="pe-7s-angle-right visible-on-sidebar-mini"></i>
               </button>
             </div>
-            <div class="navbar-header">
+            <div className="navbar-header">
               <button
                 type="button"
-                class="navbar-toggle"
+                className="navbar-toggle"
                 data-toggle="collapse"
               >
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
+                <span className="sr-only">Toggle navigation</span>
+                <span className="icon-bar"></span>
+                <span className="icon-bar"></span>
+                <span className="icon-bar"></span>
               </button>
-              <a class="navbar-brand" href="bootstrap-table.html#">
+              <a className="navbar-brand" href="bootstrap-table.html#">
                 PDLM
               </a>
             </div>
-            <div class="collapse navbar-collapse">
+            <div className="collapse navbar-collapse">
               <form
-                class="navbar-form navbar-left navbar-search-form"
+                className="navbar-form navbar-left navbar-search-form"
                 role="search"
               >
-                <div class="input-group">
-                  <span class="input-group-addon">
-                    <i class="fa fa-search"></i>
+                <div className="input-group">
+                  <span className="input-group-addon">
+                    <i className="fa fa-search"></i>
                   </span>
                   <input
                     type="text"
                     value
-                    class="form-control"
+                    className="form-control"
                     placeholder="Search..."
                   />
                 </div>
               </form>
-              <ul class="nav navbar-nav navbar-right">
+              <ul className="nav navbar-nav navbar-right">
                 <li>
                   <a href="../charts.html">
-                    <i class="fa fa-line-chart"></i>
+                    <i className="fa fa-line-chart"></i>
                     <p>Stats</p>
                   </a>
                 </li>
-                <li class="dropdown">
+                <li className="dropdown">
                   <a
                     href="bootstrap-table.html#"
-                    class="dropdown-toggle"
+                    className="dropdown-toggle"
                     data-toggle="dropdown"
                   >
-                    <i class="fa fa-gavel"></i>
-                    <p class="hidden-md hidden-lg">
+                    <i className="fa fa-gavel"></i>
+                    <p className="hidden-md hidden-lg">
                       Actions
-                      <b class="caret"></b>
+                      <b className="caret"></b>
                     </p>
                   </a>
-                  <ul class="dropdown-menu">
+                  <ul className="dropdown-menu">
                     <li>
                       <a href="bootstrap-table.html#">Create New Post</a>
                     </li>
@@ -282,26 +279,26 @@ const Dashboard = () => {
                     <li>
                       <a href="bootstrap-table.html#">Submit to live</a>
                     </li>
-                    <li class="divider"></li>
+                    <li className="divider"></li>
                     <li>
                       <a href="bootstrap-table.html#">Another Action</a>
                     </li>
                   </ul>
                 </li>
-                <li class="dropdown">
+                <li className="dropdown">
                   <a
                     href="bootstrap-table.html#"
-                    class="dropdown-toggle"
+                    className="dropdown-toggle"
                     data-toggle="dropdown"
                   >
-                    <i class="fa fa-bell-o"></i>
-                    <span class="notification">5</span>
-                    <p class="hidden-md hidden-lg">
+                    <i className="fa fa-bell-o"></i>
+                    <span className="notification">5</span>
+                    <p className="hidden-md hidden-lg">
                       Notifications
-                      <b class="caret"></b>
+                      <b className="caret"></b>
                     </p>
                   </a>
-                  <ul class="dropdown-menu">
+                  <ul className="dropdown-menu">
                     <li>
                       <a href="bootstrap-table.html#">Notification 1</a>
                     </li>
@@ -319,43 +316,43 @@ const Dashboard = () => {
                     </li>
                   </ul>
                 </li>
-                <li class="dropdown dropdown-with-icons">
+                <li className="dropdown dropdown-with-icons">
                   <a
                     href="bootstrap-table.html#"
-                    class="dropdown-toggle"
+                    className="dropdown-toggle"
                     data-toggle="dropdown"
                   >
-                    <i class="fa fa-list"></i>
-                    <p class="hidden-md hidden-lg">
+                    <i className="fa fa-list"></i>
+                    <p className="hidden-md hidden-lg">
                       More
-                      <b class="caret"></b>
+                      <b className="caret"></b>
                     </p>
                   </a>
-                  <ul class="dropdown-menu dropdown-with-icons">
+                  <ul className="dropdown-menu dropdown-with-icons">
                     <li>
                       <a href="bootstrap-table.html#">
-                        <i class="pe-7s-mail"></i> Messages
+                        <i className="pe-7s-mail"></i> Messages
                       </a>
                     </li>
                     <li>
                       <a href="bootstrap-table.html#">
-                        <i class="pe-7s-help1"></i> Help Center
+                        <i className="pe-7s-help1"></i> Help Center
                       </a>
                     </li>
                     <li>
                       <a href="bootstrap-table.html#">
-                        <i class="pe-7s-tools"></i> Settings
+                        <i className="pe-7s-tools"></i> Settings
                       </a>
                     </li>
-                    <li class="divider"></li>
+                    <li className="divider"></li>
                     <li>
                       <a href="bootstrap-table.html#">
-                        <i class="pe-7s-lock"></i> Lock Screen
+                        <i className="pe-7s-lock"></i> Lock Screen
                       </a>
                     </li>
                     <li>
-                      <a href="bootstrap-table.html#" class="text-danger">
-                        <i class="pe-7s-close-circle"></i> Log out
+                      <a href="bootstrap-table.html#" className="text-danger">
+                        <i className="pe-7s-close-circle"></i> Log out
                       </a>
                     </li>
                   </ul>
@@ -364,17 +361,27 @@ const Dashboard = () => {
             </div>
           </div>
         </nav>
-        <div class="main-content im-scrollbar">
-          <div class="container-fluid">
-            <div class="row">
-              <div class="col-md-12">
-                <div class="card">
-                  <div class="toolbar"></div>
-                 { showAssignments ?<MyAssignment setLoading={setLoading} />
-                  :<TableComponent data={submittalsData} columns={columns} />}
+        <div className="main-content im-scrollbar">
+          <div className="container-fluid">
+            <div className="row">
+              <div className="col-md-12">
+                <div className="card">
+                  <div className="toolbar"></div>
+                  {showAssignments ? (
+                    <MyAssignment setLoading={setLoading} />
+                  ) : (
+                    <TableComponent
+                      data={submittalsData}
+                      columns={columns}
+                      totalRecords={totalRecords}
+                      currentPage={currentPage}
+                      itemsPerPage={itemsPerPage}
+                      setCurrentPage={setCurrentPage}
+                    />
+                  )}
                   {loading && (
                     <div style={{ position: "relative", height: 100 }}>
-                      <div class="jvectormap-spinner" />
+                      <div className="jvectormap-spinner" />
                     </div>
                   )}
                 </div>
@@ -384,7 +391,6 @@ const Dashboard = () => {
         </div>
       </div>
       {/* <Footer /> */}
-     
     </div>
   );
 };

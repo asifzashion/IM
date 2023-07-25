@@ -1,89 +1,186 @@
-import React, { useState,useEffect,useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { AppContext } from "../../../contexts/AppContextProvider";
 import TableComponent from "../tableComponent";
 
-const MyAssignment = ({setLoading}) => {
+const MyAssignment = ({ setLoading }) => {
+  const [iframeLink, setIframeLink] = useState("");
+  const [type, setType] = useState("&new=true");
+  const [searchText, setSearchText] = useState("");
+  const [totalRecords, setTotalRecords] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
 
-    const [type,setType] = useState("&new=true");
-
-    const columns = React.useMemo(
-        () => [
-          {
-            accessorKey: "pwn",
-            id: "pwn",
-            header: () => <span>PWA Ref Number</span>,
-            //cell: (row) => <span>{row.pwn}</span>,  
-            cell: (row) => {
-                return <div dangerouslySetInnerHTML={{ __html: row.pwn }} />;
-              },    
-          },
-          {
-            accessorKey: "subj",
-            id: "subj",
-            header: () => <span>Subject</span>,
-            //cell: (row) => <span>{row.subj}</span>,
-            cell: (row) => {
-                return <div dangerouslySetInnerHTML={{ __html: row.subj }} />;
-              },
-          },
-          {
-            accessorKey: "cont",
-            id: "cont",
-            header: () => <span>Contract Number</span>,
-            //cell: (row) => <span>{row.subj}</span>,
-            cell: (row) => {
-                return <div dangerouslySetInnerHTML={{ __html: row.cont }} />;
-              },
-          },
-          {
-            accessorKey: "prjid",
-            id: "prjid",
-            header: () => <span>Project ID</span>,
-            //cell: (row) => <span>{row.subj}</span>,
-            cell: (row) => {
-                return <div dangerouslySetInnerHTML={{ __html: row.prjid }} />;
-              },
-          },
-           {
-            accessorKey: "asigdate",
-            id: "asigdate",
-            header: () => <span>Received Date</span>,
-            //cell: (row) => <span>{row.subj}</span>,
-            cell: (row) => {
-                return <div dangerouslySetInnerHTML={{ __html: row.asigdate }} />;
-              },
-          },
-         
-        ],
-        []
-      );
-    
-  
   const {
-    state: { emaildid, token,assignments  },
+    state: { emaildid, token, assignments, otdsticket },
     actions: { getAssignmentsNew },
   } = useContext(AppContext).auth;
 
   useEffect(() => {
     loadAssignmentData();
-  }, [token,type]);
+  }, [token, type, currentPage, searchText]);
 
-  console.log("assign",assignments);
-
-  const loadAssignmentData = async () => { 
-        if (token) {setLoading(true)
-          await getAssignmentsNew(token, type, emaildid);
-          setLoading(false)
-        }   
+  const handleTypeChange = (str) => {
+    setType(str);
+    setCurrentPage(1);
+    setTotalRecords(0);
   };
 
-  return (
-    <div>
-    {/* <h3>My Assignments</h3> */}
-    <button  style={{ marginTop: '15px',marginLeft: '10px',}} onClick={() => setType("&new=true")}>New</button>
-    <button style={{ marginLeft: '5px',}} onClick={() => setType("&inprogress=true&wftype=inprogress")}>InProgress</button>
-    <button style={{ marginLeft: '5px',}} onClick={() => setType("&completed=true")}>Completed</button>
-     <TableComponent columns={columns} data={assignments || []}/>
+  const extractTaskParams = (str) => {
+    const start = str.indexOf("(");
+    const end = str.lastIndexOf(")");
+    const paramsString = str.substring(start + 1, end);
+
+    const params = paramsString
+      .split(",")
+      .map((param) => parseInt(param.trim(), 10));
+
+    return params;
+  };
+
+  const getLinkForTable = (row) => {
+    const payload = extractTaskParams(row);
+    const openTaskWindow = () => {
+      console.log(payload);
+      if (payload.length !== 3) return "";
+      const url = `https://tempouat.ashghal.gov.qa/otcs/llisapi.dll/app/processes/${payload[0]}/${payload[1]}/${payload[2]}?otdsticket=${otdsticket}&nexturl=%2Fotcs%2Fllisapi.dll%3Ffunc%3Dll%26objId%26objAction%3DRunReport`;
+      return url;
+    };
+    const tempelement = document.createElement("div");
+    tempelement.innerHTML = row;
+    return openTaskWindow() ? (
+      <a
+        onClick={(e) => {
+          e.stopPropagation();
+          setIframeLink(openTaskWindow());
+        }}
+      >
+        {tempelement?.textContent}
+      </a>
+    ) : (
+      <div>{tempelement.textContent}</div>
+    );
+  };
+
+  const loadAssignmentData = async () => {
+    const payload = searchText
+      ? type + `&columns[0][search][value]=${searchText}`
+      : type;
+    if (token) {
+      setLoading(true);
+      const startIndex = (currentPage - 1) * itemsPerPage;
+      try {
+        const response = await getAssignmentsNew(
+          token,
+          payload,
+          emaildid,
+          currentPage,
+          startIndex,
+          itemsPerPage
+        );
+        setLoading(false);
+        if (response?.recordsTotal) {
+          setTotalRecords(response.recordsTotal);
+        }
+      } catch (error) {
+        setLoading(false);
+        return error;
+      }
+    }
+  };
+
+  const columns = [
+    {
+      dataField: "pwn",
+      text: "PWA Ref Number",
+      formatter: (_cell, row) => getLinkForTable(row.pwn),
+    },
+    {
+      dataField: "subj",
+      text: "Subject",
+      formatter: (_cell, row) => (
+        <div dangerouslySetInnerHTML={{ __html: row.subj }} />
+      ),
+    },
+    {
+      dataField: "cont",
+      text: "Contract Number",
+    },
+    {
+      dataField: "prjid",
+      text: "Project ID",
+    },
+    {
+      dataField: "asigdate",
+      text: "Received Date",
+      cell: (row) => {
+        return <div dangerouslySetInnerHTML={{ __html: row.asigdate }} />;
+      },
+    },
+  ];
+
+  const showBtnStatus = (str) => {
+    return type === str
+      ? "btn btn-default btn-fill btn-wd me-2"
+      : "btn btn-info btn-fill btn-wd me-2";
+  };
+
+  const getCount = (str) => {
+    return type === str ? "(" + totalRecords + ")" : null;
+  };
+
+  // TODO we need to remove style and add inbuild css classes.
+
+  return iframeLink ? (
+    <>
+      <button onClick={() => setIframeLink("")}>Close</button>
+      <iframe
+        src={iframeLink}
+        sandbox="allow-same-origin"
+        style={{ height: "75vh", width: "100%" }}
+        allowFullScreen
+      />
+    </>
+  ) : (
+    <div style={{ paddingTop: "10px" }}>
+      {/* <h3>My Assignments</h3> */}
+      <div style={{ display: "flex", margin: "0px 10px 10px 10px" }}>
+        <button
+          style={{ marginRight: 10 }}
+          className={showBtnStatus("&new=true")}
+          onClick={() => handleTypeChange("&new=true")}
+        >
+          New {getCount("&new=true")}
+        </button>
+        <button
+          style={{ marginRight: 10 }}
+          className={showBtnStatus("&inprogress=true")}
+          onClick={() => handleTypeChange("&inprogress=true")}
+        >
+          InProgress {getCount("&inprogress-=true")}
+        </button>
+        <button
+          style={{ marginRight: 10 }}
+          className={showBtnStatus("&completed=true")}
+          onClick={() => handleTypeChange("&completed=true")}
+        >
+          Completed {getCount("&completed=true")}
+        </button>
+        <input
+          onChange={(e) => setSearchText(e.target.value)}
+          value={searchText}
+          placeholder="Search..."
+          className="form-control"
+          style={{ maxWidth: 400 }}
+        />
+      </div>
+      <TableComponent
+        columns={columns}
+        data={assignments || []}
+        totalRecords={totalRecords}
+        currentPage={currentPage}
+        itemsPerPage={itemsPerPage}
+        setCurrentPage={setCurrentPage}
+      />
     </div>
   );
 };
