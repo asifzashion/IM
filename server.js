@@ -188,6 +188,10 @@ app.prepare().then(() => {
         debugLog(req, res)
         return renderHandler({ req, res, pagePath: '/', queryParams: req.query })
     });
+    server.get("/dashboard", (req, res) => {//todo handle main page
+        debugLog(req, res)
+        return renderHandler({ req, res, pagePath: '/dashboard', queryParams: req.query })
+    });
     server.get("*", (req, res) => {
         const isStaticFile = req.url.match(/\.(js|css|jpg|png|jpeg|svg|woff|gif|ico|ttf|eot|otf)/) || req.url.match(/hmr/);
         if (isStaticFile) {

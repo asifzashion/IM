@@ -1,11 +1,12 @@
 //import '../public/js/jquery.min.js'
 //import '../public/js/light-bootstrap-dashboard-v=1.4.1.js'
-import React,{useState,useContext} from "react";
+import React,{useState,useContext,useEffect} from "react";
 import Image from 'next/image'
 import Link from 'next/link'
 import {validEmailRegex} from "../helper";
 //import userValidation from "../pages/users/userValidation"
 import {AppContext} from "../contexts/AppContextProvider";
+import Router from "next/router";
 
 export default function Home() {
     const [formData, setFormData] = useState({})
@@ -13,7 +14,14 @@ export default function Home() {
     const [isvalidSubmit, setvalidSubmit] = useState(0)
     const [isLogin, setLogin] = useState(1)
     const [uservalidate, setuservalidate] = useState({})
-
+    useEffect(() => {
+        // redirect to home if already logged in
+        if (window && window.sessionStorage && window.sessionStorage.getItem('token')) {
+            Router.push('/dashboard');
+        }else{
+            Router.push('/');
+        }
+      }, []);
     const [error, setError] = useState({
         email: '',
         password: ''
