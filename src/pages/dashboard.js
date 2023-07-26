@@ -127,7 +127,7 @@ const Dashboard = () => {
       >
         <div className="logo">
           <a href="#" className="simple-text logo-normal">
-            Ashghal
+          <img src="../img/ashghal.png" />
           </a>
         </div>
         <div className="sidebar-wrapper ps-container ps-theme-default ps-active-y im-scrollbar">
@@ -229,12 +229,12 @@ const Dashboard = () => {
                 <span className="icon-bar"></span>
                 <span className="icon-bar"></span>
               </button>
-              <a className="navbar-brand" href="bootstrap-table.html#">
+              <a className="navbar-brand" href="#">
                 PDLM
               </a>
             </div>
             <div className="collapse navbar-collapse">
-              <form
+              {/* <form
                 className="navbar-form navbar-left navbar-search-form"
                 role="search"
               >
@@ -249,52 +249,22 @@ const Dashboard = () => {
                     placeholder="Search..."
                   />
                 </div>
-              </form>
+              </form> */}
               <ul className="nav navbar-nav navbar-right">
                 <li>
-                  <a href="../charts.html">
-                    <i className="fa fa-line-chart"></i>
+                  <a href="#">
+                    <i className="pe-7s-graph3"></i>
                     <p>Stats</p>
                   </a>
                 </li>
+                
                 <li className="dropdown">
                   <a
-                    href="bootstrap-table.html#"
+                    href="#"
                     className="dropdown-toggle"
                     data-toggle="dropdown"
                   >
-                    <i className="fa fa-gavel"></i>
-                    <p className="hidden-md hidden-lg">
-                      Actions
-                      <b className="caret"></b>
-                    </p>
-                  </a>
-                  <ul className="dropdown-menu">
-                    <li>
-                      <a href="bootstrap-table.html#">Create New Post</a>
-                    </li>
-                    <li>
-                      <a href="bootstrap-table.html#">Manage Something</a>
-                    </li>
-                    <li>
-                      <a href="bootstrap-table.html#">Do Nothing</a>
-                    </li>
-                    <li>
-                      <a href="bootstrap-table.html#">Submit to live</a>
-                    </li>
-                    <li className="divider"></li>
-                    <li>
-                      <a href="bootstrap-table.html#">Another Action</a>
-                    </li>
-                  </ul>
-                </li>
-                <li className="dropdown">
-                  <a
-                    href="bootstrap-table.html#"
-                    className="dropdown-toggle"
-                    data-toggle="dropdown"
-                  >
-                    <i className="fa fa-bell-o"></i>
+                    <i className="pe-7s-bell"></i>
                     <span className="notification">5</span>
                     <p className="hidden-md hidden-lg">
                       Notifications
@@ -303,29 +273,29 @@ const Dashboard = () => {
                   </a>
                   <ul className="dropdown-menu">
                     <li>
-                      <a href="bootstrap-table.html#">Notification 1</a>
+                      <a href="#">Notification 1</a>
                     </li>
                     <li>
-                      <a href="bootstrap-table.html#">Notification 2</a>
+                      <a href="#">Notification 2</a>
                     </li>
                     <li>
-                      <a href="bootstrap-table.html#">Notification 3</a>
+                      <a href="#">Notification 3</a>
                     </li>
                     <li>
-                      <a href="bootstrap-table.html#">Notification 4</a>
+                      <a href="#">Notification 4</a>
                     </li>
                     <li>
-                      <a href="bootstrap-table.html#">Another notification</a>
+                      <a href="#">Another notification</a>
                     </li>
                   </ul>
                 </li>
                 <li className="dropdown dropdown-with-icons">
                   <a
-                    href="bootstrap-table.html#"
+                    href="#"
                     className="dropdown-toggle"
                     data-toggle="dropdown"
                   >
-                    <i className="fa fa-list"></i>
+                    <i className="pe-7s-power"></i>
                     <p className="hidden-md hidden-lg">
                       More
                       <b className="caret"></b>
@@ -333,28 +303,28 @@ const Dashboard = () => {
                   </a>
                   <ul className="dropdown-menu dropdown-with-icons">
                     <li>
-                      <a href="bootstrap-table.html#">
+                      <a href="#">
                         <i className="pe-7s-mail"></i> Messages
                       </a>
                     </li>
                     <li>
-                      <a href="bootstrap-table.html#">
+                      <a href="#">
                         <i className="pe-7s-help1"></i> Help Center
                       </a>
                     </li>
                     <li>
-                      <a href="bootstrap-table.html#">
+                      <a href="#">
                         <i className="pe-7s-tools"></i> Settings
                       </a>
                     </li>
                     <li className="divider"></li>
                     <li>
-                      <a href="bootstrap-table.html#">
+                      <a href="#">
                         <i className="pe-7s-lock"></i> Lock Screen
                       </a>
                     </li>
                     <li>
-                      <a href="bootstrap-table.html#" className="text-danger">
+                      <a href="#" className="text-danger">
                         <i className="pe-7s-close-circle"></i> Log out
                       </a>
                     </li>

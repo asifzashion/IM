@@ -17,7 +17,8 @@ const ProjectNav = ({ projects, handleProjectMenuClick, handleAssignmentClick })
     <ul className="nav">
        <li key={"MyAssignments"}>
             <a onClick={handleAssignmentClick}>
-              <i className="pe-7s-news-paper"></i>
+              <i className="pe-7s-note2
+"></i>
               <p>
                My Assignments
                             </p>
@@ -27,7 +28,7 @@ const ProjectNav = ({ projects, handleProjectMenuClick, handleAssignmentClick })
         return (
           <li key={project.ProjectDataID}>
             <a onClick={() => handleExpanded(project.ProjectDataID)}>
-              <i className="pe-7s-news-paper"></i>
+              <i className="pe-7s-wallet"></i>
               <p>
                 {project.Project}
                 <b className="caret"></b>
@@ -44,6 +45,7 @@ const ProjectNav = ({ projects, handleProjectMenuClick, handleAssignmentClick })
                 <ul className="nav" style={{ marginLeft: 60 }}>
                   {projectMenus.map((subProject) => (
                     <li key={subProject}>
+                       <i className="pe-7s-angle-right"></i>
                       <a
                         onClick={() =>
                           handleProjectMenuClick(project, subProject)
