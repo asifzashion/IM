@@ -4,15 +4,6 @@ import TableComponent from "../components/common/tableComponent";
 import { AppContext } from "../contexts/AppContextProvider";
 import MyAssignment from "../components/common/layouts/MyAssignment";
 
-//import BootstrapTable from 'react-bootstrap-table-2';
-//import 'react-bootstrap-table-2/dist/react-bootstrap-table2.min.css';
-//import 'bootstrap/dist/css/bootstrap.min.css';
-//import { Button } from 'react-bootstrap';
-//import Swal from 'sweetalert2';
-
-//import 'bootstrap/dist/css/bootstrap.min.css';
-//import 'bootstrap/dist/js/bootstrap.min.js';
-
 const Dashboard = () => {
   const [currentProject, setCurrentProject] = useState({});
   const [loading, setLoading] = useState(false);
@@ -234,22 +225,6 @@ const Dashboard = () => {
               </a>
             </div>
             <div className="collapse navbar-collapse">
-              {/* <form
-                className="navbar-form navbar-left navbar-search-form"
-                role="search"
-              >
-                <div className="input-group">
-                  <span className="input-group-addon">
-                    <i className="fa fa-search"></i>
-                  </span>
-                  <input
-                    type="text"
-                    value
-                    className="form-control"
-                    placeholder="Search..."
-                  />
-                </div>
-              </form> */}
               <ul className="nav navbar-nav navbar-right">
                 <li>
                   <a href="#">

@@ -32,6 +32,9 @@ class ProjectUtils {
     static getAssignmentsNewURL(type, emailId, draw, start, end) {
         return `${window.CORS_URL}${process.env.BASE_LOCATION}${APIConstant.GET_ASSIGNMENTS_NEW}&emaildid=${emailId}&draw=${draw}&start=${start}&length=${end}${type}`;
     }
+    static getMyassignmentData(payload,otdsticket) {
+        return `${process.env.BASE_LOCATION}${APIConstant.GET_MYASSIGNMENT}/${payload[0]}/${payload[1]}/${payload[2]}?otdsticket=${otdsticket}&nexturl=%2Fotcs%2Fllisapi.dll%3Ffunc%3Dll%26objId%26objAction%3DRunReport`;
+    }
     static getOTDSTicket() {
         return `${window.CORS_URL}${process.env.BASE_LOCATION}${APIConstant.GET_OTDSTICKET}`;
     }

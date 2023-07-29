@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import { AppContext } from "../../../contexts/AppContextProvider";
 import TableComponent from "../tableComponent";
-
+import ProjectUtils from "../../../utilities/utils";
 const MyAssignment = ({ setLoading }) => {
   const [iframeLink, setIframeLink] = useState("");
   const [type, setType] = useState("&new=true");
@@ -41,8 +41,8 @@ const MyAssignment = ({ setLoading }) => {
     const payload = extractTaskParams(row);
     const openTaskWindow = () => {
       console.log(payload);
-      if (payload.length !== 3) return "";
-      const url = `https://tempouat.ashghal.gov.qa/otcs/llisapi.dll/app/processes/${payload[0]}/${payload[1]}/${payload[2]}?otdsticket=${otdsticket}&nexturl=%2Fotcs%2Fllisapi.dll%3Ffunc%3Dll%26objId%26objAction%3DRunReport`;
+      if (payload.length !== 3) return ""; 
+      const url = ProjectUtils.getMyassignmentData(payload,otdsticket)
       return url;
     };
     const tempelement = document.createElement("div");
