@@ -20,7 +20,7 @@ function MyApp({ Component, pageProps, ctxReqHeaders }) {
   return (
     <AppContextProvider ctxReqHeaders={ctxReqHeaders} pageProps={pageProps}>
       <Component {...pageProps} />
-      <ToastContainer />
+      {/* <ToastContainer /> */}
     </AppContextProvider>
   );
 }
