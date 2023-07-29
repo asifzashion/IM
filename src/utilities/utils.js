@@ -3,6 +3,7 @@ import cookie from 'js-cookie';
 import * as APIConstant from '../constants/APIConstant';
 import * as Constants from '../constants/constant';
 import NetworkManager from '../NetworkManager/NetworkManager';
+import {ContractDataID} from '../NetworkManager/NetworkManager';
 
 /**
  * @param path
@@ -26,8 +27,8 @@ class ProjectUtils {
     static getProjectRequestURL(email) {
         return `${window.CORS_URL}${process.env.BASE_LOCATION}${APIConstant.GET_PROJECTS}&userID=${email}`;
     }
-    static getSubmittalsRequestURL(ContractDataID, draw, start, end) {
-        return `${window.CORS_URL}${process.env.BASE_LOCATION}${APIConstant.GET_SUBMITTALS}&ContractDataID=${ContractDataID}&draw=${draw}&start=${start}&length=${end}`;
+    static getSubmittalsRequestURL(ContractDataIDDD, draw, start, end) {
+        return `${window.CORS_URL}${process.env.BASE_LOCATION}${APIConstant.GET_SUBMITTALS}&ContractDataID=${ContractDataID || ContractDataIDDD}&draw=${draw}&start=${start}&length=${end}`;
     }
     static getAssignmentsNewURL(type, emailId, draw, start, end) {
         return `${window.CORS_URL}${process.env.BASE_LOCATION}${APIConstant.GET_ASSIGNMENTS_NEW}&emaildid=${emailId}&draw=${draw}&start=${start}&length=${end}${type}`;

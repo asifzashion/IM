@@ -168,6 +168,9 @@ axiosInstance &&
 export const getToken = (context = null) => {
       return context;
 };
+export const ContractDataID = (context = null) => {
+  return window.sessionStorage.getItem('token');
+};
 
 class NetworkManager {
   static selected = {};
