@@ -13,6 +13,21 @@ const TableComponent = ({
   const handleTableChange = (type, { page, sortField, sortOrder, filters }) => {
     console.log("Table changed:", type, page, sortField, sortOrder, filters);
   };
+  const expandRow = {
+    renderer: row => (
+      <div class="hoverdiv">
+      <ul>
+          <li><i class="pe-7s-exapnd2"></i></li>
+          <li><i class="pe-7s-menu"></i></li>
+          <li><i class="pe-7s-note"></i></li>
+          <li><i class="pe-7s-flag"></i></li>
+      </ul>
+
+  </div>
+    ),
+    showExpandColumn: true,
+    expandByColumnOnly: true
+  };
 
   return (
     <div className="m-3">
@@ -30,6 +45,7 @@ const TableComponent = ({
             totalSize: totalRecords,
             onPageChange: (page) => setCurrentPage(page),
           })}
+          expandRow={ expandRow }
         />
       ) : null}
     </div>

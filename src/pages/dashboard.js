@@ -131,7 +131,7 @@ const Dashboard = () => {
           </a>
         </div>
         <div className="sidebar-wrapper ps-container ps-theme-default ps-active-y im-scrollbar">
-          <div className="user">
+          {/* <div className="user">
             <div className="info">
               <div className="photo">
                 <img src="../img/default-avatar.png" />
@@ -157,7 +157,7 @@ const Dashboard = () => {
                 </ul>
               </div>
             </div>
-          </div>
+          </div> */}
           <ul className="nav">
             {/* <li className="active">
               <a href="">
