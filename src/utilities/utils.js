@@ -28,11 +28,8 @@ class ProjectUtils {
         const email_id = window.sessionStorage.getItem('email')
         return `${window.CORS_URL}${process.env.BASE_LOCATION}${APIConstant.GET_PROJECTS}&userID=${email_id}`;
     }
-    static getSubmittalsRequestURL(ContractDataIDDD, draw, start, end) {
-        console.log(window.sessionStorage.getItem('token'))
-        console.log("dddddd session", sessionStorage.getItem('token'))
-        const cid = sessionStorage.getItem('token');
-        return `${window.CORS_URL}${process.env.BASE_LOCATION}${APIConstant.GET_SUBMITTALS}&ContractDataID=${cid}&draw=${draw}&start=${start}&length=${end}`;
+    static getSubmittalsRequestURL(ContractDataID, draw, start, end) {
+        return `${window.CORS_URL}${process.env.BASE_LOCATION}${APIConstant.GET_SUBMITTALS}&ContractDataID=${ContractDataID}&draw=${draw}&start=${start}&length=${end}`;
     }
     static getAssignmentsNewURL(type, emailId, draw, start, end) {
         const email_id = window.sessionStorage.getItem('email')
