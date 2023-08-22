@@ -38,12 +38,8 @@ const TableComponent = ({
   //   showExpandColumn: true,
   //   expandByColumnOnly: true
   // };
-  const [selectedRow, setSelectedRow] = useState(null);
-  const [showDiv, setshowDiv] = useState(false);
 
-  const [show, setShow] = useState(false);
-
-  const [reportform, setReportForm] = useState(false);
+  const [currentPopup, setCurrentPopup] = useState(1);
   
   const renderDropdownActions = (row) => (
     <div className="dropdown">
@@ -60,8 +56,9 @@ const TableComponent = ({
       
       <div className="dropdown-menu" aria-labelledby={`dropdown-${'ff'}`}>
         <button class="dropdown-item" type="button" onClick={() => {
-          setShow(!show)
-          setReportForm(false)
+        //   setShow(!show)
+        //   setReportForm(false)
+        setCurrentPopup(2);
           }} id="metadatapage">Metadata</button>
            <button class="dropdown-item" type="button">Checklist</button>
         <button class="dropdown-item" type="button">Upload</button>
@@ -73,8 +70,21 @@ const TableComponent = ({
 
   return (
     <>
-    {reportform ?  <div className="im_detail fullscreen">
-                                <button type="button" className="close" id="closematadata2"><span aria-hidden="true">×</span></button>
+     <div class="header">
+      <div>
+          <div class="btn-group">
+             <i class="pe-7s-plus f35" data-toggle="dropdown"></i>
+              <div class="dropdown-menu dropdown-menu-size">
+                    <button class="dropdown-item" type="button">Submit Handover Deliverables</button>
+                    <button class="dropdown-item" type="button">Submit DC Deliverables (Partial)</button>
+                    <button class="dropdown-item" type="button">Submit DC Deliverables (Full)</button>
+               </div>
+          </div>
+        </div>
+    </div>
+    {currentPopup === 3 && (
+    <div className="im_detail fullscreen">
+                                <button type="button" className="close" id="closematadata2" onClick={() =>  setCurrentPopup(2)}><span aria-hidden="true">×</span></button>
                                 <h3 className="text_23">Report and Forms → Ashghal O&M Approvals</h3>
                                 <div className="row">
                                     <div className="col-md-12">
@@ -139,10 +149,11 @@ const TableComponent = ({
                                         </table>
                                     </div>
                                 </div>
-                            </div> : null}
+                            </div>)}
 
-    {show && !reportform ? <div className="im_detail fullscreen">
-        <button type="button" className="close" id="closematadata" onClick={() => setShow(!show)}>x</button>
+    {currentPopup === 2 && (
+    <div className="im_detail fullscreen">
+        <button type="button" className="close closematadata" id="closematadata" onClick={() =>  setCurrentPopup(1)}><span aria-hidden="true">×</span></button>
                                 <h3 className="text_23">DCU forms</h3>
                                 <div className="header_back_cpd_dtl">
                                     <div className="alert alert-danger">
@@ -212,9 +223,9 @@ const TableComponent = ({
                                                                     <div className="dropdown-menu dropdown-menu-size">
                                                                         <button className="dropdown-item" type="button">Upload frrom Server</button>
                                                                         <div class="dropdown-item uploadbtn2" >Upload frrom Local Computer<input onClick={() => {
-                                                                          setReportForm(!reportform)
-                                                                          setShow(false)
-                                                                          
+                                                                        //   setReportForm(!reportform)
+                                                                        //   setShow(false)
+                                                                        setCurrentPopup(3);
                                                                           }} type="file" name="file"/></div>
                                                                     </div>
                                                                 </div>
@@ -226,8 +237,8 @@ const TableComponent = ({
                                         </div>
                                     </div>
                                 </div>
- </div> :  
-   
+ </div>)} 
+   {currentPopup === 1 && (
     <div style={{ padding: "15px" }}>
       {data?.length ? (
         <BootstrapTable
@@ -252,7 +263,7 @@ const TableComponent = ({
           // expandRow={ expandRow }
         />
       ) : null}
-    </div>
+    </div>)
 }
     </>
   );
