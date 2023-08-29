@@ -11,3 +11,4 @@ export const GET_SUBMITTALS = '/otcs/llisapi.dll/api/v1/nodes/116895788/output?f
 export const GET_ASSIGNMENTS_NEW = '/otcs/llisapi.dll/api/v1/nodes/117635803/output?format=webreport';
 export const GET_OTDSTICKET = '/otdsws/rest/authentication/credentials';
 export const GET_MYASSIGNMENT = '/otcs/llisapi.dll/app/processes';
+export const SUBMIT_TO_METADATA = '/otcs/llisapi.dll/api/v1/nodes/118712925/output?format=webreport';

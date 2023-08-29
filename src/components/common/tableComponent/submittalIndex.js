@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 import BootstrapTable from "react-bootstrap-table-next";
 import paginationFactory from "react-bootstrap-table2-paginator";
 import Mynext from "../layouts/Mynext"
+import ProjectUtils from '../../../utilities/utils';
+import NetworkManager from '../../../NetworkManager/NetworkManager';
 // import "bootstrap/dist/css/bootstrap.min.css";
-
 // const ActionButtons = ({ row }) => (
 //   <div>
 //     <button className="btn btn-primary btn-sm mr-2">Edit</button>
@@ -11,6 +12,27 @@ import Mynext from "../layouts/Mynext"
 //   </div>
 // );
 
+//          window.userID +
+//         "&project=" +
+//         uploadData.Project +
+//         "&section=" +
+//         uploadData.Section +
+//         "&VolumeID=" +
+//         uploadData.VolumeID +
+//         uploadData.AssetJSON,
+
+const fetchData = async (userID, Project, Section, VolumeID) => {
+    try {
+       //const a ='&userID=117630702&project=C2019-137&section=Section%203&VolumeID=120688278&ContractualDocuments=true&Drainage=true&GIS=true&ReportandForms=true&Roads=true&Survey=true'
+       const token = window.sessionStorage.getItem('token') 
+       const response = await NetworkManager.getDataWithUrl(token)(
+            ProjectUtils.getSubmittoMedatdataURL(userID, Project, Section, VolumeID)
+          );
+        console.log (response)
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
 
 const TableComponent = ({
   data,
@@ -57,9 +79,10 @@ const TableComponent = ({
       <div className="dropdown-menu" aria-labelledby={`dropdown-${'ff'}`}>
         <button class="dropdown-item" type="button" onClick={() => {
         //   setShow(!show)
+        fetchData('117630702', 'C2019-137', 'Section%203', '120688278')
         //   setReportForm(false)
         setCurrentPopup(2);
-          }} id="metadatapage">Metadata</button>
+          }} id="metadatapage">Submit to Metadata</button>
            <button class="dropdown-item" type="button">Checklist</button>
         <button class="dropdown-item" type="button">Upload</button>
         
@@ -248,7 +271,18 @@ const TableComponent = ({
             ...columns,
             {
               text: 'Actions',
-              formatter: renderDropdownActions
+            formatter: renderDropdownActions
+
+            // formatter: (cell, row) => {
+            //     return (
+            //       <div>
+                    
+            //         {row.ChecklistDC}
+            //       </div>
+            //     );
+            //   },
+
+
             }
           ]}
           remote={true}
