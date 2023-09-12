@@ -1,9 +1,11 @@
 import { ToastContainer } from "react-toastify";
 // import "react-toastify/dist/ReactToastify.css";
 import "../../public/js/jquery.min.js";
-import "../../public/css/all.css";
 import "../../public/css/bootstrap.min.css";
+import "../../public/css/all.css";
 import "../../public/css/main.css";
+import "../../public/css/demo.css";
+
 import "../../public/css/pe-icon-7-stroke.css";
 // import "../../public/js/bootstrap-table.js";
 

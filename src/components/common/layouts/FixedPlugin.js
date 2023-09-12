@@ -1,10 +1,10 @@
 import Head from 'next/head';
 import React, { useState } from "react";
 
-const Header = () => {
+const FixedPlugin = () => {
     
     return (
-     <div>dhhdsgdsddhd</div>
+     ddd
     )
 }
-export default Header;
+export default FixedPlugin;

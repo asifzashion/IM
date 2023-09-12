@@ -14,6 +14,7 @@ const ParentComponent = () => {
   ];
 
   // Render ProjectNav and pass handleSubProjectClick and subProjects as props
+  
   return (
     <div>
       <h1>Parent Component</h1>

@@ -13,9 +13,11 @@ const Footer = () => {
       <Head>
         <script src="../../../js/jquery.min.js"></script>
         <script src="../../../js/bootstrap.min.js"></script>
-        <script src="../../../js/main.js"></script>
+        <script src="../../../js/demo.js"></script>
       </Head>
     </React.Fragment>
   );
+  
 };
+
 export default Footer;

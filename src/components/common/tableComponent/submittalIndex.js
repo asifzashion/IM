@@ -1,38 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import BootstrapTable from "react-bootstrap-table-next";
 import paginationFactory from "react-bootstrap-table2-paginator";
 import Mynext from "../layouts/Mynext"
 import ProjectUtils from '../../../utilities/utils';
 import NetworkManager from '../../../NetworkManager/NetworkManager';
-// import "bootstrap/dist/css/bootstrap.min.css";
-// const ActionButtons = ({ row }) => (
-//   <div>
-//     <button className="btn btn-primary btn-sm mr-2">Edit</button>
-//     <button className="btn btn-danger btn-sm">Delete</button>
-//   </div>
-// );
+//import ToolkitProvider, { Search } from 'react-bootstrap-table2-toolkit';
 
-//          window.userID +
-//         "&project=" +
-//         uploadData.Project +
-//         "&section=" +
-//         uploadData.Section +
-//         "&VolumeID=" +
-//         uploadData.VolumeID +
-//         uploadData.AssetJSON,
+//const { SearchBar } = Search;
 
-const fetchData = async (userID, Project, Section, VolumeID) => {
-    try {
-       //const a ='&userID=117630702&project=C2019-137&section=Section%203&VolumeID=120688278&ContractualDocuments=true&Drainage=true&GIS=true&ReportandForms=true&Roads=true&Survey=true'
-       const token = window.sessionStorage.getItem('token') 
-       const response = await NetworkManager.getDataWithUrl(token)(
-            ProjectUtils.getSubmittoMedatdataURL(userID, Project, Section, VolumeID)
-          );
-        console.log (response)
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  };
+const defaultSorted = [{
+  dataField: 'PWARefNumber',
+  order: 'desc'
+}];
+
 
 const TableComponent = ({
   data,
@@ -42,30 +22,82 @@ const TableComponent = ({
   setCurrentPage,
   itemsPerPage = 10,
 }) => {
-  const handleTableChange = (type, { page, sortField, sortOrder, filters }) => {
+  const handleTableChange = (type, {data, page, sortField, sortOrder, filters }) => {
+    setRowData(data);
     console.log("Table changed:", type, page, sortField, sortOrder, filters);
   };
-  // const expandRow = {
-  //   renderer: row => (
-  //     <div class="hoverdiv">
-  //     <ul>
-  //         <li><i class="pe-7s-exapnd2"></i></li>
-  //         <li><i class="pe-7s-menu"></i></li>
-  //         <li><i class="pe-7s-note"></i></li>
-  //         <li><i class="pe-7s-flag"></i></li>
-  //     </ul>
-
-  // </div>
-  //   ),
-  //   showExpandColumn: true,
-  //   expandByColumnOnly: true
-  // };
 
   const [currentPopup, setCurrentPopup] = useState(1);
+  const [metadataSubmit, setmetadataSubmit] = useState([]);
+  const [rowData, setRowData] = useState([]);
+  const [metadataPopup, setmetadataPopup] = useState([]);
   
-  const renderDropdownActions = (row) => (
+
+  const fetchData = async (userID, Project, Section, VolumeID) => {
+    try {
+       //const a ='&userID=117630702&project=C2019-137&section=Section%203&VolumeID=120688278&ContractualDocuments=true&Drainage=true&GIS=true&ReportandForms=true&Roads=true&Survey=true'
+       const token = window.sessionStorage.getItem('token') 
+       const response = await NetworkManager.getDataWithUrl(token)(
+            ProjectUtils.getSubmittoMedatdataURL(userID, Project, Section, VolumeID)
+          );
+        console.log (response)
+        setmetadataSubmit(response && response.data && response.data ? response.data : [])
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  const openAdvanceUploadWindow = (VolumeID, PWARefNumber, Project, ProjDataID, Section, SubDataID, ProgDataID, DepartmentID, Department, ProjectType, Description, subMenuId, AssetJSON, Role, UIType, userID, OUID, OSID, ProjectID, revisiontypeid, ExistingDCSubMethod, Status) => {
+    console.log("from myfunc", VolumeID, PWARefNumber, Project, ProjDataID, Section, SubDataID, ProgDataID, DepartmentID, Department, ProjectType, Description, subMenuId, AssetJSON, Role, UIType, userID, OUID, OSID, ProjectID, revisiontypeid, ExistingDCSubMethod, Status);
+    fetchData(userID, Project, Section, VolumeID)
+    //   setReportForm(false)
+    setCurrentPopup(2);
+  };
+
+  const openAdvanceUploadWindowHO = (VolumeID, PWARefNumber, Project, ProjDataID, Section, SubDataID, ProgDataID, DepartmentID, Department, ProjectType, Description, subMenuId, AssetJSON, Role, UIType, userID, OUID, OSID, ProjectID, revisiontypeid, ExistingDCSubMethod, Purpose, Status) => {
+    console.log("from myfunc", VolumeID, PWARefNumber, Project, ProjDataID, Section, SubDataID, ProgDataID, DepartmentID, Department, ProjectType, Description, subMenuId, AssetJSON, Role, UIType, userID, OUID, OSID, ProjectID, revisiontypeid, ExistingDCSubMethod, Purpose, Status);
+    fetchData(userID, Project, Section, VolumeID)
+    //   setReportForm(false)
+    setCurrentPopup(2);
+  };
+
+  const deleteToDo_HO = (VolumeID, ProgDataID, ProjDataID, Project, DepartmentID, ProjectType, Role) => {
+    console.log("from myfunc", VolumeID, ProgDataID, ProjDataID, Project, DepartmentID, ProjectType, Role);
+    fetchData(userID, Project, Section, VolumeID)
+    //   setReportForm(false)
+    setCurrentPopup(2);
+  };
+
+  useEffect(() => {
+    window.openAdvanceUploadWindow = openAdvanceUploadWindow;
+    window.openAdvanceUploadWindowHO = openAdvanceUploadWindowHO;
+    window.deleteToDo_HO = deleteToDo_HO;
+
+
+    return () => {
+      window.openAdvanceUploadWindow = null;
+      window.openAdvanceUploadWindowHO = null;
+
+    };
+  }, []);
+
+  const replaceIconWithText = (htmlContent, classNameToRemove,name) => {
+    // Define a regular expression pattern dynamically
+    const pattern = new RegExp(`<i\\s+class=['"]${classNameToRemove}['"]><\\/i>`, 'g');
+  
+    // Replace the matching <i> element with the string "name"
+    const modifiedHtml = htmlContent && htmlContent.replace(
+      pattern,
+      name
+    );
+  
+    return modifiedHtml;
+  };
+
+  const renderDropdownActions = (cell, row) => (
+    
     <div className="dropdown">
-      <button
+      {/* <button
         className="btn btn-secondary dropdown-toggle"
         type="button"
         id={`dropdown-${'hh'}`}
@@ -74,37 +106,106 @@ const TableComponent = ({
         aria-expanded="false"
       >
         Actions
-      </button>
-      
-      <div className="dropdown-menu" aria-labelledby={`dropdown-${'ff'}`}>
-        <button class="dropdown-item" type="button" onClick={() => {
-        //   setShow(!show)
-        fetchData('117630702', 'C2019-137', 'Section%203', '120688278')
-        //   setReportForm(false)
-        setCurrentPopup(2);
-          }} id="metadatapage">Submit to Metadata</button>
-           <button class="dropdown-item" type="button">Checklist</button>
-        <button class="dropdown-item" type="button">Upload</button>
+      </button> */}
+      <i className="pe-7s-more btn-secondary dropdown-toggle"
+        type="button"
+        id={`dropdown-${'hh'}`}
+        data-toggle="dropdown"
+        aria-haspopup="true"
+        aria-expanded="false"></i>
+      <div className="dropdown-menu" aria-labelledby={`dropdown-${'ff'}`}>    
+{row.Status === "Draft" ? (
+          <button className="dropdown-item" onClick={() => {
+          setmetadataPopup(row);
+          }} dangerouslySetInnerHTML={{ __html: replaceIconWithText(row.ChecklistDC, 'fa fa-calendar-check-o fontsize20', 'Submit to Metadata') }} />
+        ) : null}
+
+{row.Status === "Draft" ? (
+          <button className="dropdown-item" onClick={() => {
+          setmetadataPopup(row);
+          }} dangerouslySetInnerHTML={{ __html: replaceIconWithText(row.Audit, 'fa fa-info-circle fontsize20', 'Audit') }} />
+        ) : null}
         
-       
-        </div>
-    </div>
+{row.Status === "Draft" ? (
+          <button className="dropdown-item" onClick={() => {
+          setmetadataPopup(row);
+          }} dangerouslySetInnerHTML={{ __html: replaceIconWithText(row.Checklist, 'fa fa-calendar-check-o fontsize20', 'Checklist') }} />
+        ) : null} 
+
+{row.Status === "Draft" ? (
+          <button className="dropdown-item" onClick={() => {
+          setmetadataPopup(row);
+          }} dangerouslySetInnerHTML={{ __html: replaceIconWithText(row.EditDetails, 'fa fa-pencil fontsize20', 'EditDetails') }} />
+        ) : null} 
+
+{row.Status === "Draft" ? (
+          <button className="dropdown-item" onClick={() => {
+          setmetadataPopup(row);
+          }} dangerouslySetInnerHTML={{ __html: replaceIconWithText(row.Cancel, 'fa fa-trash fontsize20', 'Cancel') }} />
+        ) : null} 
+
+
+{row.Status === "Submitted" ? (
+          <button className="dropdown-item" onClick={() => {
+          setmetadataPopup(row);
+          }} dangerouslySetInnerHTML={{ __html: replaceIconWithText(row.Audit, 'fa fa-info-circle fontsize20', 'Audit') }} />
+        ) : null}
+
+{row.Status === "Submitted" ? (
+          <button className="dropdown-item" onClick={() => {
+          setmetadataPopup(row);
+          }} dangerouslySetInnerHTML={{ __html: replaceIconWithText(row.Checklist, 'fa fa-calendar-check-o fontsize20', 'Checklist') }} />
+        ) : null}
+
+      
+{row.Status === "Completed" ? (
+          <button className="dropdown-item" onClick={() => {
+          setmetadataPopup(row);
+          }} dangerouslySetInnerHTML={{ __html: replaceIconWithText(row.Audit, 'fa fa-info-circle fontsize20', 'Audit') }} />
+        ) : null}
+
+{row.Status === "Completed" ? (
+          <button className="dropdown-item" onClick={() => {
+          setmetadataPopup(row);
+          }} dangerouslySetInnerHTML={{ __html: replaceIconWithText(row.Checklist, 'fa fa-calendar-check-o fontsize20', 'Checklist') }} />
+        ) : null}
+
+
+{row.Status === "Returned to Contractor" ? (
+          <button className="dropdown-item" onClick={() => {
+          setmetadataPopup(row);
+          }} dangerouslySetInnerHTML={{ __html: replaceIconWithText(row.ChecklistDC, 'fa fa-calendar-check-o fontsize20', 'Submit to Metadata') }} />
+        ) : null}
+
+{row.Status === "Returned to Contractor" ? (
+          <button className="dropdown-item" onClick={() => {
+          setmetadataPopup(row);
+          }} dangerouslySetInnerHTML={{ __html: replaceIconWithText(row.Audit, 'fa fa-info-circle fontsize20', 'Audit') }} />
+        ) : null}
+        
+{row.Status === "Returned to Contractor" ? (
+          <button className="dropdown-item" onClick={() => {
+          setmetadataPopup(row);
+          }} dangerouslySetInnerHTML={{ __html: replaceIconWithText(row.Checklist, 'fa fa-calendar-check-o fontsize20', 'Checklist') }} />
+        ) : null} 
+
+{row.Status === "Returned to Contractor" ? (
+          <button className="dropdown-item" onClick={() => {
+          setmetadataPopup(row);
+          }} dangerouslySetInnerHTML={{ __html: replaceIconWithText(row.EditDetails, 'fa fa-pencil fontsize20', 'EditDetails') }} />
+        ) : null} 
+
+        
+    </div> 
+
+
+    </div> 
+    
   );
 
   return (
     <>
-     <div class="header">
-      <div>
-          <div class="btn-group">
-             <i class="pe-7s-plus f35" data-toggle="dropdown"></i>
-              <div class="dropdown-menu dropdown-menu-size">
-                    <button class="dropdown-item" type="button">Submit Handover Deliverables</button>
-                    <button class="dropdown-item" type="button">Submit DC Deliverables (Partial)</button>
-                    <button class="dropdown-item" type="button">Submit DC Deliverables (Full)</button>
-               </div>
-          </div>
-        </div>
-    </div>
+   
     {currentPopup === 3 && (
     <div className="im_detail fullscreen">
                                 <button type="button" className="close" id="closematadata2" onClick={() =>  setCurrentPopup(2)}><span aria-hidden="true">×</span></button>
@@ -187,15 +288,15 @@ const TableComponent = ({
                 <div className="row">
                                     <div className="form-group col-md-3">
                                         <label className="pr-20">Subject</label>
-                                        <span>Detailed Design Test 2 </span>
+                                        <span>{metadataPopup.Description}</span>
                                     </div>
                                     <div className="form-group col-md-3">
                                         <label className="pr-20">PWA RefNum</label>
-                                        <span>C2014-135-AQC-DC-SUB-0009</span>
+                                        <span>{metadataPopup.PWARefNumber}</span>
                                     </div>
                                     <div className="form-group col-md-3">
                                         <label className="pr-20">Section</label>
-                                        <span>Section 1</span>
+                                        <span>{metadataPopup.SecDescription}</span>
                                     </div>
                                     <div className="form-group col-md-3">
                                         <a href="#" className="pr-20">DC CheckList </a></div>
@@ -221,24 +322,20 @@ const TableComponent = ({
                                                         <th> Discipline:</th>
                                                         <th> Type:</th>
                                                         <th> Sub Type:</th>
-                                                        <th> Existing HO Documents:</th>
-                                                        <th> Total:</th>
-                                                        <th> Approved:</th>
-                                                        <th> Returned / Revised:</th>
-                                                        <th> Under review :</th>
-                                                        <th> Actions:</th>
-                                                        <th> Bulk Status :</th>
+                                                        <th style={{ textAlign: "center" }}> Existing HO Documents:</th>
+                                                        <th style={{ textAlign: "center" }}> Uploaded Documents</th>
+                                                        <th style={{ textAlign: "center" }}> Actions</th>
+                                                        <th style={{ textAlign: "center" }}>Bulk Status</th>
                                                     </tr>
-                                                    <tr>
-                                                        <td>Report and Forms </td>
-                                                        <td>Ashghal O&M Approvals </td>
-                                                        <td><button type="button" className="btn btn-dribbble">0</button></td>
-                                                        <td><button type="button" className="btn btn-dribbble">0</button> </td>
-                                                        <td><button type="button" className="btn btn-dribbble">0</button> </td>
-                                                        <td><button type="button" className="btn btn-dribbble">0</button> </td>
-                                                        <td> <button type="button" className="btn btn-dribbble">0</button></td>
-                                                        <td> <button type="button" className="btn btn-dribbble">0</button></td>
-                                                        <td> <button type="button" className="btn btn-dribbble">0</button></td>
+                                                                                          
+                                                {metadataSubmit.map((s,index) => (
+                                                    <tr key={index}>
+                                                      <td>{s['Level 1']} </td>
+                                                      <td>{s['Level 2']} </td>
+                                                      <td>{s['Level 3']}</td>
+                                                      <td style={{ textAlign: "center" }}><span className='tablecountspan'>{s['Existing Handover Documents']}</span></td>
+                                                      <td style={{ textAlign: "center" }}><span className='tablecountspan'>0</span></td>
+                                                                                                  
                                                         <td>
                                                             <div>
                                                                 <div className="btn-group">
@@ -254,8 +351,10 @@ const TableComponent = ({
                                                                 </div>
                                                             </div>
                                                         </td>
-                                                        </tr>
-     </thead>
+                                                    </tr>
+                                                ))}
+                                                                                            
+                                              </thead>
                                             </table>
                                         </div>
                                     </div>
@@ -263,7 +362,28 @@ const TableComponent = ({
  </div>)} 
    {currentPopup === 1 && (
     <div style={{ padding: "15px" }}>
+        <div className="header" style={{paddingBottom :"10px", paddingTop :"0" }}>
+          <div>
+              <div className="btn-group">
+                <i className="pe-7s-plus f35" data-toggle="dropdown"></i>
+                  <div className="dropdown-menu dropdown-menu-size">
+                        <button className="dropdown-item" type="button">Submit Handover Deliverables</button>
+                        <button className="dropdown-item" type="button">Submit DC Deliverables (Partial)</button>
+                        <button class="dropdown-item" type="button">Submit DC Deliverables (Full)</button>
+                  </div>
+              </div>
+            </div>
+            {/* <SearchBar { ...data.searchProps } /> */}
+        </div>
+        
       {data?.length ? (
+        // <ToolkitProvider
+        // keyField="id"
+        // data={data}
+        // columns={ columns }
+        // search
+        //   >
+ 
         <BootstrapTable
           keyField="id"
           data={data}
@@ -271,36 +391,31 @@ const TableComponent = ({
             ...columns,
             {
               text: 'Actions',
-            formatter: renderDropdownActions
-
-            // formatter: (cell, row) => {
-            //     return (
-            //       <div>
-                    
-            //         {row.ChecklistDC}
-            //       </div>
-            //     );
-            //   },
-
-
+          
+            formatter: (cell, row) => renderDropdownActions(cell, row)
             }
           ]}
+          //defaultSortDirection="asc"
           remote={true}
           onTableChange={handleTableChange}
+          // defaultSorted={ defaultSorted }
           pagination={paginationFactory({
             page: currentPage,
             sizePerPage: itemsPerPage,
-            hideSizePerPage: true,
+            // hideSizePerPage: true,
             totalSize: totalRecords,
             onPageChange: (page) => setCurrentPage(page),
+            
           })}
-          // expandRow={ expandRow }
-        />
+          />
+          // </ToolkitProvider>
       ) : null}
+      
     </div>)
 }
     </>
   );
 };
+
 
 export default TableComponent;

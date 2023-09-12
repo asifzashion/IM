@@ -41,8 +41,8 @@ class ProjectUtils {
     static getOTDSTicket() {
         return `${window.CORS_URL}${process.env.BASE_LOCATION}${APIConstant.GET_OTDSTICKET}`;
     }
-    static getSubmittoMedatdataURL() {
-        return `${window.CORS_URL}${process.env.BASE_LOCATION}${APIConstant.SUBMIT_TO_METADATA}&userID=117630702&project=C2019-137&section=Section%203&VolumeID=120688278&ContractualDocuments=true&Drainage=true&GIS=true&ReportandForms=true&Roads=true&Survey=true`;
+    static getSubmittoMedatdataURL(userID, Project, Section, VolumeID) {
+        return `${window.CORS_URL}${process.env.BASE_LOCATION}${APIConstant.SUBMIT_TO_METADATA}&userID=${userID}&project=${Project}&section=${Section}&VolumeID=${VolumeID}&ContractualDocuments=true&Drainage=true&GIS=true&ReportandForms=true&Roads=true&Survey=true`;
     }
 }
 

@@ -29,7 +29,7 @@ const Mynext = ({MetadataClose}) => {
                                             </span>
                                     </div>
                                 </div>
-                <div className="row">
+                <div className="row readyonlyheader">
                                     <div className="form-group col-md-3">
                                         <label className="pr-20">Subject</label>
                                         <span>Detailed Design Test 2 </span>

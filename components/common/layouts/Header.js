@@ -1,18 +1,38 @@
 import Head from 'next/head';
-import React, { useState } from "react";
+import React, { useState, useEffect} from "react";
 
 const Header = () => {
-    
+
+  const [addClassToBody, setAddClassToBody] = useState(false);
+
+  const handleLanguageClick = () => {
+    setAddClassToBody((prev) => !prev); // Toggle the state
+  };
+
+  useEffect(() => {
+    if (addClassToBody) {
+      document.body.classList.add('ar');
+    } else {
+      document.body.classList.remove('ar');
+    }
+  }, [addClassToBody]);
+
+
+  const handleLogout = () => {
+    // Remove the user token from local storage
+    localStorage.removeItem('token');
+    window.location.href = '/'; // This will reload the page
+  };
     return (
         <nav className="navbar navbar-default">
         <div className="container-fluid">
           <div className="navbar-minimize">
             <button
               id="minimizeSidebar"
-              className="btn btn-warning btn-fill btn-round btn-icon"
+              className="btn btn-warning btn-fill btn-round btn-icon "
             >
-              <i className="pe-7s-angle-left visible-on-sidebar-regular"></i>
-              <i className="pe-7s-angle-right visible-on-sidebar-mini"></i>
+              <i className="pe-7s-menu visible-on-sidebar-regular"></i>
+              <i className="pe-7s-menu visible-on-sidebar-mini"></i>
             </button>
           </div>
           <div className="navbar-header">
@@ -26,18 +46,15 @@ const Header = () => {
               <span className="icon-bar"></span>
               <span className="icon-bar"></span>
             </button>
-            <a className="navbar-brand" href="#">
+            {/* <a className="navbar-brand" href="#">
               PDLM
-            </a>
+            </a> */}
           </div>
           <div className="collapse navbar-collapse">
             <ul className="nav navbar-nav navbar-right">
               <li>
-                <a href="#">
-                  <i className="pe-7s-graph3"></i>
-                  <p>Stats</p>
-                </a>
-              </li>
+                <a href="#" onClick={handleLanguageClick} className='language'>{addClassToBody ? "E" : "ع"}</a>
+              </li> 
               
               <li className="dropdown">
                 <a href="#" className="dropdown-toggle" data-toggle="dropdown"
@@ -68,45 +85,30 @@ const Header = () => {
                 </ul>
               </li>
               <li className="dropdown dropdown-with-icons">
-                <a
-                  href="#"
-                  className="dropdown-toggle"
-                  data-toggle="dropdown"
-                >
-                  <i className="pe-7s-power"></i>
-                  <p className="hidden-md hidden-lg">
-                    More
-                    <b className="caret"></b>
-                  </p>
+                <a href="#" className="dropdown-toggle" data-toggle="dropdown" >
+                <img src="../img/default-avatar.jpeg" className='imgprofile' />
+                  <p className="hidden-md hidden-lg">  More <b className="caret"></b> </p>
                 </a>
                 <ul className="dropdown-menu dropdown-with-icons">
+                 
+                 
                   <li>
                     <a href="#">
-                      <i className="pe-7s-mail"></i> Messages
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#">
-                      <i className="pe-7s-help1"></i> Help Center
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#">
-                      <i className="pe-7s-tools"></i> Settings
+                      <i className="pe-7s-tools"></i> Theme Setting
                     </a>
                   </li>
                   <li className="divider"></li>
                   <li>
                     <a href="#">
-                      <i className="pe-7s-lock"></i> Lock Screen
+                      <i className="pe-7s-user"></i> Edit Profile
                     </a>
-                  </li>
+                  </li> <li className="divider"></li>
                   <li>
-                    <a href="#" className="text-danger">
+                    <a href="#" className="text-danger" onClick={handleLogout} >
                       <i className="pe-7s-close-circle"></i> Log out
                     </a>
                   </li>
-                </ul>
+    </ul>
               </li>
             </ul>
           </div>

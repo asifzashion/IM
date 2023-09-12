@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import MyAssignment from "./layouts/MyAssignment";
 
 const ProjectNav = ({ projects, handleProjectMenuClick, handleAssignmentClick }) => {
+
+  const [showAllItems, setShowAllItems] = useState(false);
   const [expandedId, setExpandedId] = useState([]);
   const projectMenus = ["Submittals", "Checklist Form", "Documents"];
 
@@ -12,19 +14,17 @@ const ProjectNav = ({ projects, handleProjectMenuClick, handleAssignmentClick })
       setExpandedId(id);
     }
   };
-
+  
+  const handleReadMoreClick = () => {
+    setShowAllItems(true);
+  };
+  
+  const visibleItems = showAllItems ? projects : projects.slice(0, 5);
   return (
+    <>
     <ul className="nav">
-       <li key={"MyAssignments"}>
-            <a onClick={handleAssignmentClick}>
-              <i className="pe-7s-note2
-"></i>
-              <p>
-               My Assignments
-                            </p>
-            </a>
-          </li>
-      {projects.map((project) => {
+       
+      {visibleItems.map((project, index) => {
         return (
           <li key={project.ProjectDataID}>
             <a onClick={() => handleExpanded(project.ProjectDataID)}>
@@ -42,15 +42,16 @@ const ProjectNav = ({ projects, handleProjectMenuClick, handleAssignmentClick })
               id={project.Project}
             >
               {projectMenus && projectMenus.length > 0 && (
-                <ul className="nav" style={{ marginLeft: 60 }}>
+                <ul className="nav submittal" style={{ marginLeft: 0, }}>
                   {projectMenus.map((subProject) => (
                     <li key={subProject}>
-                       <i className="pe-7s-angle-right"></i>
-                      <a
+                       {/* <i className="pe-7s-notebook"></i> */}
+                      <a 
                         onClick={() =>
                           handleProjectMenuClick(project, subProject)
                         }
                       >
+                        <span className="sidebar-mini">{subProject[0]}</span>
                         <span className="sidebar-normal">{subProject}</span>
                       </a>
                     </li>
@@ -62,6 +63,14 @@ const ProjectNav = ({ projects, handleProjectMenuClick, handleAssignmentClick })
         );
       })}
     </ul>
+
+      <ul className="showmore">
+      <li>{!showAllItems && (
+        <a onClick={handleReadMoreClick}>Show more...</a>
+      )}
+      </li>
+      </ul>
+    </>
   );
 };
 

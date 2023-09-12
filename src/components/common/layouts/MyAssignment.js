@@ -64,7 +64,7 @@ const MyAssignment = ({ setLoading }) => {
   const loadAssignmentData = async () => {
     const token = window.sessionStorage.getItem('token')
     const payload = searchText
-      ? type + `&columns[0][search][value]=${searchText}`
+      ? type + `&columns[0]&columns[1][search][value]=${searchText}`
       : type;
     if (token) {
       setLoading(true);
@@ -113,6 +113,7 @@ const MyAssignment = ({ setLoading }) => {
     {
       dataField: "asigdate",
       text: "Received Date",
+      
       cell: (row) => {
         return <div dangerouslySetInnerHTML={{ __html: row.asigdate }} />;
       },
@@ -142,12 +143,10 @@ const MyAssignment = ({ setLoading }) => {
       />
     </>
   ) : (
-    <div style={{ paddingTop: "10px" }}>
+    <div style={{ padding: "15px" }}>
       
       {/* <h3>My Assignments</h3> */}
-      <div style={{ display: "flex", margin: "0px 10px 10px 10px" }}>
-
-
+      <div className="myassign_header" style={{ display: "flex", margin: "0px 10px 10px 10px" }}>
         <button
           style={{ marginRight: 10 }}
           className={showBtnStatus("&new=true")}
@@ -173,7 +172,7 @@ const MyAssignment = ({ setLoading }) => {
           onChange={(e) => setSearchText(e.target.value)}
           value={searchText}
           placeholder="Search..."
-          className="form-control"
+          className="form-control searchproject"
           style={{ maxWidth: 400 }}
         />
       </div>

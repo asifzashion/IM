@@ -9,8 +9,8 @@ export default class BTQDocument extends Document {
             <Html>
                 <Head>
                 </Head>
-                <body className={`lang-wrapper`}>
-                <div>
+                <body className={`sidebar-mini`}>
+                <div className={`lang-wrapper`}>
                     <Main/>
                     <NextScript/>
                 </div>

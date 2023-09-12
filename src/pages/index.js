@@ -8,6 +8,12 @@ import {validEmailRegex} from "../helper";
 import {AppContext} from "../contexts/AppContextProvider";
 import Router from "next/router";
 
+const isAuthenticated = () => {
+    // Check if the user is authenticated (e.g., by verifying an authentication token)
+    const token = localStorage.getItem('token'); // Check your storage method
+    return !!token; // Return true if authenticated, false otherwise
+  };
+
 export default function Home() {
     const [formData, setFormData] = useState({})
     const [isForgot, setForgot] = useState(0)
@@ -16,7 +22,7 @@ export default function Home() {
     const [uservalidate, setuservalidate] = useState({})
     useEffect(() => {
         // redirect to home if already logged in
-        if (window && window.sessionStorage && window.sessionStorage.getItem('token')) {
+        if (isAuthenticated()) {
             Router.push('/dashboard');
         }else{
             Router.push('/');
