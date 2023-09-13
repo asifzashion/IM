@@ -1,8 +1,8 @@
-type = ['','info','success','warning','danger'];
+type = ['', 'info', 'success', 'warning', 'danger'];
 
-$().ready(function(){
+$().ready(function() {
     $sidebar = $('.sidebar');
-    $sidebar_img_container = $sidebar.find('.sidebar-background');
+
 
     $full_page = $('.full-page');
 
@@ -10,26 +10,25 @@ $().ready(function(){
 
     window_width = $(window).width();
 
-    if(window_width > 767){
-        if($('.fixed-plugin .dropdown').hasClass('show-dropdown')){
+    if (window_width > 767) {
+        if ($('.fixed-plugin .dropdown').hasClass('show-dropdown')) {
             $('.fixed-plugin .dropdown').addClass('open');
         }
 
     }
 
-    $('.fixed-plugin a').click(function(event){
-      // Alex if we click on switch, stop propagation of the event, so the dropdown will not be hide, otherwise we set the  section active
-        if($(this).hasClass('switch-trigger')){
-            if(event.stopPropagation){
+    $('.fixed-plugin a').click(function(event) {
+        // Alex if we click on switch, stop propagation of the event, so the dropdown will not be hide, otherwise we set the  section active
+        if ($(this).hasClass('switch-trigger')) {
+            if (event.stopPropagation) {
                 event.stopPropagation();
-            }
-            else if(window.event){
-               window.event.cancelBubble = true;
+            } else if (window.event) {
+                window.event.cancelBubble = true;
             }
         }
     });
 
-    $('.fixed-plugin .badge').click(function(){
+    $('.fixed-plugin .badge').click(function() {
         $full_page_background = $('.full-page-background');
 
         $(this).siblings().removeClass('active');
@@ -37,20 +36,20 @@ $().ready(function(){
 
         var new_color = $(this).data('color');
 
-        if($sidebar.length != 0){
-            $sidebar.attr('data-color',new_color);
+        if ($sidebar.length != 0) {
+            $sidebar.attr('data-color', new_color);
         }
 
-        if($full_page.length != 0){
-            $full_page.attr('data-color',new_color);
+        if ($full_page.length != 0) {
+            $full_page.attr('data-color', new_color);
         }
 
-        if($sidebar_responsive.length != 0){
-            $sidebar_responsive.attr('data-color',new_color);
+        if ($sidebar_responsive.length != 0) {
+            $sidebar_responsive.attr('data-color', new_color);
         }
     });
 
-    $('.fixed-plugin .img-holder').click(function(){
+    $('.fixed-plugin .img-holder').click(function() {
         $full_page_background = $('.full-page-background');
 
         $(this).parent('li').siblings().removeClass('active');
@@ -59,51 +58,51 @@ $().ready(function(){
 
         var new_image = $(this).find("img").attr('src');
 
-        if($sidebar_img_container.length !=0 ){
-            $sidebar_img_container.fadeOut('fast', function(){
-               $sidebar_img_container.css('background-image','url("' + new_image + '")');
-               $sidebar_img_container.fadeIn('fast');
+        if ($sidebar_img_container.length != 0) {
+            $sidebar_img_container.fadeOut('fast', function() {
+                $sidebar_img_container.css('background-image', 'url("' + new_image + '")');
+                $sidebar_img_container.fadeIn('fast');
             });
         }
 
-        if($full_page_background.length != 0){
+        if ($full_page_background.length != 0) {
 
-            $full_page_background.fadeOut('fast', function(){
-               $full_page_background.css('background-image','url("' + new_image + '")');
-               $full_page_background.fadeIn('fast');
+            $full_page_background.fadeOut('fast', function() {
+                $full_page_background.css('background-image', 'url("' + new_image + '")');
+                $full_page_background.fadeIn('fast');
             });
         }
 
-        if($sidebar_responsive.length != 0){
-            $sidebar_responsive.css('background-image','url("' + new_image + '")');
+        if ($sidebar_responsive.length != 0) {
+            $sidebar_responsive.css('background-image', 'url("' + new_image + '")');
         }
     });
 
-    $('.switch-sidebar-image').on('switchChange.bootstrapSwitch', function(){
+    $('.switch-sidebar-image').on('switchChange.bootstrapSwitch', function() {
         $full_page_background = $('.full-page-background');
 
         $input = $(this);
 
-        if($input.is(':checked')){
-            if($sidebar_img_container.length != 0){
+        if ($input.is(':checked')) {
+            if ($sidebar_img_container.length != 0) {
                 $sidebar_img_container.fadeIn('fast');
-                $sidebar.attr('data-image','#');
+                $sidebar.attr('data-image', '#');
             }
 
-            if($full_page_background.length != 0){
+            if ($full_page_background.length != 0) {
                 $full_page_background.fadeIn('fast');
-                $full_page.attr('data-image','#');
+                $full_page.attr('data-image', '#');
             }
 
             background_image = true;
         } else {
-            if($sidebar_img_container.length != 0){
+            if ($sidebar_img_container.length != 0) {
                 $sidebar.removeAttr('data-image');
                 $sidebar_img_container.fadeOut('fast');
             }
 
-            if($full_page_background.length != 0){
-                $full_page.removeAttr('data-image','#');
+            if ($full_page_background.length != 0) {
+                $full_page.removeAttr('data-image', '#');
                 $full_page_background.fadeOut('fast');
             }
 
@@ -111,53 +110,53 @@ $().ready(function(){
         }
     });
 
-    $('.switch-sidebar-mini').on('switchChange.bootstrapSwitch', function(){
+    $('.switch-sidebar-mini').on('switchChange.bootstrapSwitch', function() {
         $body = $('body');
 
         $input = $(this);
 
-        if(lbd.misc.sidebar_mini_active == true){
+        if (lbd.misc.sidebar_mini_active == true) {
             $('body').removeClass('sidebar-mini');
             lbd.misc.sidebar_mini_active = false;
 
-            if(isWindows){
+            if (isWindows) {
                 $('.sidebar .sidebar-wrapper').perfectScrollbar();
             }
 
-        }else{
+        } else {
 
-            $('.sidebar .collapse').collapse('hide').on('hidden.bs.collapse',function(){
-                $(this).css('height','auto');
+            $('.sidebar .collapse').collapse('hide').on('hidden.bs.collapse', function() {
+                $(this).css('height', 'auto');
             });
 
-            if(isWindows){
+            if (isWindows) {
                 $('.sidebar .sidebar-wrapper').perfectScrollbar('destroy');
             }
 
-            setTimeout(function(){
+            setTimeout(function() {
                 $('body').addClass('sidebar-mini');
 
-                $('.sidebar .collapse').css('height','auto');
+                $('.sidebar .collapse').css('height', 'auto');
                 lbd.misc.sidebar_mini_active = true;
-            },300);
+            }, 300);
         }
 
         // we simulate the window Resize so the charts will get updated in realtime.
-        var simulateWindowResize = setInterval(function(){
+        var simulateWindowResize = setInterval(function() {
             window.dispatchEvent(new Event('resize'));
-        },180);
+        }, 180);
 
         // we stop the simulation of Window Resize after the animations are completed
-        setTimeout(function(){
+        setTimeout(function() {
             clearInterval(simulateWindowResize);
-        },1000);
+        }, 1000);
 
     });
 
-    $('.switch-navbar-fixed').on('switchChange.bootstrapSwitch',function(){
+    $('.switch-navbar-fixed').on('switchChange.bootstrapSwitch', function() {
         $nav = $('nav.navbar').first();
 
-        if($nav.hasClass('navbar-fixed')){
+        if ($nav.hasClass('navbar-fixed')) {
             $nav.removeClass('navbar-fixed').prependTo('.main-panel');
         } else {
             $nav.prependTo('.wrapper').insertAfter('.sidebar').addClass('navbar-fixed');
@@ -206,83 +205,83 @@ $().ready(function(){
 });
 
 demo = {
-    initPickColor: function(){
-        $('.pick-class-label').click(function(){
+    initPickColor: function() {
+        $('.pick-class-label').click(function() {
             var new_class = $(this).attr('new-class');
             var old_class = $('#display-buttons').attr('data-class');
             var display_div = $('#display-buttons');
-            if(display_div.length) {
-            var display_buttons = display_div.find('.btn');
-            display_buttons.removeClass(old_class);
-            display_buttons.addClass(new_class);
-            display_div.attr('data-class', new_class);
+            if (display_div.length) {
+                var display_buttons = display_div.find('.btn');
+                display_buttons.removeClass(old_class);
+                display_buttons.addClass(new_class);
+                display_div.attr('data-class', new_class);
             }
         });
     },
 
     checkScrollForTransparentNavbar: debounce(function() {
-            $navbar = $('.navbar[color-on-scroll]');
-            scroll_distance = $navbar.attr('color-on-scroll') || 500;
+        $navbar = $('.navbar[color-on-scroll]');
+        scroll_distance = $navbar.attr('color-on-scroll') || 500;
 
-            if($(document).scrollTop() > scroll_distance ) {
-                if(transparent) {
-                    transparent = false;
-                    $('.navbar[color-on-scroll]').removeClass('navbar-transparent');
-                    $('.navbar[color-on-scroll]').addClass('navbar-default');
-                }
-            } else {
-                if( !transparent ) {
-                    transparent = true;
-                    $('.navbar[color-on-scroll]').addClass('navbar-transparent');
-                    $('.navbar[color-on-scroll]').removeClass('navbar-default');
-                }
+        if ($(document).scrollTop() > scroll_distance) {
+            if (transparent) {
+                transparent = false;
+                $('.navbar[color-on-scroll]').removeClass('navbar-transparent');
+                $('.navbar[color-on-scroll]').addClass('navbar-default');
             }
+        } else {
+            if (!transparent) {
+                transparent = true;
+                $('.navbar[color-on-scroll]').addClass('navbar-transparent');
+                $('.navbar[color-on-scroll]').removeClass('navbar-default');
+            }
+        }
     }, 17),
 
-    initFullScreenGoogleMap: function(){
+    initFullScreenGoogleMap: function() {
         var myLatlng = new google.maps.LatLng(40.748817, -73.985428);
         var mapOptions = {
-          zoom: 13,
-          center: myLatlng,
-          scrollwheel: false, //we disable de scroll over the map, it is a really annoing when you scroll through page
-          styles: [{"featureType":"water","stylers":[{"saturation":43},{"lightness":-11},{"hue":"#0088ff"}]},{"featureType":"road","elementType":"geometry.fill","stylers":[{"hue":"#ff0000"},{"saturation":-100},{"lightness":99}]},{"featureType":"road","elementType":"geometry.stroke","stylers":[{"color":"#808080"},{"lightness":54}]},{"featureType":"landscape.man_made","elementType":"geometry.fill","stylers":[{"color":"#ece2d9"}]},{"featureType":"poi.park","elementType":"geometry.fill","stylers":[{"color":"#ccdca1"}]},{"featureType":"road","elementType":"labels.text.fill","stylers":[{"color":"#767676"}]},{"featureType":"road","elementType":"labels.text.stroke","stylers":[{"color":"#ffffff"}]},{"featureType":"poi","stylers":[{"visibility":"off"}]},{"featureType":"landscape.natural","elementType":"geometry.fill","stylers":[{"visibility":"on"},{"color":"#b8cb93"}]},{"featureType":"poi.park","stylers":[{"visibility":"on"}]},{"featureType":"poi.sports_complex","stylers":[{"visibility":"on"}]},{"featureType":"poi.medical","stylers":[{"visibility":"on"}]},{"featureType":"poi.business","stylers":[{"visibility":"simplified"}]}]
+            zoom: 13,
+            center: myLatlng,
+            scrollwheel: false, //we disable de scroll over the map, it is a really annoing when you scroll through page
+            styles: [{ "featureType": "water", "stylers": [{ "saturation": 43 }, { "lightness": -11 }, { "hue": "#0088ff" }] }, { "featureType": "road", "elementType": "geometry.fill", "stylers": [{ "hue": "#ff0000" }, { "saturation": -100 }, { "lightness": 99 }] }, { "featureType": "road", "elementType": "geometry.stroke", "stylers": [{ "color": "#808080" }, { "lightness": 54 }] }, { "featureType": "landscape.man_made", "elementType": "geometry.fill", "stylers": [{ "color": "#ece2d9" }] }, { "featureType": "poi.park", "elementType": "geometry.fill", "stylers": [{ "color": "#ccdca1" }] }, { "featureType": "road", "elementType": "labels.text.fill", "stylers": [{ "color": "#767676" }] }, { "featureType": "road", "elementType": "labels.text.stroke", "stylers": [{ "color": "#ffffff" }] }, { "featureType": "poi", "stylers": [{ "visibility": "off" }] }, { "featureType": "landscape.natural", "elementType": "geometry.fill", "stylers": [{ "visibility": "on" }, { "color": "#b8cb93" }] }, { "featureType": "poi.park", "stylers": [{ "visibility": "on" }] }, { "featureType": "poi.sports_complex", "stylers": [{ "visibility": "on" }] }, { "featureType": "poi.medical", "stylers": [{ "visibility": "on" }] }, { "featureType": "poi.business", "stylers": [{ "visibility": "simplified" }] }]
 
         }
         var map = new google.maps.Map(document.getElementById("map"), mapOptions);
 
         var marker = new google.maps.Marker({
             position: myLatlng,
-            title:"Hello World!"
+            title: "Hello World!"
         });
 
         // To add the marker to the map, call setMap();
         marker.setMap(map);
     },
 
-    initCharts: function(){
+    initCharts: function() {
 
         /*  **************** 24 Hours Performance - single line ******************** */
 
         var dataPerformance = {
-          labels: ['6pm','9pm','11pm', '2am', '4am', '8am', '2pm', '5pm', '8pm', '11pm', '4am'],
-          series: [
-            [1, 6, 8, 7, 4, 7, 8, 12, 16, 17, 14, 13]
-          ]
+            labels: ['6pm', '9pm', '11pm', '2am', '4am', '8am', '2pm', '5pm', '8pm', '11pm', '4am'],
+            series: [
+                [1, 6, 8, 7, 4, 7, 8, 12, 16, 17, 14, 13]
+            ]
         };
 
         var optionsPerformance = {
-          showPoint: false,
-          lineSmooth: true,
-          height: "260px",
-          axisX: {
-            showGrid: false,
-            showLabel: true
-          },
-          axisY: {
-            offset: 40,
-          },
-          low: 0,
-          high: 16
+            showPoint: false,
+            lineSmooth: true,
+            height: "260px",
+            axisX: {
+                showGrid: false,
+                showLabel: true
+            },
+            axisY: {
+                offset: 40,
+            },
+            low: 0,
+            high: 16
         };
 
         Chartist.Line('#chartPerformance', dataPerformance, optionsPerformance);
@@ -292,28 +291,28 @@ demo = {
         /*  **************** NASDAQ: AAPL - single line with points ******************** */
 
         var dataStock = {
-          labels: ['\'07','\'08','\'09', '\'10', '\'11', '\'12', '\'13', '\'14', '\'15'],
-          series: [
-            [22.20, 34.90, 42.28, 51.93, 62.21, 80.23, 62.21, 82.12, 102.50, 107.23]
-          ]
+            labels: ['\'07', '\'08', '\'09', '\'10', '\'11', '\'12', '\'13', '\'14', '\'15'],
+            series: [
+                [22.20, 34.90, 42.28, 51.93, 62.21, 80.23, 62.21, 82.12, 102.50, 107.23]
+            ]
         };
 
         var optionsStock = {
-          lineSmooth: false,
-          height: "260px",
-          axisY: {
-            offset: 40,
-            labelInterpolationFnc: function(value) {
-                return '$' + value;
-              }
+            lineSmooth: false,
+            height: "260px",
+            axisY: {
+                offset: 40,
+                labelInterpolationFnc: function(value) {
+                    return '$' + value;
+                }
 
-          },
-          low: 10,
-          high: 110,
+            },
+            low: 10,
+            high: 110,
             classNames: {
-              point: 'ct-point ct-green',
-              line: 'ct-line ct-green'
-          }
+                point: 'ct-point ct-green',
+                line: 'ct-line ct-green'
+            }
         };
 
         Chartist.Line('#chartStock', dataStock, optionsStock);
@@ -324,21 +323,21 @@ demo = {
 
 
         var dataSales = {
-          labels: ['\'06','\'07','\'08','\'09', '\'10', '\'11', '\'12', '\'13', '\'14','\'15'],
-          series: [
-            [287, 385, 490, 554, 586, 698, 695, 752, 788, 846, 944],
-            [67, 152, 143,  287, 335, 435, 437, 539, 542, 544, 647],
-            [23, 113, 67, 190, 239, 307, 308, 439, 410, 410, 509]
-          ]
+            labels: ['\'06', '\'07', '\'08', '\'09', '\'10', '\'11', '\'12', '\'13', '\'14', '\'15'],
+            series: [
+                [287, 385, 490, 554, 586, 698, 695, 752, 788, 846, 944],
+                [67, 152, 143, 287, 335, 435, 437, 539, 542, 544, 647],
+                [23, 113, 67, 190, 239, 307, 308, 439, 410, 410, 509]
+            ]
         };
 
         var optionsSales = {
-          lineSmooth: false,
-          axisY: {
-            offset: 40
-          },
-          low: 0,
-          high: 1000
+            lineSmooth: false,
+            axisY: {
+                offset: 40
+            },
+            low: 0,
+            high: 1000
         };
 
 
@@ -369,39 +368,39 @@ demo = {
         Chartist.Pie('#chartPreferences', dataPreferences, optionsPreferences);
 
         Chartist.Pie('#chartPreferences', {
-          labels: ['62%','32%','6%'],
-          series: [62, 32, 6]
+            labels: ['62%', '32%', '6%'],
+            series: [62, 32, 6]
         });
 
 
         /*  **************** Views  - barchart ******************** */
 
         var dataViews = {
-          labels: ['Jan', 'Feb', 'Mar', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-          series: [
-            [542, 443, 320, 780, 553, 453, 326, 434, 568, 610, 756, 895]
-          ]
+            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+            series: [
+                [542, 443, 320, 780, 553, 453, 326, 434, 568, 610, 756, 895]
+            ]
         };
 
         var optionsViews = {
-          seriesBarDistance: 10,
-          classNames: {
-            bar: 'ct-bar ct-azure'
-          },
-          axisX: {
-            showGrid: false
-          }
+            seriesBarDistance: 10,
+            classNames: {
+                bar: 'ct-bar ct-azure'
+            },
+            axisX: {
+                showGrid: false
+            }
         };
 
         var responsiveOptionsViews = [
-          ['screen and (max-width: 640px)', {
-            seriesBarDistance: 5,
-            axisX: {
-              labelInterpolationFnc: function (value) {
-                return value[0];
-              }
-            }
-          }]
+            ['screen and (max-width: 640px)', {
+                seriesBarDistance: 5,
+                axisX: {
+                    labelInterpolationFnc: function(value) {
+                        return value[0];
+                    }
+                }
+            }]
         ];
 
         Chartist.Bar('#chartViews', dataViews, optionsViews, responsiveOptionsViews);
@@ -409,11 +408,11 @@ demo = {
 
 
         var data = {
-          labels: ['Jan', 'Feb', 'Mar', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-          series: [
-            [542, 443, 320, 780, 553, 453, 326, 434, 568, 610, 756, 895],
-            [412, 243, 280, 580, 453, 353, 300, 364, 368, 410, 636, 695]
-          ]
+            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+            series: [
+                [542, 443, 320, 780, 553, 453, 326, 434, 568, 610, 756, 895],
+                [412, 243, 280, 580, 453, 353, 300, 364, 368, 410, 636, 695]
+            ]
         };
 
         var options = {
@@ -425,21 +424,21 @@ demo = {
         };
 
         var responsiveOptions = [
-          ['screen and (max-width: 640px)', {
-            seriesBarDistance: 5,
-            axisX: {
-              labelInterpolationFnc: function (value) {
-                return value[0];
-              }
-            }
-          }]
+            ['screen and (max-width: 640px)', {
+                seriesBarDistance: 5,
+                axisX: {
+                    labelInterpolationFnc: function(value) {
+                        return value[0];
+                    }
+                }
+            }]
         ];
 
         Chartist.Bar('#chartActivity', data, options, responsiveOptions);
 
     },
 
-    initDashboardPageCharts: function(){
+    initDashboardPageCharts: function() {
 
 
         /*   **************** Email Statistics - Pie Chart ********************    */
@@ -464,8 +463,8 @@ demo = {
         Chartist.Pie('#chartEmail', dataPreferences, optionsPreferences);
 
         Chartist.Pie('#chartEmail', {
-          labels: ['62%','32%','6%'],
-          series: [62, 32, 6]
+            labels: ['62%', '32%', '6%'],
+            series: [62, 32, 6]
         });
 
 
@@ -473,11 +472,11 @@ demo = {
         /*   **************** 2014 Sales - Bar Chart ********************    */
 
         var data = {
-          labels: ['Jan', 'Feb', 'Mar', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-          series: [
-            [542, 443, 320, 780, 553, 453, 326, 434, 568, 610, 756, 895],
-            [412, 243, 280, 580, 453, 353, 300, 364, 368, 410, 636, 695]
-          ]
+            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+            series: [
+                [542, 443, 320, 780, 553, 453, 326, 434, 568, 610, 756, 895],
+                [412, 243, 280, 580, 453, 353, 300, 364, 368, 410, 636, 695]
+            ]
         };
 
         var options = {
@@ -489,14 +488,14 @@ demo = {
         };
 
         var responsiveOptions = [
-          ['screen and (max-width: 640px)', {
-            seriesBarDistance: 5,
-            axisX: {
-              labelInterpolationFnc: function (value) {
-                return value[0];
-              }
-            }
-          }]
+            ['screen and (max-width: 640px)', {
+                seriesBarDistance: 5,
+                axisX: {
+                    labelInterpolationFnc: function(value) {
+                        return value[0];
+                    }
+                }
+            }]
         ];
 
         Chartist.Bar('#chartActivity', data, options, responsiveOptions);
@@ -506,41 +505,41 @@ demo = {
         /*   **************** Users Behaviour - Line Chart ********************    */
 
         var dataSales = {
-          labels: ['9:00AM', '12:00AM', '3:00PM', '6:00PM', '9:00PM', '12:00PM', '3:00AM', '6:00AM'],
-          series: [
-             [287, 385, 490, 492, 554, 586, 698, 695, 752, 788, 846, 944],
-            [67, 152, 143, 240, 287, 335, 435, 437, 539, 542, 544, 647],
-            [23, 113, 67, 108, 190, 239, 307, 308, 439, 410, 410, 509]
-          ]
+            labels: ['9:00AM', '12:00AM', '3:00PM', '6:00PM', '9:00PM', '12:00PM', '3:00AM', '6:00AM'],
+            series: [
+                [287, 385, 490, 492, 554, 586, 698, 695, 752, 788, 846, 944],
+                [67, 152, 143, 240, 287, 335, 435, 437, 539, 542, 544, 647],
+                [23, 113, 67, 108, 190, 239, 307, 308, 439, 410, 410, 509]
+            ]
         };
 
         var optionsSales = {
-          lineSmooth: false,
-          low: 0,
-          high: 800,
-          height: "245px",
-          axisX: {
-            showGrid: false,
-          },
+            lineSmooth: false,
+            low: 0,
+            high: 800,
+            height: "245px",
+            axisX: {
+                showGrid: false,
+            },
 
 
         };
 
         var responsiveSales = [
-          ['screen and (max-width: 640px)', {
-            axisX: {
-              labelInterpolationFnc: function (value) {
-                return value[0];
-              }
-            }
-          }]
+            ['screen and (max-width: 640px)', {
+                axisX: {
+                    labelInterpolationFnc: function(value) {
+                        return value[0];
+                    }
+                }
+            }]
         ];
 
         Chartist.Line('#chartHours', dataSales, optionsSales, responsiveSales);
 
     },
 
-    initSmallGoogleMaps: function(){
+    initSmallGoogleMaps: function() {
 
         // Regular Map
         var myLatlng = new google.maps.LatLng(40.748817, -73.985428);
@@ -554,7 +553,7 @@ demo = {
 
         var marker = new google.maps.Marker({
             position: myLatlng,
-            title:"Regular Map!"
+            title: "Regular Map!"
         });
 
         marker.setMap(map);
@@ -568,7 +567,7 @@ demo = {
             scrollwheel: false, //we disable de scroll over the map, it is a really annoing when you scroll through page
             disableDefaultUI: true, // a way to quickly hide all controls
             zoomControl: true,
-            styles: [{"featureType":"water","stylers":[{"saturation":43},{"lightness":-11},{"hue":"#0088ff"}]},{"featureType":"road","elementType":"geometry.fill","stylers":[{"hue":"#ff0000"},{"saturation":-100},{"lightness":99}]},{"featureType":"road","elementType":"geometry.stroke","stylers":[{"color":"#808080"},{"lightness":54}]},{"featureType":"landscape.man_made","elementType":"geometry.fill","stylers":[{"color":"#ece2d9"}]},{"featureType":"poi.park","elementType":"geometry.fill","stylers":[{"color":"#ccdca1"}]},{"featureType":"road","elementType":"labels.text.fill","stylers":[{"color":"#767676"}]},{"featureType":"road","elementType":"labels.text.stroke","stylers":[{"color":"#ffffff"}]},{"featureType":"poi","stylers":[{"visibility":"off"}]},{"featureType":"landscape.natural","elementType":"geometry.fill","stylers":[{"visibility":"on"},{"color":"#b8cb93"}]},{"featureType":"poi.park","stylers":[{"visibility":"on"}]},{"featureType":"poi.sports_complex","stylers":[{"visibility":"on"}]},{"featureType":"poi.medical","stylers":[{"visibility":"on"}]},{"featureType":"poi.business","stylers":[{"visibility":"simplified"}]}]
+            styles: [{ "featureType": "water", "stylers": [{ "saturation": 43 }, { "lightness": -11 }, { "hue": "#0088ff" }] }, { "featureType": "road", "elementType": "geometry.fill", "stylers": [{ "hue": "#ff0000" }, { "saturation": -100 }, { "lightness": 99 }] }, { "featureType": "road", "elementType": "geometry.stroke", "stylers": [{ "color": "#808080" }, { "lightness": 54 }] }, { "featureType": "landscape.man_made", "elementType": "geometry.fill", "stylers": [{ "color": "#ece2d9" }] }, { "featureType": "poi.park", "elementType": "geometry.fill", "stylers": [{ "color": "#ccdca1" }] }, { "featureType": "road", "elementType": "labels.text.fill", "stylers": [{ "color": "#767676" }] }, { "featureType": "road", "elementType": "labels.text.stroke", "stylers": [{ "color": "#ffffff" }] }, { "featureType": "poi", "stylers": [{ "visibility": "off" }] }, { "featureType": "landscape.natural", "elementType": "geometry.fill", "stylers": [{ "visibility": "on" }, { "color": "#b8cb93" }] }, { "featureType": "poi.park", "stylers": [{ "visibility": "on" }] }, { "featureType": "poi.sports_complex", "stylers": [{ "visibility": "on" }] }, { "featureType": "poi.medical", "stylers": [{ "visibility": "on" }] }, { "featureType": "poi.business", "stylers": [{ "visibility": "simplified" }] }]
 
         }
 
@@ -576,7 +575,7 @@ demo = {
 
         var marker = new google.maps.Marker({
             position: myLatlng,
-            title:"Custom Skin & Settings Map!"
+            title: "Custom Skin & Settings Map!"
         });
 
         marker.setMap(map);
@@ -589,14 +588,14 @@ demo = {
             zoom: 3,
             scrollwheel: false, //we disable de scroll over the map, it is a really annoing when you scroll through page
             center: myLatlng,
-             mapTypeId: google.maps.MapTypeId.SATELLITE
+            mapTypeId: google.maps.MapTypeId.SATELLITE
         }
 
         var map = new google.maps.Map(document.getElementById("satelliteMap"), mapOptions);
 
         var marker = new google.maps.Marker({
             position: myLatlng,
-            title:"Satellite Map!"
+            title: "Satellite Map!"
         });
 
         marker.setMap(map);
@@ -604,14 +603,14 @@ demo = {
 
     },
 
-	showNotification: function(from, align){
-    	color = Math.floor((Math.random() * 4) + 1);
+    showNotification: function(from, align) {
+        color = Math.floor((Math.random() * 4) + 1);
 
-    	$.notify({
-        	icon: "pe-7s-gift",
-        	message: "<b>Light Bootstrap Dashboard PRO</b> - forget about boring dashboards."
+        $.notify({
+            icon: "pe-7s-gift",
+            message: "<b>Light Bootstrap Dashboard PRO</b> - forget about boring dashboards."
 
-        },{
+        }, {
             type: type[color],
             timer: 4000,
             placement: {
@@ -619,84 +618,84 @@ demo = {
                 align: align
             }
         });
-	},
+    },
 
-	initVectorMap: function(){
-         var mapData = {
-                "AU": 760,
-                "BR": 550,
-                "CA": 120,
-                "DE": 1300,
-                "FR": 540,
-                "GB": 690,
-                "GE": 200,
-                "IN": 200,
-                "RO": 600,
-                "RU": 300,
-                "US": 2920,
-            };
+    initVectorMap: function() {
+        var mapData = {
+            "AU": 760,
+            "BR": 550,
+            "CA": 120,
+            "DE": 1300,
+            "FR": 540,
+            "GB": 690,
+            "GE": 200,
+            "IN": 200,
+            "RO": 600,
+            "RU": 300,
+            "US": 2920,
+        };
 
-            $('#worldMap').vectorMap({
-                map: 'world_mill_en',
-                backgroundColor: "transparent",
-                zoomOnScroll: false,
-                regionStyle: {
-                    initial: {
-                        fill: '#e4e4e4',
-                        "fill-opacity": 0.9,
-                        stroke: 'none',
-                        "stroke-width": 0,
-                        "stroke-opacity": 0
-                    }
-                },
+        $('#worldMap').vectorMap({
+            map: 'world_mill_en',
+            backgroundColor: "transparent",
+            zoomOnScroll: false,
+            regionStyle: {
+                initial: {
+                    fill: '#e4e4e4',
+                    "fill-opacity": 0.9,
+                    stroke: 'none',
+                    "stroke-width": 0,
+                    "stroke-opacity": 0
+                }
+            },
 
-                series: {
-                    regions: [{
-                        values: mapData,
-                        scale: ["#AAAAAA","#444444"],
-                        normalizeFunction: 'polynomial'
-                    }]
-                },
-            });
-	},
+            series: {
+                regions: [{
+                    values: mapData,
+                    scale: ["#AAAAAA", "#444444"],
+                    normalizeFunction: 'polynomial'
+                }]
+            },
+        });
+    },
 
-	initAnimationsArea: function(){
-    	$('.animationsArea .btn').click(function(){
-        	animation_class = $(this).data('animation-class');
+    initAnimationsArea: function() {
+        $('.animationsArea .btn').click(function() {
+            animation_class = $(this).data('animation-class');
 
-        	$parent = $(this).closest('.animationsArea');
+            $parent = $(this).closest('.animationsArea');
 
-        	$parent.find('.btn').removeClass('btn-fill');
+            $parent.find('.btn').removeClass('btn-fill');
 
-        	$(this).addClass('btn-fill');
+            $(this).addClass('btn-fill');
 
-        	$parent.find('.animated')
-        	       .removeAttr('class')
-        	       .addClass('animated')
-        	       .addClass(animation_class);
+            $parent.find('.animated')
+                .removeAttr('class')
+                .addClass('animated')
+                .addClass(animation_class);
 
-        	$parent.siblings('.header').find('.title small').html('class: <code>animated ' + animation_class + '</code>');
-    	});
-	},
+            $parent.siblings('.header').find('.title small').html('class: <code>animated ' + animation_class + '</code>');
+        });
+    },
 
-	showSwal: function(type){
-        if(type == 'basic'){
-        	swal({
+    showSwal: function(type) {
+        if (type == 'basic') {
+            swal({
                 title: "Here's a message!",
                 buttonsStyling: false,
                 confirmButtonClass: "btn btn-success btn-fill"
             }).catch(swal.noop)
 
-    	}else if(type == 'title-and-text'){
-        	swal({
+        } else if (type == 'title-and-text') {
+            swal({
                 title: "Here's a message!",
                 text: "It's pretty, isn't it?",
                 buttonsStyling: false,
                 confirmButtonClass: "btn btn-info btn-fill"
             }).catch(swal.noop)
 
-    	}else if(type == 'success-message'){
-        	swal({
+        } else if (type == 'success-message') {
+            swal({
                 title: "Good job!",
                 text: "You clicked the button!",
                 buttonsStyling: false,
@@ -704,105 +703,105 @@ demo = {
                 type: "success"
             }).catch(swal.noop)
 
-    	}else if(type == 'warning-message-and-confirmation'){
+        } else if (type == 'warning-message-and-confirmation') {
             swal({
-                    title: 'Are you sure?',
-                    text: "You won't be able to revert this!",
-                    type: 'warning',
-                    showCancelButton: true,
-                    confirmButtonClass: 'btn btn-info btn-fill',
-                    cancelButtonClass: 'btn btn-danger btn-fill',
-                    confirmButtonText: 'Yes, delete it!',
-                    buttonsStyling: false
-                }).then(function() {
-                  swal({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonClass: 'btn btn-info btn-fill',
+                cancelButtonClass: 'btn btn-danger btn-fill',
+                confirmButtonText: 'Yes, delete it!',
+                buttonsStyling: false
+            }).then(function() {
+                swal({
                     title: 'Deleted!',
                     text: 'Your file has been deleted.',
                     type: 'success',
                     confirmButtonClass: "btn btn-info btn-fill",
                     buttonsStyling: false
-                    })
-                }).catch(swal.noop)
-    	}else if(type == 'warning-message-and-cancel'){
+                })
+            }).catch(swal.noop)
+        } else if (type == 'warning-message-and-cancel') {
             swal({
-                    title: 'Are you sure?',
-                    text: 'You will not be able to recover this imaginary file!',
-                    type: 'warning',
-                    showCancelButton: true,
-                    confirmButtonText: 'Yes, delete it!',
-                    cancelButtonText: 'No, keep it',
-                    confirmButtonClass: "btn btn-info btn-fill",
-                    cancelButtonClass: "btn btn-danger btn-fill",
-                    buttonsStyling: false
-                }).then(function() {
-                  swal({
+                title: 'Are you sure?',
+                text: 'You will not be able to recover this imaginary file!',
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, delete it!',
+                cancelButtonText: 'No, keep it',
+                confirmButtonClass: "btn btn-info btn-fill",
+                cancelButtonClass: "btn btn-danger btn-fill",
+                buttonsStyling: false
+            }).then(function() {
+                swal({
                     title: 'Deleted!',
                     text: 'Your imaginary file has been deleted.',
                     type: 'success',
                     confirmButtonClass: "btn btn-info btn-fill",
                     buttonsStyling: false
-                    }).catch(swal.noop)
-                }, function(dismiss) {
-                  // dismiss can be 'overlay', 'cancel', 'close', 'esc', 'timer'
-                  if (dismiss === 'cancel') {
+                }).catch(swal.noop)
+            }, function(dismiss) {
+                // dismiss can be 'overlay', 'cancel', 'close', 'esc', 'timer'
+                if (dismiss === 'cancel') {
                     swal({
-                      title: 'Cancelled',
-                      text: 'Your imaginary file is safe :)',
-                      type: 'error',
-                      confirmButtonClass: "btn btn-info btn-fill",
-                      buttonsStyling: false
+                        title: 'Cancelled',
+                        text: 'Your imaginary file is safe :)',
+                        type: 'error',
+                        confirmButtonClass: "btn btn-info btn-fill",
+                        buttonsStyling: false
                     }).catch(swal.noop)
-                  }
-                });
+                }
+            });
 
-    	}else if(type == 'custom-html'){
-        	swal({
+        } else if (type == 'custom-html') {
+            swal({
                 title: 'HTML example',
                 buttonsStyling: false,
                 confirmButtonClass: "btn btn-info btn-fill",
-                html:
-                        'You can use <b>bold text</b>, ' +
-                        '<a href="http://github.com">links</a> ' +
-                        'and other HTML tags'
-                }).catch(swal.noop)
+                html: 'You can use <b>bold text</b>, ' +
+                    '<a href="http://github.com">links</a> ' +
+                    'and other HTML tags'
+            }).catch(swal.noop)
 
-    	}else if(type == 'auto-close'){
-        	swal({ title: "Auto close alert!",
-            	   text: "I will close in 2 seconds.",
-            	   timer: 2000,
-            	   showConfirmButton: false
-                }).catch(swal.noop)
-    	} else if(type == 'input-field'){
+        } else if (type == 'auto-close') {
             swal({
-                    title: 'Input something',
-                    html: '<div class="form-group">' +
-                              '<input id="input-field" type="text" class="form-control" />' +
-                          '</div>',
-                    showCancelButton: true,
+                title: "Auto close alert!",
+                text: "I will close in 2 seconds.",
+                timer: 2000,
+                showConfirmButton: false
+            }).catch(swal.noop)
+        } else if (type == 'input-field') {
+            swal({
+                title: 'Input something',
+                html: '<div class="form-group">' +
+                    '<input id="input-field" type="text" class="form-control" />' +
+                    '</div>',
+                showCancelButton: true,
+                confirmButtonClass: 'btn btn-info btn-fill',
+                cancelButtonClass: 'btn btn-danger btn-fill',
+                buttonsStyling: false
+            }).then(function(result) {
+                swal({
+                    type: 'success',
+                    html: 'You entered: <strong>' +
+                        $('#input-field').val() +
+                        '</strong>',
                     confirmButtonClass: 'btn btn-info btn-fill',
-                    cancelButtonClass: 'btn btn-danger btn-fill',
                     buttonsStyling: false
-                }).then(function(result) {
-                    swal({
-                        type: 'success',
-                        html: 'You entered: <strong>' +
-                                $('#input-field').val() +
-                              '</strong>',
-                        confirmButtonClass: 'btn btn-info btn-fill',
-                        buttonsStyling: false
 
-                    })
-                }).catch(swal.noop)
-            }
-	},
+                })
+            }).catch(swal.noop)
+        }
+    },
 
-	initFormExtendedSliders: function(){
+    initFormExtendedSliders: function() {
         // Sliders for demo purpose in refine cards section
         var slider = document.getElementById('sliderRegular');
 
         noUiSlider.create(slider, {
             start: 40,
-            connect: [true,false],
+            connect: [true, false],
             range: {
                 min: 0,
                 max: 100
@@ -812,17 +811,17 @@ demo = {
         var slider2 = document.getElementById('sliderDouble');
 
         noUiSlider.create(slider2, {
-            start: [ 20, 60 ],
+            start: [20, 60],
             connect: true,
             range: {
-                min:  0,
-                max:  100
+                min: 0,
+                max: 100
             }
         });
 
     },
 
-    initFormExtendedDatetimepickers: function(){
+    initFormExtendedDatetimepickers: function() {
         $('.datetimepicker').datetimepicker({
             icons: {
                 time: "fa fa-clock-o",
@@ -835,9 +834,9 @@ demo = {
                 clear: 'fa fa-trash',
                 close: 'fa fa-remove'
             }
-         });
+        });
 
-         $('.datepicker').datetimepicker({
+        $('.datepicker').datetimepicker({
             format: 'MM/DD/YYYY',
             icons: {
                 time: "fa fa-clock-o",
@@ -850,11 +849,11 @@ demo = {
                 clear: 'fa fa-trash',
                 close: 'fa fa-remove'
             }
-         });
+        });
 
-         $('.timepicker').datetimepicker({
-//          format: 'H:mm',    // use this format if you want the 24hours timepicker
-            format: 'h:mm A',    //use this format if you want the 12hours timpiecker with AM/PM toggle
+        $('.timepicker').datetimepicker({
+            //          format: 'H:mm',    // use this format if you want the 24hours timepicker
+            format: 'h:mm A', //use this format if you want the 12hours timpiecker with AM/PM toggle
             icons: {
                 time: "fa fa-clock-o",
                 date: "fa fa-calendar",
@@ -866,10 +865,10 @@ demo = {
                 clear: 'fa fa-trash',
                 close: 'fa fa-remove'
             }
-         });
+        });
     },
 
-    initFullCalendar: function(){
+    initFullCalendar: function() {
         $calendar = $('#fullCalendar');
 
         today = new Date();
@@ -880,22 +879,22 @@ demo = {
         $calendar.fullCalendar({
             viewRender: function(view, element) {
                 // We make sure that we activate the perfect scrollbar when the view isn't on Month
-                if (view.name != 'month'){
+                if (view.name != 'month') {
                     $(element).find('.fc-scroller').perfectScrollbar();
                 }
             },
             header: {
-				left: 'title',
-				center: 'month,agendaWeek,agendaDay',
-				right: 'prev,next,today'
-			},
-			defaultDate: today,
-			selectable: true,
-			selectHelper: true,
+                left: 'title',
+                center: 'month,agendaWeek,agendaDay',
+                right: 'prev,next,today'
+            },
+            defaultDate: today,
+            selectable: true,
+            selectHelper: true,
             views: {
                 month: { // name of view
                     titleFormat: 'MMMM YYYY'
-                    // other view-specific options here
+                        // other view-specific options here
                 },
                 week: {
                     titleFormat: " MMMM D YYYY"
@@ -905,15 +904,15 @@ demo = {
                 }
             },
 
-			select: function(start, end) {
+            select: function(start, end) {
 
                 // on select we show the Sweet Alert modal with an input
-				swal({
-    				title: 'Create an Event',
-    				html: '<div class="form-group">' +
-                            '<input class="form-control" placeholder="Event Title" id="input-field">' +
+                swal({
+                    title: 'Create an Event',
+                    html: '<div class="form-group">' +
+                        '<input class="form-control" placeholder="Event Title" id="input-field">' +
                         '</div>',
-    				showCancelButton: true,
+                    showCancelButton: true,
                     confirmButtonClass: 'btn btn-info btn-fill',
                     cancelButtonClass: 'btn btn-danger btn-fill',
                     buttonsStyling: false
@@ -923,71 +922,70 @@ demo = {
                     event_title = $('#input-field').val();
 
                     if (event_title) {
-    					eventData = {
-    						title: event_title,
-    						start: start,
-    						end: end
-    					};
-    					$calendar.fullCalendar('renderEvent', eventData, true); // stick? = true
-    				}
+                        eventData = {
+                            title: event_title,
+                            start: start,
+                            end: end
+                        };
+                        $calendar.fullCalendar('renderEvent', eventData, true); // stick? = true
+                    }
 
-    				$calendar.fullCalendar('unselect');
+                    $calendar.fullCalendar('unselect');
 
                 });
-			},
-			editable: true,
-			eventLimit: true, // allow "more" link when too many events
+            },
+            editable: true,
+            eventLimit: true, // allow "more" link when too many events
 
 
             // color classes: [ event-blue | event-azure | event-green | event-orange | event-red ]
-            events: [
-				{
-					title: 'All Day Event',
-					start: new Date(y, m, 1),
+            events: [{
+                    title: 'All Day Event',
+                    start: new Date(y, m, 1),
                     className: 'event-default'
-				},
-				{
-					title: 'Meeting',
-					start: new Date(y, m, d-1, 10, 30),
-					allDay: false,
-					className: 'event-green'
-				},
-				{
-					title: 'Lunch',
-					start: new Date(y, m, d+7, 12, 0),
-					end: new Date(y, m, d+7, 14, 0),
-					allDay: false,
-					className: 'event-red'
-				},
-				{
-					title: 'Nud-pro Launch',
-					start: new Date(y, m, d-2, 12, 0),
-					allDay: true,
-					className: 'event-azure'
-				},
-				{
-					title: 'Birthday Party',
-					start: new Date(y, m, d+1, 19, 0),
-					end: new Date(y, m, d+1, 22, 30),
-					allDay: false,
+                },
+                {
+                    title: 'Meeting',
+                    start: new Date(y, m, d - 1, 10, 30),
+                    allDay: false,
+                    className: 'event-green'
+                },
+                {
+                    title: 'Lunch',
+                    start: new Date(y, m, d + 7, 12, 0),
+                    end: new Date(y, m, d + 7, 14, 0),
+                    allDay: false,
+                    className: 'event-red'
+                },
+                {
+                    title: 'Nud-pro Launch',
+                    start: new Date(y, m, d - 2, 12, 0),
+                    allDay: true,
                     className: 'event-azure'
-				},
-				{
-					title: 'Click for Creative Tim',
-					start: new Date(y, m, 21),
-					end: new Date(y, m, 22),
-					url: 'http://www.creative-tim.com/',
-					className: 'event-orange'
-				},
-				{
-					title: 'Click for Google',
-					start: new Date(y, m, 21),
-					end: new Date(y, m, 22),
-					url: 'http://www.creative-tim.com/',
-					className: 'event-orange'
-				}
-			]
-		});
+                },
+                {
+                    title: 'Birthday Party',
+                    start: new Date(y, m, d + 1, 19, 0),
+                    end: new Date(y, m, d + 1, 22, 30),
+                    allDay: false,
+                    className: 'event-azure'
+                },
+                {
+                    title: 'Click for Creative Tim',
+                    start: new Date(y, m, 21),
+                    end: new Date(y, m, 22),
+                    url: 'http://www.creative-tim.com/',
+                    className: 'event-orange'
+                },
+                {
+                    title: 'Click for Google',
+                    start: new Date(y, m, 21),
+                    end: new Date(y, m, 22),
+                    url: 'http://www.creative-tim.com/',
+                    className: 'event-orange'
+                }
+            ]
+        });
     }
 
 

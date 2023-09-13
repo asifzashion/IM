@@ -20,6 +20,9 @@ const Dashboard = () => {
   const [totalRecords, setTotalRecords] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const [toggle, setToggle] = useState(true);
+  const [isAtive, setinActive] = useState(null);
+  const [searchQuery, setSearchQuery] = useState('');
+
   const itemsPerPage = 10;
   const columns = React.useMemo(
     () => [
@@ -157,7 +160,18 @@ const Dashboard = () => {
     setShowAssignments('MyAssignment');
   }
 
+  const handleActive = (index) => {
+    setinActive(index);
+  }
 
+
+  const handleSearchChange = (e) => {
+    setSearchQuery(e.target.value);
+  };
+
+  const filteredList = projects.filter((item) =>
+    item.Project.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   // const handleSideBarClick = () => {
   //   document.body.classList.toggle("sidebar-mini");
@@ -175,17 +189,17 @@ const Dashboard = () => {
 
         <div class="input-icons">
                 <i class="pe-7s-search nav-search"></i>
-                <input class="input-field" type="text" placeholder="Password" />
+                <input class="input-field" type="text" name="listsearch" placeholder="search" onChange={handleSearchChange} />
             </div>
 
         </div>
           <ul className="nav">
-            <li className="active" key={"MyAssignments"}>
+            <li  onClick={() => handleActive(1)} className={ isAtive === 1 ? 'active' : ''} key={"MyAssignments"}>
             <a onClick={handleAssignmentClick}><i className="pe-7s-note2"></i>
               <p>My Assignments</p>
             </a>
           </li>
-            <li>
+            <li  onClick={() => handleActive(2)} className={ isAtive === 2 ? 'active' : ''}>
               {/* <a  onClick={handleProjectClick}> */}
               <a onClick={() => setExpandProjects(!expandProjects)}>
                 <i className="pe-7s-news-paper"></i>
@@ -194,7 +208,7 @@ const Dashboard = () => {
               <div className={`collapse ${expandProjects ? "" : "show"}`} id="projects">
                 <ProjectNav
                   handleAssignmentClick={handleAssignmentClick}
-                  projects={projects}
+                  projects={ searchQuery ? filteredList : projects }
                   handleProjectMenuClick={handleProjectMenuClick}
                 />
               </div>

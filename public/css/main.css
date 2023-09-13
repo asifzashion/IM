@@ -12723,4 +12723,5 @@ be a descendant of the grid when it is being dragged.
     
     .ar .navbar-default .navbar-nav>li>a.language {
         padding-top: 4px;
+        padding-left: 8px;
     }

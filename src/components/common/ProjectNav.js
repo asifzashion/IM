@@ -5,6 +5,8 @@ const ProjectNav = ({ projects, handleProjectMenuClick, handleAssignmentClick })
 
   const [showAllItems, setShowAllItems] = useState(false);
   const [expandedId, setExpandedId] = useState([]);
+  const [isAtive, setinActive] = useState(null);
+
   const projectMenus = ["Submittals", "Checklist Form", "Documents"];
 
   const handleExpanded = (id) => {
@@ -19,6 +21,10 @@ const ProjectNav = ({ projects, handleProjectMenuClick, handleAssignmentClick })
     setShowAllItems(true);
   };
   
+  const handleActive = (index) => {
+    setinActive(index);
+  }
+
   const visibleItems = showAllItems ? projects : projects.slice(0, 5);
   return (
     <>
@@ -26,7 +32,7 @@ const ProjectNav = ({ projects, handleProjectMenuClick, handleAssignmentClick })
        
       {visibleItems.map((project, index) => {
         return (
-          <li key={project.ProjectDataID}>
+          <li onClick={() => handleActive(index)} key={project.ProjectDataID} className={ isAtive === index ? 'active' : ''}>
             <a onClick={() => handleExpanded(project.ProjectDataID)}>
               <i className="pe-7s-wallet"></i>
               <p>
