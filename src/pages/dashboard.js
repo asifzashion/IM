@@ -30,18 +30,15 @@ const Dashboard = () => {
       {
         dataField: "PWARefNumber",
         text: "PWA Ref Number",
-        //sort: true,
-        style: {
-          width: '16%',
-        }
+        sort: true,
+        style: { width: '20%' }
       },
       {
         dadaField: "Subject",
         text: "Subject",
-        style: {
-          width: '22%',
-        },
-        //sort: true,
+        //style: { width: '29%' },
+        sort: true,
+        
         formatter: (_cell, row) => {
           return <div dangerouslySetInnerHTML={{ __html: row.Subject }} />;
         },
@@ -50,22 +47,24 @@ const Dashboard = () => {
       {
         dataField: "Purpose",
         text: "Purpose",
-        //sort: true
+        sort: true,
+        style: { width: '9%' }
       },
       {
         dataField: "Owner",
         text: "Owner",
-        //sort: true
+        sort: true
       },
       {
         dataField: "Asset",
         text: "Asset",
-        //sort: true
+        sort: true,
+        style: { width: '9%' }
       },
       {
         dataField: "Section",
         text: "Section",
-        //sort: true,
+        sort: true,
         formatter: (_cell, row) => {
           return <div dangerouslySetInnerHTML={{ __html: row.Section }} />;
         },
@@ -74,14 +73,15 @@ const Dashboard = () => {
         dataField: "Created Date",
         text: "Created Date",
         style: {
-          width: '8%',
+          width: '10%',
         },
-        //sort: true
+        sort: true
       },
       {
         dataField: "Status",
         text: "Status",
-        //sort: true
+        sort: true,
+        style: { width: '9%' }
       },
     ],
     []
@@ -179,7 +179,7 @@ const Dashboard = () => {
 
   return (
     <div className="wrapper">
-      <div  className="sidebar"  data-color="purple" style={{ backgroundImage: `url("../img/sidebar-5.jpg")` }}>
+      <div  className="sidebar"  data-color="purple" id="navBG" style={{ backgroundImage: `url("../img/sidebar-5.jpg")` }}>
         <div className="logo">
           <a href="#" class="simple-text logo-mini">IM</a>
           <a href="#" className="simple-text logo-normal"><img src="../img/ashghal.png" /></a> 

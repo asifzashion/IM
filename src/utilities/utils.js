@@ -29,20 +29,29 @@ class ProjectUtils {
         return `${window.CORS_URL}${process.env.BASE_LOCATION}${APIConstant.GET_PROJECTS}&userID=${email_id}`;
     }
     static getSubmittalsRequestURL(ContractDataID, draw, start, end) {
-        return `${window.CORS_URL}${process.env.BASE_LOCATION}${APIConstant.GET_SUBMITTALS}&ContractDataID=${ContractDataID}&draw=${draw}&start=${start}&length=${end}`;
+            return `${window.CORS_URL}${process.env.BASE_LOCATION}${APIConstant.GET_SUBMITTALS}&ContractDataID=${ContractDataID}&draw=${draw}&start=${start}&length=${end}`;
+        }
+        // static getAssignmentsNewURL(type, emailId, draw, start, end) {
+        //         const email_id = window.sessionStorage.getItem('email')
+        //         return `${window.CORS_URL}${process.env.BASE_LOCATION}${APIConstant.GET_ASSIGNMENTS_NEW}&emaildid=${email_id}&draw=${draw}&start=${start}&length=${end}${type}`;
+        //     }
+    static getAssignmentsNewURL(type, draw, start, end, searchText, sortOrder) {
+        // const email_id = window.sessionStorage.getItem('email')
+        return `${window.CORS_URL}${process.env.BASE_LOCATION}${APIConstant.GET_ASSIGNMENTS_NEW}&New=true&draw=${draw}&Page=${start}&Limit=${end}&Sort=ReceivedDate_${sortOrder}&Filter=${searchText}`;
     }
-    static getAssignmentsNewURL(type, emailId, draw, start, end) {
-        const email_id = window.sessionStorage.getItem('email')
-        return `${window.CORS_URL}${process.env.BASE_LOCATION}${APIConstant.GET_ASSIGNMENTS_NEW}&emaildid=${email_id}&draw=${draw}&start=${start}&length=${end}${type}`;
-    }
+
     static getMyassignmentData(payload, otdsticket) {
         return `${process.env.BASE_LOCATION}${APIConstant.GET_MYASSIGNMENT}/${payload[0]}/${payload[1]}/${payload[2]}?otdsticket=${otdsticket}&nexturl=%2Fotcs%2Fllisapi.dll%3Ffunc%3Dll%26objId%26objAction%3DRunReport`;
     }
     static getOTDSTicket() {
-        return `${window.CORS_URL}${process.env.BASE_LOCATION}${APIConstant.GET_OTDSTICKET}`;
+        return `${window.CORS_URL}${APIConstant.GET_OTDSTICKET}`;
     }
     static getSubmittoMedatdataURL(userID, Project, Section, VolumeID) {
         return `${window.CORS_URL}${process.env.BASE_LOCATION}${APIConstant.SUBMIT_TO_METADATA}&userID=${userID}&project=${Project}&section=${Section}&VolumeID=${VolumeID}&ContractualDocuments=true&Drainage=true&GIS=true&ReportandForms=true&Roads=true&Survey=true`;
+    }
+
+    static getCountMyAssignment(New) {
+        return `${window.CORS_URL}${process.env.BASE_LOCATION}${APIConstant.SUBMIT_TO_COUNT}&New=true`;
     }
 }
 

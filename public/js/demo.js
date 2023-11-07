@@ -219,24 +219,24 @@ demo = {
         });
     },
 
-    checkScrollForTransparentNavbar: debounce(function() {
-        $navbar = $('.navbar[color-on-scroll]');
-        scroll_distance = $navbar.attr('color-on-scroll') || 500;
+    // checkScrollForTransparentNavbar: debounce(function() {
+    //     $navbar = $('.navbar[color-on-scroll]');
+    //     scroll_distance = $navbar.attr('color-on-scroll') || 500;
 
-        if ($(document).scrollTop() > scroll_distance) {
-            if (transparent) {
-                transparent = false;
-                $('.navbar[color-on-scroll]').removeClass('navbar-transparent');
-                $('.navbar[color-on-scroll]').addClass('navbar-default');
-            }
-        } else {
-            if (!transparent) {
-                transparent = true;
-                $('.navbar[color-on-scroll]').addClass('navbar-transparent');
-                $('.navbar[color-on-scroll]').removeClass('navbar-default');
-            }
-        }
-    }, 17),
+    //     if ($(document).scrollTop() > scroll_distance) {
+    //         if (transparent) {
+    //             transparent = false;
+    //             $('.navbar[color-on-scroll]').removeClass('navbar-transparent');
+    //             $('.navbar[color-on-scroll]').addClass('navbar-default');
+    //         }
+    //     } else {
+    //         if (!transparent) {
+    //             transparent = true;
+    //             $('.navbar[color-on-scroll]').addClass('navbar-transparent');
+    //             $('.navbar[color-on-scroll]').removeClass('navbar-default');
+    //         }
+    //     }
+    // }, 17),
 
     initFullScreenGoogleMap: function() {
         var myLatlng = new google.maps.LatLng(40.748817, -73.985428);

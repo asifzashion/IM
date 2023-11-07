@@ -36,7 +36,7 @@ const ProjectNav = ({ projects, handleProjectMenuClick, handleAssignmentClick })
             <a onClick={() => handleExpanded(project.ProjectDataID)}>
               <i className="pe-7s-wallet"></i>
               <p>
-                {project.Project}
+                {project.Project} <span className="menurole">({project.Role})</span>
                 <b className="caret"></b>
               </p>
             </a>

@@ -26,6 +26,10 @@ const reducerCb = (state, action) => {
       newState = { ...state, ...payload };
       break;
     case "SET_OTDSTICKET":
+      window.sessionStorage.setItem('OTDSToken', payload.otdsticket)
+      newState = { ...state, ...payload };
+      break;
+      case "SET_ASSIGNMENTS_COUNT_NEW":
       newState = { ...state, ...payload };
       break;
 
@@ -105,13 +109,13 @@ const actionsCreator = (dispatch, state) => {
     return response;
   };
 
-  const getAssignmentsNew = async (token, type, emailId, draw, start, end) => {
+  const getAssignmentsNew = async (token, type, draw, start, end, searchText, sortOrder) => {
     dispatch({
       type: "SET_ASSIGNMENTS_NEW",
       payload: { assignments: [] },
     });
     const response = await NetworkManager.getDataWithUrl(token)(
-      ProjectUtils.getAssignmentsNewURL(type, emailId, draw, start, end)
+      ProjectUtils.getAssignmentsNewURL(type, draw, start, end, searchText, sortOrder)
     );
     dispatch({
       type: "SET_ASSIGNMENTS_NEW",
@@ -119,6 +123,22 @@ const actionsCreator = (dispatch, state) => {
     });
     return response;
   };
+
+  const getAssignmentsCountNew = async (token) => {
+    dispatch({
+      type: "SET_ASSIGNMENTS_COUNT_NEW",
+      payload: { assignmentsCount: [] },
+    });
+    const response = await NetworkManager.getDataWithUrl(token)(
+      ProjectUtils.getCountMyAssignment()
+    );
+    dispatch({
+      type: "SET_ASSIGNMENTS_COUNT_NEW",
+      payload: { assignmentsCount: response?.data },
+    });
+    return response;
+  };
+
 
   const uservValidation = async ({ email }) => {
     let postData = {
@@ -144,6 +164,8 @@ const actionsCreator = (dispatch, state) => {
     getProjects,
     getSubmittals,
     getAssignmentsNew,
+    getAssignmentsCountNew,
+    
   };
 };
 

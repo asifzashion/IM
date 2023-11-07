@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="512px" height="512px" viewBox="0 0 512 512" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>full-screen</title>
+    <defs>
+        <filter id="filter-1">
+            <feColorMatrix in="SourceGraphic" type="matrix" values="0 0 0 0 0.517647 0 0 0 0 0.149020 0 0 0 0 0.333333 0 0 0 1.000000 0"></feColorMatrix>
+        </filter>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g filter="url(#filter-1)" id="full-screen">
+            <g>
+                <polygon id="Path" fill="#00B7C3" fill-rule="nonzero" points="312.889333 0 312.889333 56.8893333 414.862667 56.8893333 135.253333 336.497333 175.502667 376.746667 455.110667 97.1373333 455.110667 199.110667 512 199.110667 512 0"></polygon>
+                <path d="M455.110667,455.110667 L56.8893333,455.110667 L56.8893333,56.8893333 L256,56.8893333 L256,0 L56.8893333,0 C25.4573333,0 0,25.4573333 0,56.8893333 L0,455.112 C0,486.542667 25.4573333,512 56.8893333,512 L455.112,512 C486.542667,512 512,486.542667 512,455.110667 L512,256 L455.110667,256 L455.110667,455.110667 Z" id="Path" fill="#00B7C3" fill-rule="nonzero"></path>
+            </g>
+        </g>
+    </g>
+</svg>

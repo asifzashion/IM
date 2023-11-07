@@ -10348,11 +10348,12 @@ be a descendant of the grid when it is being dragged.
     
     .im_detail,
     .im_detail2 {
-        width: 50%;
+        width: 100%;
         box-shadow: 15px 0 25px 0 rgba(0, 0, 0, .05);
         padding: 10px 20px 50px 20px;
         box-sizing: border-box;
-        position: relative
+        position: relative;
+        height: 85vh;
     }
     
     .im_detail .corsp_ext_btn,
@@ -10514,6 +10515,10 @@ be a descendant of the grid when it is being dragged.
     
     .icon_typ_008 {
         background-color: #564a4e;
+    }
+    
+    #navBG {
+        background-size: cover;
     }
     
     .dropdown-menu {
@@ -12510,6 +12515,11 @@ be a descendant of the grid when it is being dragged.
         width: 50px;
     }
     
+    .menurole {
+        text-transform: capitalize;
+        font-weight: 700;
+    }
+    
     .navbar-default .navbar-nav>li>a.language {
         border: 1px solid #7c2b54;
         border-radius: 50%;
@@ -12524,6 +12534,10 @@ be a descendant of the grid when it is being dragged.
         padding-left: 10px;
         margin-top: 15px;
         margin-right: 17px;
+    }
+    
+    .react-bootstrap-table table {
+        table-layout: auto !important;
     }
     
     .navbar-default .navbar-nav>li>a.language:hover,
@@ -12662,6 +12676,10 @@ be a descendant of the grid when it is being dragged.
         white-space: nowrap;
         display: block;
     } */
+    
+    .mr-10 {
+        margin-right: 10px;
+    }
     /* arabic css started here */
     
     .ar .main-panel {
@@ -12706,6 +12724,26 @@ be a descendant of the grid when it is being dragged.
         float: left;
     }
     
+    .ar .fixed-plugin .adjustments-line .bootstrap-switch {
+        float: left;
+    }
+    
+    .ar .fixed-plugin .adjustments-line p {
+        float: right;
+    }
+    
+    .ar .fixed-plugin .dropdown-menu li {
+        float: right;
+    }
+    
+    .ar .fixed-plugin .pull-right {
+        float: left!important;
+    }
+    
+    .ar .fixed-plugin .adjustments-line p {
+        float: right;
+    }
+    
     .ar .searchproject {
         max-width: 400px;
         float: right;
@@ -12724,4 +12762,117 @@ be a descendant of the grid when it is being dragged.
     .ar .navbar-default .navbar-nav>li>a.language {
         padding-top: 4px;
         padding-left: 8px;
+    }
+    
+    .ar .sidebar .nav i {
+        float: right;
+        margin-left: 15px;
+    }
+    
+    .ar .sidebar .nav p {
+        text-align: right;
+    }
+    
+    .ar .sidebar .nav p .caret {
+        left: 0px;
+    }
+    
+    .ar .nav-search {
+        right: 11px;
+        left: auto;
+    }
+    
+    .ar .sidebarsearch .input-field {
+        text-align: right;
+        padding-right: 36px;
+        padding-left: 16px;
+    }
+    
+    .ar .sidebar .logo a.logo-mini {
+        float: right;
+    }
+    
+    .ar .sidebar .logo {
+        display: block;
+    }
+    
+    .ar .sidebar .logo a.logo-normal {
+        text-align: right;
+    }
+    
+    .ar .navbar-nav.navbar-right>li>.dropdown-menu:before,
+    .ar .navbar-nav.navbar-right>li>.dropdown-menu:after {
+        left: 12px;
+        right: auto;
+    }
+    
+    .ar .navbar-right .dropdown-menu {
+        right: auto;
+        left: auto;
+    }
+    
+    .ar ul.showmore {
+        padding-right: 45px;
+        text-align: right;
+    }
+    
+    .ar .card .header {
+        text-align: right;
+    }
+    
+    .ar .dropdown-with-icons .dropdown-menu i {
+        float: right;
+    }
+    
+    .ar .dropdown-with-icons>li>a {
+        padding-right: 0px;
+        padding-left: 20px;
+    }
+    
+    .ar .dropdown-menu>li>a {
+        text-align: right;
+    }
+    
+    .ar h3,
+    .h3 {
+        text-align: right;
+    }
+    
+    .ar .login-page .card .btn-wd {
+        float: none;
+    }
+    
+    .ar .login-page .card .header {
+        text-align: center !important;
+    }
+    
+    .ar .react-bs-table-sizePerPage-dropdown {
+        text-align: right;
+    }
+    
+    .ar .col-lg-6 {
+        float: right;
+    }
+    
+    .ar .pagination {
+        float: left;
+    }
+    
+    .ar .pull-right {
+        float: left!important;
+    }
+    
+    .full-iframe {
+        height: 76vh;
+        width: 100%;
+        border: none;
+        overflow: hidden;
+    }
+    
+    .full-iframeparent {
+        position: absolute;
+        width: 97%;
+        top: 0;
+        z-index: 99;
+        background: #fff;
     }

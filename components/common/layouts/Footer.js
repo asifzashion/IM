@@ -3,6 +3,23 @@ import Head from "next/head";
 import $ from "jquery";
 
 const Footer = () => {
+  const handleChangeBG = (event, imageName) => {
+    event.stopPropagation();
+    document.getElementById("navBG").style.backgroundImage=`url('${imageName}')`;  
+  }
+  const handleChangeBG2 = (event, imageName) => {
+    event.stopPropagation();
+    document.getElementById("navBG").style.backgroundImage=`url('${imageName}')`;  
+  }
+  const handleChangeBG3 = (event, imageName) => {
+    event.stopPropagation();
+    document.getElementById("navBG").style.backgroundImage=`url('${imageName}')`;  
+  }
+  const handleChangeBG4 = (event, imageName) => {
+    event.stopPropagation();
+    document.getElementById("navBG").style.backgroundImage=`url('${imageName}')`;  
+  }
+
   return (
     <React.Fragment>
       <footer className="footer">
@@ -54,37 +71,38 @@ const Footer = () => {
     </li>
     <li className="header-title">Sidebar Images</li>
     <li>
-    <a className="img-holder switch-trigger" href="javascript:void(0)">
-    <img src="../../../img/full-screen-image-1.jpg" />
+    <a className="img-holder" href="javascript:void(0)">
+    <img src="../../../img/full-screen-image-1a.jpg" onClick={(event) => handleChangeBG(event, '../img/full-screen-image-1.jpg')}  />
     </a>
     </li>
     <li>
-    <a className="img-holder switch-trigger" href="javascript:void(0)">
-    <img src="../../../img/full-screen-image-2.jpg" />
+    <a className="img-holder" href="javascript:void(0)">
+    <img src="../../../img/sidebar-5a.jpeg"  onClick={(event) => handleChangeBG2(event, '../img/sidebar-5.jpg')} />
     </a>
     </li>
     <li className="active">
-    <a className="img-holder switch-trigger" href="javascript:void(0)">
-    <img src="../../../img/full-screen-image-3.jpg" />
+    <a className="img-holder" href="javascript:void(0)">
+    <img src="../../../img/full-screen-image-2.jpg" onClick={(event) => handleChangeBG3(event, '../img/full-screen-image-2a.jpg')} />
     </a>
     </li>
-    <li>
-    <a className="img-holder switch-trigger" href="javascript:void(0)">
-    <img src="../../../img/full-screen-image-4.jpg" />
+    <li className="active">
+    <a className="img-holder" href="javascript:void(0)">
+    <img src="../../../img/full-screen-image-4a.jpg" onClick={(event) => handleChangeBG4(event, '../img/full-screen-image-4.jpg')} />
     </a>
     </li>
   
     </ul>
     </div>
     </div>
-        
       </footer>
       <Head>
         <script src="../../../js/jquery.min.js"></script>
         <script src="../../../js/bootstrap.min.js"></script>
         <script src="../../../js/main.js"></script>
         <script src="../../../js/bootstrap-switch-tags.min.js"></script>
+        <script src="../../../js/sweetalert2.js"></script>
         <script src="../../../js/demo.js"></script>
+
       </Head>
     </React.Fragment>
   );

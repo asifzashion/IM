@@ -238,6 +238,8 @@ class NetworkManager {
       const headers = await NetworkManager.makeGetTokenHeaderParam(token);
       const response = await axiosInstance.get(url, headers);
       return response.data;
+    
+
     };
 
     

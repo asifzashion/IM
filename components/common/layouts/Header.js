@@ -1,21 +1,31 @@
 import Head from 'next/head';
 import React, { useState, useEffect} from "react";
+import cookie from "js-cookie";
 
 const Header = () => {
 
   const [addClassToBody, setAddClassToBody] = useState(false);
 
-  const handleLanguageClick = () => {
-    setAddClassToBody((prev) => !prev); // Toggle the state
+  const handleLanguageClick = (toLang) => {
+    cookie.set("lang", toLang, {
+      expires: 365
+  });
+    // setAddClassToBody((prev) => !prev); // Toggle the state
+    // if (addClassToBody) {
+    //   document.body.classList.add('ar');
+    // } else {
+    // document.body.classList.remove('en');
+    // }
+    location.reload();
   };
 
-  useEffect(() => {
-    if (addClassToBody) {
-      document.body.classList.add('ar');
-    } else {
-      document.body.classList.remove('ar');
-    }
-  }, [addClassToBody]);
+  // useEffect(() => {
+  //   if (addClassToBody) {
+  //     document.body.classList.add('en');
+  //   } else {
+  //   document.body.classList.remove('ar');
+  //   }
+  // }, [addClassToBody]);
 
 
   const handleLogout = () => {
@@ -53,7 +63,7 @@ const Header = () => {
           <div className="collapse navbar-collapse">
             <ul className="nav navbar-nav navbar-right">
               <li>
-                <a href="#" onClick={handleLanguageClick} className='language'>{addClassToBody ? "E" : "ع"}</a>
+                <a href="#" onClick={() => handleLanguageClick(cookie.get('lang') =='en' ? 'ar' : 'en')} className='language'>{cookie.get('lang') == 'ar' ? "E" : "ع"}</a>
               </li> 
               
               <li className="dropdown">

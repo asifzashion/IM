@@ -1,5 +1,7 @@
 import { ToastContainer } from "react-toastify";
 // import "react-toastify/dist/ReactToastify.css";
+import React, { useEffect } from 'react'; 
+import cookie from "js-cookie";
 import "../../public/js/jquery.min.js";
 import "../../public/css/bootstrap.min.css";
 import "../../public/css/all.css";
@@ -19,6 +21,17 @@ const wrapErrorBoundary = (children) => {
   return <ErrorBoundary>{children}</ErrorBoundary>;
 };
 function MyApp({ Component, pageProps, ctxReqHeaders }) {
+  useEffect(() => {
+    if (cookie.get('lang') == 'en') {
+      document.body.classList.remove('ar');
+      document.body.classList.add('en');
+    } 
+    if (cookie.get('lang') == 'ar') {
+      document.body.classList.remove('en');
+      document.body.classList.add('ar');
+    } 
+
+  }, [cookie.get('lang')]);
   return (
     <AppContextProvider ctxReqHeaders={ctxReqHeaders} pageProps={pageProps}>
       <Component {...pageProps} />
