@@ -1,13 +1,6 @@
 {
   "/_app": "pages/_app.js",
   "/_document": "pages/_document.js",
-  "/api/hello": "pages/api/hello.js",
-  "/changePassword": "pages/changePassword.html",
-  "/dashboard": "pages/dashboard.html",
-  "/index copy": "pages/index copy.html",
-  "/": "pages/index.html",
-  "/login": "pages/login.html",
-  "/users/userValidation": "pages/users/userValidation.html",
   "/_error": "pages/_error.js",
-  "/404": "pages/404.html"
+  "/dashboard": "pages/dashboard.js"
 }

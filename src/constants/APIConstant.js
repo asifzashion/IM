@@ -11,7 +11,10 @@ export const GET_SUBMITTALS = '/otcs/llisapi.dll/api/v1/nodes/124024553/output?f
 // export const GET_ASSIGNMENTS_NEW = '/otcs/llisapi.dll/api/v1/nodes/117635803/output?format=webreport';
 export const GET_ASSIGNMENTS_NEW = '/otcs/llisapi.dll/api/v1/nodes/124055540/output?format=webreport';
 export const GET_OTDSTICKET = 'https://tempouat.ashghal.gov.qa/otdsws/rest/authentication/credentials';
-// export const GET_OTDSTICKET = '/otdsws/rest/authentication/credentials';
+
+export const GET_AUDIT = '/otcs/llisapi.dll/api/v1/nodes/124159144/output?format=webreport';
+
+export const GET_AUDITDETAILS = '/otcs/llisapi.dll/api/v1/nodes/124153625/output?format=webreport&workid=124053290&DNOMSVer1=true&WFTYPE=DNOMSVer1';
 
 
 export const GET_MYASSIGNMENT = '/otcs/llisapi.dll/app/processes';

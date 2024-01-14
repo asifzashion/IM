@@ -53,6 +53,14 @@ class ProjectUtils {
     static getCountMyAssignment(New) {
         return `${window.CORS_URL}${process.env.BASE_LOCATION}${APIConstant.SUBMIT_TO_COUNT}&New=true`;
     }
+    static getAudit(token, Volumeid) {
+        return `${window.CORS_URL}${process.env.BASE_LOCATION}${APIConstant.GET_AUDIT}&volumeid=${Volumeid}`;
+    }
+
+    static getAuditDetail() {
+        return `${window.CORS_URL}${process.env.BASE_LOCATION}${APIConstant.GET_AUDITDETAILS}`;
+    }
+
 }
 
 export default ProjectUtils;

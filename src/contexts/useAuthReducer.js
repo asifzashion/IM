@@ -19,6 +19,12 @@ const reducerCb = (state, action) => {
     case "SET_PROJECTS":
       newState = { ...state, ...payload };
       break;
+      case "SET_AUDIT":
+      newState = { ...state, ...payload };
+      break;
+      case "SET_AUDITDETAILS":
+      newState = { ...state, ...payload };
+      break;
     case "SET_SUBMITTALS":
       newState = { ...state, ...payload };
       break;
@@ -139,6 +145,21 @@ const actionsCreator = (dispatch, state) => {
     return response;
   };
 
+  const getAuditMyassignment = async (token, Volumeid) => {
+    const response = await NetworkManager.getDataWithUrl(token)(
+      ProjectUtils.getAudit(token, Volumeid)
+    );
+    dispatch({ type: "SET_AUDIT", payload: { audit: response?.data } });
+    return response;
+  };
+
+  const getAuditDetailsMyassignment = async (token) => {
+    const response = await NetworkManager.getDataWithUrl(token)(
+      ProjectUtils.getAuditDetail(token)
+    );
+    dispatch({ type: "SET_AUDITDETAILS", payload: { auditDetails: response?.data } });
+    return response;
+  };
 
   const uservValidation = async ({ email }) => {
     let postData = {
@@ -165,6 +186,8 @@ const actionsCreator = (dispatch, state) => {
     getSubmittals,
     getAssignmentsNew,
     getAssignmentsCountNew,
+    getAuditMyassignment,
+    getAuditDetailsMyassignment,
     
   };
 };

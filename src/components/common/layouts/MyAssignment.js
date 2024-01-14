@@ -2,6 +2,8 @@ import React, { useState, useEffect, useContext } from "react";
 import { AppContext } from "../../../contexts/AppContextProvider";
 import TableComponent from "../tableComponent";
 import ProjectUtils from "../../../utilities/utils";
+import MyAssignmentAudit from '../layouts/MyAssignmentAudit';
+
 const MyAssignment = ({ setLoading }) => {
   const [iframeLink, setIframeLink] = useState("");
   const [type, setType] = useState("&New=true");
@@ -11,6 +13,10 @@ const MyAssignment = ({ setLoading }) => {
   const [showCountRecords, setCountRecords] = useState(0);
   const [itemsPerPage, setItemsPerPage] = useState(10); // Set your desired items per page
   const [showRemote, setRemote] = useState(true);
+  const [showMyAssignmentData, setMyAssignmentData] = useState(true);
+  const [showMyAssignmentAudit, setMyAssignmentAudit] = useState(false);
+  const [showVolumeID, setVolumeID] = useState('');
+
 
   //const [totalRecords, setTotalRecords] = useState(0);
 
@@ -32,6 +38,16 @@ const MyAssignment = ({ setLoading }) => {
     setTotalRecords(0);
     setRemote(false);
   };
+
+  
+  const handleSubmitAudit =(VolumeID) =>{
+    setMyAssignmentData(false)
+    setMyAssignmentAudit(true)
+  }
+
+  const handleVolumeID =(VolumeID) =>{
+    setVolumeID(VolumeID)
+  }
 
   const extractTaskParams = (str) => {
     const start = str.indexOf("(");
@@ -147,45 +163,56 @@ const MyAssignment = ({ setLoading }) => {
       />
     </>
   ) : (
-    <div style={{ padding: "15px" }}>
+    <> 
+    {showMyAssignmentAudit ? <MyAssignmentAudit showVolumeID={showVolumeID} onButtonClick={() =>  {
       
-      <h3 style={{ marginBottom: "20px", marginLeft: "10px" }}>My Assignments</h3>
-      <div className="myassign_header" style={{ display: "flex", margin: "0px 10px 10px 10px" }}>
-        <button className={showBtnStatus("&New=true")} onClick={() => {
-          setRemote(false)
-        handleTypeChange("&New=true")}}>
-          {/* New {showCountRecords}   */}
-          New {getCount("&New=true")}
-        </button>
-        <button className={showBtnStatus("&Inprogress=true")} onClick={() => handleTypeChange("&Inprogress=true")}>
-          InProgress {getCount("&Inprogress-=true")}
-        </button>
-        <button className={showBtnStatus("&Completed=true")} onClick={() => handleTypeChange("&Completed=true")}>
-          Completed {getCount("&Completed=true")}
-        </button>
-        <input
-          onChange={(e) => setSearchText(e.target.value)}
-          value={searchText}
-          placeholder="Search..."
-          className="form-control searchproject"
-          style={{ maxWidth: 300 }}
-        />
-      </div>
-
-      
-      <TableComponent
-        columns={columns}
-        data={assignments || []}
-        totalRecords={totalRecords}
-        currentPage={currentPage}
-        itemsPerPage={itemsPerPage}
-        setItemsPerPage={setItemsPerPage}
-        setCurrentPage={setCurrentPage}
-        fetchData={fetchData}
-        showRemote={showRemote}
-
+      setMyAssignmentAudit(false) 
+      setMyAssignmentData(true) 
+      } } /> : null}
+    
+    {showMyAssignmentData ? 
+      <div style={{ padding: "15px" }}>
+    <h3 style={{ marginBottom: "20px", marginLeft: "10px" }}>My Assignments</h3>
+    <div className="myassign_header" style={{ display: "flex", margin: "0px 10px 10px 10px" }}>
+      <button className={showBtnStatus("&New=true")} onClick={() => {
+        setRemote(false)
+      handleTypeChange("&New=true")}}>
+        {/* New {showCountRecords}   */}
+        New {getCount("&New=true")}
+      </button>
+      <button className={showBtnStatus("&Inprogress=true")} onClick={() => handleTypeChange("&Inprogress=true")}>
+        InProgress {getCount("&Inprogress-=true")}
+      </button>
+      <button className={showBtnStatus("&Completed=true")} onClick={() => handleTypeChange("&Completed=true")}>
+        Completed {getCount("&Completed=true")}
+      </button>
+      <input
+        onChange={(e) => setSearchText(e.target.value)}
+        value={searchText}
+        placeholder="Search..."
+        className="form-control searchproject"
+        style={{ maxWidth: 300 }}
       />
     </div>
+
+    
+    <TableComponent
+      columns={columns}
+      data={assignments || []}
+      totalRecords={totalRecords}
+      currentPage={currentPage}
+      itemsPerPage={itemsPerPage}
+      setItemsPerPage={setItemsPerPage}
+      setCurrentPage={setCurrentPage}
+      fetchData={fetchData}
+      showRemote={showRemote}
+      setMyAssignmentData={handleSubmitAudit}
+      setVolumeID={handleVolumeID}
+
+    />
+  </div> : null} </>
+  
+    
 
     
   );

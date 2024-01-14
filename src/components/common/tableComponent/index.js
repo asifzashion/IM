@@ -4,6 +4,7 @@ import paginationFactory from "react-bootstrap-table2-paginator";
 import Mynext from "../../common/layouts/Mynext"
 import IframeComponent from '../iframe/IframeComponent';
 
+
 // import "bootstrap/dist/css/bootstrap.min.css";
 
 // const ActionButtons = ({ row }) => (
@@ -23,7 +24,10 @@ const TableComponent = ({
   itemsPerPage = 10,
   setItemsPerPage,
   fetchData,
-  showRemote
+  showRemote,
+  setMyAssignmentData,
+  setVolumeID
+  
 }) => {
   const handleTableChange = (type, { page, sortField, sortOrder, filters }) => {
     console.log("Table changed:", type, page, sortField, sortOrder, filters);
@@ -47,6 +51,14 @@ const TableComponent = ({
   const [showTaskpopup, setTaskpopup] = useState(false);
   const [showIframepopup, setIframepopup] = useState(null);
   const [ShowRemote, setRemote] = useState(true);
+  const [showMyAssignmentAudit, setMyAssignmentAudit] = useState(false);
+
+
+  const handleSubmitAudit =(VolumeID) =>{
+    setVolumeID(VolumeID)
+    setMyAssignmentAudit(true)
+    setMyAssignmentData(false)
+  }
 
 
   const defaultSorted = [{
@@ -65,8 +77,11 @@ const TableComponent = ({
         aria-expanded="false"></i>
       
       <div className="dropdown-menu" aria-labelledby={`dropdown-${'ff'}`}>
-        <button class="dropdown-item" type="button">Audit</button>
-        <button class="dropdown-item" type="button">Properties</button>
+        {/* <button class="dropdown-item" onClick={handleSubmitAudit} type="button">Audit</button> */}
+        <button class="dropdown-item" onClick={() => handleSubmitAudit(row.VolumeID)} type="button">
+  Audit
+</button>        
+{/* <button class="dropdown-item" type="button">Properties</button> */}
         </div>
     </div>
   );
@@ -77,7 +92,21 @@ const TableComponent = ({
 const firstColumnFormatter = (cell, row, rowIndex, columnIndex) => {
   // Customize the formatter for the first column to make it clickable
   return (
-    <a
+    // <a
+    //   href="#"
+    //   onClick={(e) => {
+    //     e.preventDefault();
+    //     setTaskpopup(true)
+    //     setIframepopup(row)
+    //   }}
+    // >
+    //   {cell}
+    // </a>
+
+row.pwn == 0 ? 
+cell
+ :
+<a
       href="#"
       onClick={(e) => {
         e.preventDefault();
@@ -87,6 +116,7 @@ const firstColumnFormatter = (cell, row, rowIndex, columnIndex) => {
     >
       {cell}
     </a>
+
   );
 };
 
@@ -96,15 +126,6 @@ const firstColumn = {
   sort:true,
   formatter: firstColumnFormatter,
 };
-  // const baseUrl = 'https://tempouat.ashghal.gov.qa/otcs/llisapi.dll/app/processes/';
-  // const nextUrl = encodeURIComponent('/otcs/llisapi.dll?func=ll&objId=124055540&objAction=RunReport');
-  // const token = typeof window !== 'undefined' && window.sessionStorage && window.sessionStorage.getItem('OTDSToken');
-  // //const iframeUrl = `https://www.dummywebsite.com/`;
-  
-  // var iframeUrl ='';
-  // if(showIframepopup && showIframepopup.VolumeID){
-  //      iframeUrl = `${baseUrl}${showIframepopup.VolumeID}/${showIframepopup.Subworkid}/${showIframepopup.TaskID}?otdsticket=${token}&nexturl=${nextUrl}`;
-  // }
 
   const baseUrl = 'https://tempouat.ashghal.gov.qa/otcs/llisapi.dll/app/processes/';
   const token = typeof window !== 'undefined' && window.sessionStorage && window.sessionStorage.getItem('OTDSToken');
@@ -139,7 +160,7 @@ const firstColumn = {
             ...columns.slice(1), // Exclude the first column from the rest of the columns
             {
               text: 'Actions',
-              formatter: renderDropdownActions,
+              formatter: (cell, row) => renderDropdownActions(row),
             },
           ]}
           remote={showRemote}
