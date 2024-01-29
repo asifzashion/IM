@@ -7,6 +7,9 @@ import MyAssignmentAudit from '../layouts/MyAssignmentAudit';
 const MyAssignment = ({ setLoading }) => {
   const [iframeLink, setIframeLink] = useState("");
   const [type, setType] = useState("&New=true");
+  const [newly, setNewly] = useState("");
+  const [inprogress, setInprogress] = useState("");
+  const [completed, setCompleted] = useState("");
   const [searchText, setSearchText] = useState("");
   const [totalRecords, setTotalRecords] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
@@ -32,11 +35,24 @@ const MyAssignment = ({ setLoading }) => {
     loadAssignmentData();
   }, [type, currentPage, itemsPerPage, searchText]);
 
-  const handleTypeChange = (str) => {
+  
+  
+  const handleTypeChange = (str, type2) => {
     setType(str);
     setCurrentPage(1);
-    setTotalRecords(0);
+    // setTotalRecords(0);
     setRemote(false);
+    if(type2 == "New"){
+        setNewly(totalRecords);
+    }
+    if(type2 == "Inprogress"){
+        setInprogress(totalRecords);
+   
+    }
+    if(type2 == "Completed"){
+        setCompleted(totalRecords);
+    }
+    
   };
 
   
@@ -67,6 +83,42 @@ const MyAssignment = ({ setLoading }) => {
     loadAssignmentData(sortOrder);
 
   }
+
+  // const loadAssignmentData = async (sortOrder = '') => {
+  //   const token = window.sessionStorage.getItem('token');
+  //   const payload = searchText
+  //     ? type + `&columns[0]&columns[1][search][value]=${searchText}`
+  //     : type;
+    
+  //   if (token) {
+  //     setLoading(true);
+  
+  //     const startIndex = currentPage;
+      
+  //     try {
+  //       const assignmentDataResponse = await getAssignmentsNew(token, payload, currentPage, startIndex, itemsPerPage, searchText, sortOrder, type);
+  
+  //       setLoading(false);
+  
+  //       if (assignmentDataResponse?.recordsTotal) {
+  //         setTotalRecords(assignmentDataResponse.recordsTotal);
+  
+  //         if (type && type.split("&")[1].split("=")[0] === "New") {
+  //           setNewly(assignmentDataResponse.recordsTotal);
+  //         } else if (type && type.split("&")[1].split("=")[0] === "Inprogress") {
+  //           setInprogress(assignmentDataResponse.recordsTotal);
+  //         } else if (type && type.split("&")[1].split("=")[0] === "Completed") {
+  //           setCompleted(assignmentDataResponse.recordsTotal);
+  //         }
+  //       }
+  
+  //     } catch (error) {
+  //       setLoading(false);
+  //       return error;
+  //     }
+  //   }
+  // };
+
   const loadAssignmentData = async (sortOrder = '') => {
     const token = window.sessionStorage.getItem('token')
     const payload = searchText
@@ -78,18 +130,51 @@ const MyAssignment = ({ setLoading }) => {
       //const startIndex = (currentPage - 1) * itemsPerPage;
       const startIndex = currentPage;
       try {
-        const [assignmentDataResponse, assignmentsCountResponse] = await Promise.all([
-          getAssignmentsNew(token, payload, currentPage, startIndex, itemsPerPage, searchText, sortOrder),
-          getAssignmentsCountNew(token),
+        const [assignmentDataResponse] = await Promise.all([
+          // getAssignmentsCountNew(token, type),
+          getAssignmentsNew(token, payload, currentPage, startIndex, itemsPerPage, searchText, sortOrder, type),
+
+        ]);
+
+        const [assignmentDataResponseNew, assignmentDataResponseInprogess, assignmentDataResponseCompleted] = await Promise.all([
+
+          getAssignmentsCountNew(token, '&New=true'), getAssignmentsCountNew(token, '&Inprogress=true'), getAssignmentsCountNew(token, '&Completed=true')
+          
         ]);
         
+        
+
         setLoading(false);
-        if (assignmentDataResponse?.recordsTotal) {
-          setTotalRecords(assignmentDataResponse.recordsTotal);
-        }
-        if (assignmentsCountResponse) {
-          setCountRecords(assignmentsCountResponse.data[0]?.Count);
-        }
+        // if (assignmentsCountResponse) {
+        //   setCountRecords(assignmentsCountResponse.data[0]?.Count);
+        // }
+
+        // if (type && type.split("&")[1].split("=")[0] === "New") {
+          setNewly(assignmentDataResponseNew.myRows[0].DataCount);
+        // } else if (type && type.split("&")[1].split("=")[0] === "Inprogress") {
+          setInprogress(assignmentDataResponseInprogess.myRows[0].DataCount);
+        // } else if (type && type.split("&")[1].split("=")[0] === "Completed") {
+          setCompleted(assignmentDataResponseCompleted.myRows[0].DataCount);
+        // }
+      
+       
+
+        
+        // if (assignmentDataResponse?.recordsTotal) {
+        //   setTotalRecords(assignmentDataResponse.recordsTotal);
+        //   // setNewly(assignmentDataResponse.recordsTotal);
+        //   if(type && type.split("&")[1].split("=")[0]=="New"){
+        //     setNewly(assignmentDataResponse.recordsTotal)
+        //   }
+        //   if(type && type.split("&")[1].split("=")[0]=="Inprogress"){
+        //     setInprogress(assignmentDataResponse.recordsTotal)
+        //   }
+        //       if(type && type.split("&")[1].split("=")[0]=="Completed"){
+        //         setCompleted(assignmentDataResponse.recordsTotal)
+        //     }
+
+        // }
+       
         
       } catch (error) {
         setLoading(false);
@@ -97,7 +182,6 @@ const MyAssignment = ({ setLoading }) => {
       }
     }
   };
-
 
   const columns = [
     {
@@ -145,8 +229,24 @@ const MyAssignment = ({ setLoading }) => {
       : "btn btn-info btn-fill mr-10 btn-wd me-2";
   };
 
-  const getCount = (str) => {
-    return type === str ? "(" + totalRecords + ")" : totalRecords;
+  // const getCount = (str, type2) => {
+    
+
+  //   return type === str ? "(" + totalRecords + ")" : totalRecords;
+
+  // };
+
+  const getCount = (str, type2) => {
+
+    if(type2 == "New"){
+        return newly;
+    }
+    if(type2 == "Inprogess"){
+        return  inprogress;
+    }
+    if(type2 == "Completed"){
+        return  completed;
+    }
 
   };
 
@@ -176,15 +276,15 @@ const MyAssignment = ({ setLoading }) => {
     <div className="myassign_header" style={{ display: "flex", margin: "0px 10px 10px 10px" }}>
       <button className={showBtnStatus("&New=true")} onClick={() => {
         setRemote(false)
-      handleTypeChange("&New=true")}}>
+      handleTypeChange("&New=true", "New")}}>
         {/* New {showCountRecords}   */}
-        New {getCount("&New=true")}
+        New {newly}
       </button>
-      <button className={showBtnStatus("&Inprogress=true")} onClick={() => handleTypeChange("&Inprogress=true")}>
-        InProgress {getCount("&Inprogress-=true")}
+      <button className={showBtnStatus("&Inprogress=true")} onClick={() => handleTypeChange("&Inprogress=true", "Inprogress")}>
+        InProgress {inprogress}
       </button>
-      <button className={showBtnStatus("&Completed=true")} onClick={() => handleTypeChange("&Completed=true")}>
-        Completed {getCount("&Completed=true")}
+      <button className={showBtnStatus("&Completed=true")} onClick={() => handleTypeChange("&Completed=true", "Completed")}>
+        Completed {completed}
       </button>
       <input
         onChange={(e) => setSearchText(e.target.value)}

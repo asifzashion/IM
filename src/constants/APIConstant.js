@@ -14,7 +14,9 @@ export const GET_OTDSTICKET = 'https://tempouat.ashghal.gov.qa/otdsws/rest/authe
 
 export const GET_AUDIT = '/otcs/llisapi.dll/api/v1/nodes/124159144/output?format=webreport';
 
-export const GET_AUDITDETAILS = '/otcs/llisapi.dll/api/v1/nodes/124153625/output?format=webreport&workid=124053290&DNOMSVer1=true&WFTYPE=DNOMSVer1';
+export const GET_AUDITDETAILS = '/otcs/llisapi.dll/api/v1/nodes/124153625/output?format=webreport';
+
+// export const GET_AUDITDETAILS = '/otcs/llisapi.dll/api/v1/nodes/124153625/output?format=webreport&workid=124053290&DNOMSVer1=true&WFTYPE=DNOMSVer1';
 
 
 export const GET_MYASSIGNMENT = '/otcs/llisapi.dll/app/processes';

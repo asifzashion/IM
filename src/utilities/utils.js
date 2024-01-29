@@ -35,9 +35,9 @@ class ProjectUtils {
         //         const email_id = window.sessionStorage.getItem('email')
         //         return `${window.CORS_URL}${process.env.BASE_LOCATION}${APIConstant.GET_ASSIGNMENTS_NEW}&emaildid=${email_id}&draw=${draw}&start=${start}&length=${end}${type}`;
         //     }
-    static getAssignmentsNewURL(type, draw, start, end, searchText, sortOrder) {
+    static getAssignmentsNewURL(type, draw, start, end, searchText, sortOrder, countStatus) {
         // const email_id = window.sessionStorage.getItem('email')
-        return `${window.CORS_URL}${process.env.BASE_LOCATION}${APIConstant.GET_ASSIGNMENTS_NEW}&New=true&draw=${draw}&Page=${start}&Limit=${end}&Sort=ReceivedDate_${sortOrder}&Filter=${searchText}`;
+        return `${window.CORS_URL}${process.env.BASE_LOCATION}${APIConstant.GET_ASSIGNMENTS_NEW}${countStatus}&draw=${draw}&Page=${start}&Limit=${end}&Sort=ReceivedDate_${sortOrder}&Filter=${searchText}`;
     }
 
     static getMyassignmentData(payload, otdsticket) {
@@ -51,14 +51,16 @@ class ProjectUtils {
     }
 
     static getCountMyAssignment(New) {
-        return `${window.CORS_URL}${process.env.BASE_LOCATION}${APIConstant.SUBMIT_TO_COUNT}&New=true`;
+        return `${window.CORS_URL}${process.env.BASE_LOCATION}${APIConstant.SUBMIT_TO_COUNT}${New}`;
     }
     static getAudit(token, Volumeid) {
-        return `${window.CORS_URL}${process.env.BASE_LOCATION}${APIConstant.GET_AUDIT}&volumeid=${Volumeid}`;
+        return `${window.CORS_URL}${process.env.BASE_LOCATION}${APIConstant.GET_AUDIT}&volumeid=${Volumeid}&IMCheck=${1}`;
     }
 
-    static getAuditDetail() {
-        return `${window.CORS_URL}${process.env.BASE_LOCATION}${APIConstant.GET_AUDITDETAILS}`;
+    static getAuditDetail(token, workid, DNOMSVer1, WFTYPE) {
+        // return `${window.CORS_URL}${process.env.BASE_LOCATION}${APIConstant.GET_AUDITDETAILS}&workid=${workid}&DNOMSVer1=true&WFTYPE=${DNOMSVer1}`;
+        return `${window.CORS_URL}${process.env.BASE_LOCATION}${APIConstant.GET_AUDITDETAILS}&workid=${workid}&${DNOMSVer1}=true&WFTYPE=${DNOMSVer1}`;
+
     }
 
 }

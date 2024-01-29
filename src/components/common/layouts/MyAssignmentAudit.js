@@ -1,5 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
 import { AppContext } from "../../../contexts/AppContextProvider";
+import IframeComponent from '../iframe/IframeComponent';
 
 
 
@@ -11,14 +12,50 @@ const MyAssignmentAudit = ({showVolumeID,onButtonClick}) => {
   } = useContext(AppContext).auth;
 
     const [display, setDisplay] = useState(false);
+    const [showAttachmentpopup, setAttachmentpopup] = useState(false);
+    const [showSectionsDetailpopup, setSectionsDetailpopup] = useState(false);
+    const [showAttachmentRowdata, setAttachmentRowdata] = useState("");
+    const [showSectionsDetailRowdata, setSectionsDetailRowdata] = useState("");
+
+
+
+
+
+    // useEffect(() => {
+    //   const fetchData = async () => {
+    //     try {
+    //       const token = window.sessionStorage.getItem('token');
+    //       if (token) {
+    //         await getAuditMyassignment(token, showVolumeID);
+    //         console.log(audit);
+    //         await getAuditDetailsMyassignment(token);
+    //       }
+    //     } catch (error) {
+    //       console.error('Error fetching data:', error);
+    //       // Handle error (e.g., show an error message to the user)
+    //     }
+    //   };
+    
+    //   fetchData(); // Call the async function immediately
+    
+    // }, []);
 
     useEffect(() => {
       const fetchData = async () => {
         try {
           const token = window.sessionStorage.getItem('token');
           if (token) {
-            await getAuditMyassignment(token, showVolumeID);
-            await getAuditDetailsMyassignment(token);
+            const result = await getAuditMyassignment(token, showVolumeID);
+            if (result) {
+              console.log(result);
+              const Volumeid = result.data[0].Volumeid;
+              const WFExpand = result.data[0].WFExpand;
+              const Workflow = result.data[0].Workflow;
+
+
+              // If getAuditMyassignment is successful, call getAuditDetailsMyassignment
+              await getAuditDetailsMyassignment(token, Volumeid, WFExpand, Workflow);
+            }
           }
         } catch (error) {
           console.error('Error fetching data:', error);
@@ -31,14 +68,56 @@ const MyAssignmentAudit = ({showVolumeID,onButtonClick}) => {
     }, []);
 
     const [isVisible, setIsVisible] = useState(false);
+    const [isSectionDetails, setSectionDetails] = useState(false);
+
+
+    const handleSectiontoggle = () => {
+      setSectionDetails(!isSectionDetails);
+    };
 
     const handleToggle = () => {
       setIsVisible(!isVisible);
     };
   
+    const baseUrl = 'https://tempouat.ashghal.gov.qa/otcs/llisapi.dll/app/processes/';
+    const token2 = typeof window !== 'undefined' && window.sessionStorage && window.sessionStorage.getItem('OTDSToken');
+    //const iframeUrl = `https://www.dummywebsite.com/`;
+    var iframeUrl ='';
+    if(true){
+      iframeUrl = `https://tempouat.ashghal.gov.qa/IM2/widgets/folderbrowse.html?folderDataID=${showAttachmentRowdata.Volumeid}`;
+      // const nextUrl = encodeURIComponent (`/otcs/llisapi.dll?func=ll&objId=${showIframepopup.MYID}&objAction=RunReport`);
+      //    iframeUrl = `${baseUrl}${showIframepopup.VolumeID}/${showIframepopup.Subworkid}/${showIframepopup.TaskID}?otdsticket=${token}&nexturl=${nextUrl}`;
+    }
+  
+    var iframeUrlSectionDetail ='';
+    if(isSectionDetails){
+      iframeUrlSectionDetail = `https://tempouat.ashghal.gov.qa/IM2/${showSectionsDetailRowdata}`;
+    }
+
   return (
     <div>
-      
+       {showAttachmentpopup ?  <div className="full-iframeparent">
+       <button type="button" className="close closematadata" id="closematadata2" onClick={() =>  setAttachmentpopup(!showAttachmentpopup)}><span aria-hidden="true">×</span></button>
+
+      <IframeComponent
+        src={iframeUrl}
+        width="600"
+        height="400"
+        
+      />
+      </div> : null}
+
+      {showSectionsDetailpopup ?  <div className="full-iframeparent">
+       <button type="button" className="close closematadata" id="closematadata2" onClick={() =>  setAttachmentpopup(!showAttachmentpopup)}><span aria-hidden="true">×</span></button>
+
+      <IframeComponent
+        src={iframeUrlSectionDetail}
+        width="600"
+        height="400"
+        
+      />
+      </div> : null}
+
       <div className="new_edt_cont_wrapper" style={{ display: display ? "block" : "" }}>
         <div class="im_detail" style={{ width: display ? "100%" : "" }}>
         <button type="button" className="close closematadata" id="closematadata" onClick={() =>  onButtonClick(0)}><span aria-hidden="true">×</span></button>
@@ -73,8 +152,12 @@ const MyAssignmentAudit = ({showVolumeID,onButtonClick}) => {
                       <td>{audit && audit[0].CREATOR}</td>
                       <td>{audit && audit[0].SUBJECT}</td>
                       <td>{audit && audit[0].CURRSTAGE}</td>
-                      <td>Sections Detail</td>
-                      <td>Attachments</td>
+                      <td onClick={handleSectiontoggle} style={{textAlign: "center"}}>Sections Detail</td>
+                      <td style={{textAlign: "center"}}><i class="pe-7s-paperclip"  onClick={(e) => {
+        e.preventDefault();
+        setAttachmentpopup(true)
+        setAttachmentRowdata(audit[0])
+      }} style={{color: "#842655", fontSize: "20px", cursor:'pointer'}}></i></td>
                       <td onClick={handleToggle} style={{textAlign: "center"}}><i class="pe-7s-look" style={{color: "#842655", fontSize: "20px", cursor:'pointer'}}></i></td>
                       
                       
@@ -119,6 +202,7 @@ const MyAssignmentAudit = ({showVolumeID,onButtonClick}) => {
                       <th>Due Date</th>
                       <th>Days Taken</th>
                       <th style={{width:"17%"}}>Comments</th>
+                      <th>Action</th>
                       <th>Instructions</th>
                       
                     </tr>
@@ -127,7 +211,7 @@ const MyAssignmentAudit = ({showVolumeID,onButtonClick}) => {
                       auditDetails.length > 0 &&
                       auditDetails.map((item) => (
                         <tr key={item.id}>
-                          <td style={{ color: item.Status === 'Completed1' ? 'green' : 'red' }}>
+                          <td style={{ color: item.Status === 'Completed' ? 'green' : 'orange' }}>
               {item.Status}
             </td>
                           <td>{item.Role}</td>
@@ -140,7 +224,58 @@ const MyAssignmentAudit = ({showVolumeID,onButtonClick}) => {
                           <td><div
       dangerouslySetInnerHTML={{__html: item.Comments}}
     /></td>
+     <td>{item.ActionTaken}</td>
                           <td>{item.INSTR}</td>
+                        </tr>
+                      ))}
+                  </thead>
+                </table>
+                        
+              </div>
+            </div>}
+            
+
+            {isSectionDetails && <div class="corres_data_area">
+              <div class="corres_table_wrapper">
+                <table class="sender-table">
+                  <thead>
+                    <tr>
+                      <th style={{width:"17%"}}>Section</th>
+                      <th style={{width:"21%"}}>Description</th>
+                      <th style={{width:"12%"}}>Selected Description</th>
+                      <th style={{width:"12%"}}>Asset</th>
+                      {/* <th>Action</th>
+                      <th>Instructions</th> */}
+                      
+                    </tr>
+                    
+                    {audit &&
+                      audit.length > 0 &&
+                      audit[0].EXPAND.map((item) => (
+                        <tr key={item.id}>
+                         
+                          <td>{item.Section}</td>
+                          <td>{item.Description}</td>
+                          <td>{item.SelectedDescription}</td>
+                          <td>{item.Asset}</td>
+                          {/* <td><div
+      dangerouslySetInnerHTML={{__html: item.DocumentReview}}
+    /></td> */}
+ {/* <td style={{textAlign: "center"}}> <i class="pe-7s-paperclip"  onClick={(e) => {
+        e.preventDefault();
+        setSectionsDetailpopup(true)
+        setSectionsDetailRowdata(item.DocumentReview)
+      }} style={{color: "#842655", fontSize: "20px", cursor:'pointer'}}></i></td> */}
+
+<td><div dangerouslySetInnerHTML={{ __html: item.DocumentReview }} onClick={(e) => {
+        e.preventDefault();
+        const hrefValue = e.target.getAttribute('href');
+        console.log('Clicked link with href:', hrefValue);
+        setSectionsDetailpopup(true)
+        setSectionsDetailRowdata(hrefValue)
+      }} /></td>
+
+
                         </tr>
                       ))}
                   </thead>

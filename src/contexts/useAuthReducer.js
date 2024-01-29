@@ -115,13 +115,13 @@ const actionsCreator = (dispatch, state) => {
     return response;
   };
 
-  const getAssignmentsNew = async (token, type, draw, start, end, searchText, sortOrder) => {
+  const getAssignmentsNew = async (token, type, draw, start, end, searchText, sortOrder, countStatus) => {
     dispatch({
       type: "SET_ASSIGNMENTS_NEW",
       payload: { assignments: [] },
     });
     const response = await NetworkManager.getDataWithUrl(token)(
-      ProjectUtils.getAssignmentsNewURL(type, draw, start, end, searchText, sortOrder)
+      ProjectUtils.getAssignmentsNewURL(type, draw, start, end, searchText, sortOrder, countStatus)
     );
     dispatch({
       type: "SET_ASSIGNMENTS_NEW",
@@ -130,13 +130,13 @@ const actionsCreator = (dispatch, state) => {
     return response;
   };
 
-  const getAssignmentsCountNew = async (token) => {
+  const getAssignmentsCountNew = async (token, type) => {
     dispatch({
       type: "SET_ASSIGNMENTS_COUNT_NEW",
       payload: { assignmentsCount: [] },
     });
     const response = await NetworkManager.getDataWithUrl(token)(
-      ProjectUtils.getCountMyAssignment()
+      ProjectUtils.getCountMyAssignment(type)
     );
     dispatch({
       type: "SET_ASSIGNMENTS_COUNT_NEW",
@@ -153,9 +153,9 @@ const actionsCreator = (dispatch, state) => {
     return response;
   };
 
-  const getAuditDetailsMyassignment = async (token) => {
+  const getAuditDetailsMyassignment = async (token, workid, WFExpand, WFTYPE) => {
     const response = await NetworkManager.getDataWithUrl(token)(
-      ProjectUtils.getAuditDetail(token)
+      ProjectUtils.getAuditDetail(token, workid, WFExpand, WFTYPE)
     );
     dispatch({ type: "SET_AUDITDETAILS", payload: { auditDetails: response?.data } });
     return response;
